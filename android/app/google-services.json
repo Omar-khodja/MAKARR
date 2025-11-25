@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "440199101878",
+    "project_id": "makarr-bc736",
+    "storage_bucket": "makarr-bc736.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440199101878:android:c077cc1f12990b34669517",
+        "android_client_info": {
+          "package_name": "com.example.makarr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6RlRv25KkomG2NG43ipknML1zzdJtUl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
