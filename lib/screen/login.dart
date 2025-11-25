@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:makarr/appLogger.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
 import 'package:makarr/screen/createAccounte.dart';
+import 'package:makarr/screen/profile.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+final _firebaseAuth = FirebaseAuth.instance;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,6 +21,7 @@ class _LoginState extends State<Login> {
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool isLoading = false;
   bool showPassword = false;
   @override
   void dispose() {
@@ -116,6 +120,7 @@ class _LoginState extends State<Login> {
                   label: "Singin",
                   fun: _submit,
                   tailIcon: Icons.login,
+                  isLoading: isLoading,
                 ),
                 const SizedBox(height: 20),
 
@@ -156,7 +161,10 @@ class _LoginState extends State<Login> {
                 OutLineButton(
                   text: "Sing in with Facebook",
                   fun: () {
-                    AppLogger.i("information logger");
+                    AppLogger.i(
+                      "information logger",
+                      className: runtimeType.toString(),
+                    );
                     AppLogger.d("debug logger");
                     AppLogger.e("error logger");
                     AppLogger.w("worning logger");
@@ -201,10 +209,44 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void _submit() {
+  void _submit() async {
     final bool isValid = _formkey.currentState!.validate();
     if (!isValid) return;
-    print(_emailController.text);
-    print(_passwordController.text);
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (!mounted) return;
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => const Profile()));
+    } on FirebaseAuthException catch (e) {
+      String error;
+      setState(() {
+        isLoading = false;
+      });
+      switch (e.code) {
+        case "invalid-email":
+          error = e.code.toString();
+          break;
+        case "wrong-password":
+          error = "Wrong password or email!";
+          break;
+        case "network-request-failed":
+          error = "check your network connection";
+          break;
+        default:
+          error = e.message ?? "somthing went worng please try again later";
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(error)));
+      }
+    }
   }
 }

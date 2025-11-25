@@ -162,7 +162,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
         email: _emailController.text,
         password: _password1Controller.text,
       );
-      _firebaseAuth.
+      
       AppLogger.i(userCredential.toString(), className: runtimeType.toString());
     } on FirebaseAuthException catch (e) {
       String error;
