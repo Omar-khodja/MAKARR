@@ -120,7 +120,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                 const SizedBox(height: 20),
                 CustomTextformfield(
                   controller: _password2Controller,
-                  label: "Enter your password",
+                  label: "Confirm your password",
                   icon: Icons.lock,
                   inputType: TextInputType.visiblePassword,
                   validator: (value) {

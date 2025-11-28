@@ -27,7 +27,19 @@ class CustomTextformfield extends StatelessWidget {
       ),
       autocorrect: false,
       validator: validator,
-     
+      onTap: inputType == TextInputType.datetime
+          ? () async {
+              final DateTime? date = await showDatePicker(
+                context: context,
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+                initialDate: DateTime(2000),
+              );
+              if (date != null) {
+                controller.text = "${date.day}/${date.month}/${date.year}";
+              }
+            }
+          : null,
     );
   }
 }
