@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:makarr/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:makarr/screen/profile.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -28,7 +30,12 @@ class MyApp extends StatelessWidget {
           secondary: const Color(0xFF788888),
         ),
       ),
-      home: const Login(),
+      home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder:(context, snapshot) {
+        if(snapshot.hasData){
+          return const Profile();
+        }
+        return const Login();
+      },),
     );
   }
 }

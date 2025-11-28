@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:makarr/appLogger.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
 import 'package:makarr/screen/createAccounte.dart';
-import 'package:makarr/screen/profile.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,7 +78,6 @@ class _LoginState extends State<Login> {
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !showPassword,
-
                   decoration: InputDecoration(
                     labelText: 'Enter your password',
                     prefixIcon: const Icon(Icons.lock),
@@ -220,10 +218,9 @@ class _LoginState extends State<Login> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      if (!mounted) return;
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (context) => const Profile()));
+      setState(() {
+        isLoading = false;
+      });
     } on FirebaseAuthException catch (e) {
       String error;
       setState(() {

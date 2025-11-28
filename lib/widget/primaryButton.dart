@@ -19,29 +19,16 @@ class PrimaryButton extends StatefulWidget {
   State<PrimaryButton> createState() => _PrimaryButtonState();
 }
 
-class _PrimaryButtonState extends State<PrimaryButton> {
-  double _scale = 1.0;
-  void _onTapDown(TapDownDetails details) {
-    setState(() => _scale = 0.95); // shrink on press
-  }
-
-  void _onTapUp(TapUpDetails details) {
-    setState(() => _scale = 1.0); // return to normal
-  }
-
-  void _onTapCancel() {
-    setState(() => _scale = 1.0);
-  }
-
+class _PrimaryButtonState extends State<PrimaryButton>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.isLoading ? null : widget.fun,
-      child: AnimatedScale(
-        scale: _scale,
-        duration: const Duration(milliseconds: 300),
+      onTap: widget.isLoading?null: widget.fun,
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 1),
         curve: Curves.easeOut,
-
+        alignment: .center,
         child: TextButton(
           onPressed: null,
           style: TextButton.styleFrom(

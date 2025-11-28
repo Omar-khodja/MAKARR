@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:makarr/appLogger.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
 import 'package:makarr/screen/login.dart';
 import 'package:makarr/widget/outLineButton.dart';
@@ -158,12 +157,14 @@ class _CreateAccounteState extends State<CreateAccounte> {
     final bool isValid = _formkey.currentState!.validate();
     if (!isValid) return;
     try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _password1Controller.text,
       );
-      
-      AppLogger.i(userCredential.toString(), className: runtimeType.toString());
+      if (!mounted) return;
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => const Login()));
     } on FirebaseAuthException catch (e) {
       String error;
       switch (e.code) {
