@@ -218,32 +218,22 @@ class _LoginState extends State<Login> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      setState(() {
-        isLoading = false;
-      });
     } on FirebaseAuthException catch (e) {
       String error;
       setState(() {
         isLoading = false;
       });
-      switch (e.code) {
-        case "invalid-email":
-          error = e.code.toString();
-          break;
-        case "wrong-password":
-          error = "Wrong password or email!";
-          break;
-        case "network-request-failed":
-          error = "check your network connection";
-          break;
-        default:
-          error = e.message ?? "somthing went worng please try again later";
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(error)));
-      }
+      AppLogger.i(
+        e.message ?? "somthing went worng please try again later",
+        className: runtimeType.toString(),
+      );
+
+      error = e.message ?? "somthing went worng please try again later";
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error)));
     }
   }
 }

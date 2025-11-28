@@ -23,22 +23,21 @@ class _PrimaryButtonState extends State<PrimaryButton>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.isLoading?null: widget.fun,
+    return TextButton(
+      onPressed: widget.fun,
+      style: TextButton.styleFrom(
+        backgroundColor: Theme.of(context).primaryColor,
+
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      ),
+
       child: AnimatedSize(
-        duration: const Duration(milliseconds: 1),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        alignment: .center,
-        child: TextButton(
-          onPressed: null,
-          style: TextButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
-
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 150),
+          transitionBuilder: (child, animation) =>
+              ScaleTransition(scale: animation, child: child),
           child: widget.isLoading
               ? const CircularProgressIndicator(
                   color: Colors.white,
