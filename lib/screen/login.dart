@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:makarr/appLogger.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
 import 'package:makarr/screen/createAccounte.dart';
+import 'package:makarr/screen/profile.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -215,9 +216,11 @@ class _LoginState extends State<Login> {
         isLoading = true;
       });
       await _firebaseAuth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
+      if(!mounted) return;
+      Navigator.of(context).push(DialogRoute(context: context, builder: (context) => const Profile(),));
     } on FirebaseAuthException catch (e) {
       String error;
       setState(() {

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:makarr/appLogger.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
 import 'package:makarr/screen/login.dart';
 import 'package:makarr/widget/outLineButton.dart';
@@ -16,15 +18,22 @@ class CreateAccounte extends StatefulWidget {
 
 class _CreateAccounteState extends State<CreateAccounte> {
   final _formkey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
+  final _fNameController = TextEditingController();
+  final _idController = TextEditingController();
+  final _lNameController = TextEditingController();
   final _birthDateController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
   final _password2Controller = TextEditingController();
+  bool isLoading = false;
 
   @override
   void dispose() {
-    _fullNameController.dispose();
+    _fNameController.dispose();
+    _idController.dispose();
+    _phoneNumberController.dispose();
+    _lNameController.dispose();
     _birthDateController.dispose();
     _emailController.dispose();
     _password1Controller.dispose();
@@ -65,13 +74,55 @@ class _CreateAccounteState extends State<CreateAccounte> {
                 ),
                 const SizedBox(height: 20),
                 CustomTextformfield(
-                  controller: _fullNameController,
-                  label: "Full name",
-                  icon: Icons.person,
+                  controller: _fNameController,
+                  label: "First name",
+                  icon: Icons.person_outline,
                   inputType: TextInputType.name,
                   validator: (value) {
                     if (value == null || value.trim().length < 4) {
-                      return "name must be at least 4 character!";
+                      return "First name must be at least 4 character!";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                CustomTextformfield(
+                  controller: _lNameController,
+                  label: "Last name",
+                  icon: Icons.person_outline,
+                  inputType: TextInputType.name,
+                  validator: (value) {
+                    if (value == null || value.trim().length < 4) {
+                      return "Last name must be at least 4 character!";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                CustomTextformfield(
+                  controller: _phoneNumberController,
+                  label: "Phone number",
+                  icon: Icons.phone_outlined,
+                  inputType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.trim().length < 10) {
+                      return "Phone number must be 10 numbers!";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+
+                CustomTextformfield(
+                  controller: _idController,
+                  label: "ID number",
+                  icon: Icons.badge_outlined,
+                  inputType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.trim().length < 16) {
+                      return "ID must be 16 numbers!";
                     }
                     return null;
                   },
@@ -93,7 +144,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                 CustomTextformfield(
                   controller: _emailController,
                   label: "Enter your email",
-                  icon: Icons.email,
+                  icon: Icons.email_outlined,
                   inputType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null ||
@@ -108,7 +159,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                 CustomTextformfield(
                   controller: _password1Controller,
                   label: "Enter your password",
-                  icon: Icons.lock,
+                  icon: Icons.lock_outline,
                   inputType: TextInputType.visiblePassword,
                   validator: (value) {
                     if (value == null || value.trim().length < 6) {
@@ -121,7 +172,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                 CustomTextformfield(
                   controller: _password2Controller,
                   label: "Confirm your password",
-                  icon: Icons.lock,
+                  icon: Icons.lock_outline,
                   inputType: TextInputType.visiblePassword,
                   validator: (value) {
                     if (value == null || value.trim().length < 6) {
@@ -135,6 +186,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                   label: "Create accounte",
                   fun: _submit,
                   tailIcon: Icons.arrow_forward_rounded,
+                  isLoading: isLoading,
                 ),
                 const SizedBox(height: 10),
                 OutLineButton(
@@ -156,35 +208,53 @@ class _CreateAccounteState extends State<CreateAccounte> {
   void _submit() async {
     final bool isValid = _formkey.currentState!.validate();
     if (!isValid) return;
+    setState(() {
+      isLoading = true;
+    });
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _password1Controller.text,
       );
+      if (userCredential.user == null) return;
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.uid)
+          .set({
+            'UserId': _idController.text.trim(),
+            'Fname': _fNameController.text.trim(),
+            'Lname': _lNameController.text.trim(),
+            'Phone': _phoneNumberController.text.trim(),
+            'Birth_Date': _birthDateController.text.trim(),
+            'Email': _emailController.text.trim(),
+            'Password': _password1Controller.text.trim(),
+          });
+
       if (!mounted) return;
+      setState(() {
+        isLoading = false;
+      });
       Navigator.of(
         context,
       ).push(MaterialPageRoute(builder: (context) => const Login()));
     } on FirebaseAuthException catch (e) {
-      String error;
-      switch (e.code) {
-        case "email-already-in-use":
-          error = "email already in use";
-          break;
-        case "invalid-email":
-          error = "invalid-email";
-          break;
-        case "network-request-failed":
-          error = "check your internet connection";
-          break;
-        default:
-          error = e.message ?? "somthing went wornge please try again later";
-      }
+      setState(() {
+        isLoading = false;
+      });
+
       if (!mounted) return;
+      AppLogger.e(
+        className: runtimeType.toString(),
+        " ${e.message} ,${e.code}",
+      );
       ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(error)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.message ?? "somthing went worng please try again later",
+          ),
+        ),
+      );
     }
   }
 }

@@ -16,12 +16,15 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool isLoading = false;
-  void singOut() {
+  Future<void> singOut()async {
     setState(() {
       isLoading = true;
     });
     try {
-      _firebaseAuth.signOut();
+      await _firebaseAuth.signOut();
+        setState(() {
+        isLoading = false;
+      });
     } on FirebaseAuthException catch (e) {
       setState(() {
         isLoading = false;
@@ -41,9 +44,7 @@ class _ProfileState extends State<Profile> {
         ),
       );
     }
-    setState(() {
-      isLoading = false;
-    });
+ 
   }
 
   @override
