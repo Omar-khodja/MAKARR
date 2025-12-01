@@ -8,7 +8,7 @@ class ProfileInfo extends StatelessWidget {
     required this.icon,
   });
   final String title;
-  final String data;
+  final String? data;
   final IconData icon;
 
   @override
@@ -22,7 +22,7 @@ class ProfileInfo extends StatelessWidget {
       child: ListTile(
         leading: Icon(icon),
         title: Text(title),
-        subtitle: Text(data),
+        subtitle: Text(data ?? "Unkown"),
       ),
     );
   }

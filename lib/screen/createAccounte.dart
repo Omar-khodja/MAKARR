@@ -228,6 +228,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
             'Birth_Date': _birthDateController.text.trim(),
             'Email': _emailController.text.trim(),
             'Password': _password1Controller.text.trim(),
+            'ImagUrl': ""
           });
 
       if (!mounted) return;

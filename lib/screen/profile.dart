@@ -1,28 +1,30 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/appLogger.dart';
+import 'package:makarr/provider/user_Provider.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:makarr/widget/profile_head.dart';
 import 'package:makarr/widget/profile_info.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
 
-class Profile extends StatefulWidget {
+class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  ConsumerState<Profile> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends ConsumerState<Profile> {
   bool isLoading = false;
-  Future<void> singOut()async {
+  Future<void> singOut() async {
     setState(() {
       isLoading = true;
     });
     try {
       await _firebaseAuth.signOut();
-        setState(() {
+      setState(() {
         isLoading = false;
       });
     } on FirebaseAuthException catch (e) {
@@ -44,35 +46,38 @@ class _ProfileState extends State<Profile> {
         ),
       );
     }
- 
   }
 
   @override
   Widget build(BuildContext context) {
+    final userDate = ref.read(userProvider);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
         child: Column(
           children: [
-            const ProfileHead(name: "Khodja Omar", city: "Msila_Msila"),
-            const ProfileInfo(
+            ProfileHead(
+              name: "${userDate!.firstName} ${userDate.lastName}",
+              city: "Msila_Msila",
+            ),
+            ProfileInfo(
               title: "Birth Date",
-              data: "2001/04/12",
+              data: userDate.birthDate ?? "Unkown",
               icon: Icons.calendar_month_outlined,
             ),
-            const ProfileInfo(
+            ProfileInfo(
               title: "Phone",
-              data: "0773703289",
+              data: userDate.phone ?? "Unkown",
               icon: Icons.phone,
             ),
-            const ProfileInfo(
+            ProfileInfo(
               title: "ID",
-              data: "1002211589894",
+              data: userDate.id ?? "Unkown",
               icon: Icons.badge_outlined,
             ),
-            const ProfileInfo(
+            ProfileInfo(
               title: "Email",
-              data: "khodjaomar64@gmail.com",
+              data: userDate.email ?? "Unkown",
               icon: Icons.email_outlined,
             ),
             const SizedBox(height: 20),
