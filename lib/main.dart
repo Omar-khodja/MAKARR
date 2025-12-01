@@ -2,11 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:makarr/provider/user_Provider.dart';
+import 'package:makarr/screen/home_with_nav.dart';
 import 'package:makarr/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:makarr/screen/profile.dart';
 import 'firebase_options.dart';
+
+// MAKARR Color Palette (Light Theme)
+
+const Color kPrimaryColor = Color(0xFF0078C8); // Main blue
+const Color kSecondaryColor = Color(0xFF5BB3F0); // Light blue
+const Color kAccentDark = Color(0xFF0A2A43); // Dark blue
+const Color kTextGray = Color(0xFF333333); // Primary text
+const Color kWhite = Color(0xFFFFFFFF); // White
+
+final colorScheme = ColorScheme.fromSeed(seedColor: const Color(0xFF0078C8));
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,43 +23,24 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userNotifire = ref.watch(userProvider.notifier);
-
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         brightness: .light,
         textTheme: GoogleFonts.fjordOneTextTheme(ThemeData.light().textTheme),
-
-        colorScheme: ColorScheme.fromSeed(
-          primary: const Color(0xFF1B7C86),
-          seedColor: const Color(0xFF1B7C86),
-          secondary: const Color(0xFF788888),
-        ),
+        colorScheme: colorScheme,
       ),
-      home: StreamBuilder<User?>(
+      home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return FutureBuilder(
-              future: userNotifire.fetchUserInfo(snapshot.data!.uid),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()),
-                  );
-                }
-                  return const Profile();
-                
-
-              },
-            );
+          if (snapshot.hasData) {
+            return HomeWithNav(uId: snapshot.data!.uid);
           }
           return const Login();
         },

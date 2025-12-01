@@ -8,7 +8,7 @@ class ProfileHead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).colorScheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),
       ),
@@ -20,9 +20,15 @@ class ProfileHead extends StatelessWidget {
           leading: const CircleAvatar(radius: 40, child: null),
           title: Text(
             name,
-            style: const TextStyle(color: Colors.white, fontWeight: .w700),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontWeight: .w700,
+            ),
           ),
-          subtitle: Text(city, style: const TextStyle(color: Colors.white)),
+          subtitle: Text(
+            city,
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
         ),
       ),
     );

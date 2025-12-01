@@ -66,7 +66,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).colorScheme.onSurface,
                       letterSpacing: 5,
                     ),
                     maxLines: 1,
@@ -228,7 +228,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
             'Birth_Date': _birthDateController.text.trim(),
             'Email': _emailController.text.trim(),
             'Password': _password1Controller.text.trim(),
-            'ImagUrl': ""
+            'ImagUrl': "",
           });
 
       if (!mounted) return;

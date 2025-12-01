@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserProvider extends StateNotifier<UserData?> {
   UserProvider() : super(null);
   Future<void> fetchUserInfo(String id) async {
+    if (state != null) return;
     try {
       final doc = await FirebaseFirestore.instance
           .collection("Users")

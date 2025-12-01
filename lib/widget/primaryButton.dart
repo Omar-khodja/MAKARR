@@ -26,7 +26,7 @@ class _PrimaryButtonState extends State<PrimaryButton>
     return TextButton(
       onPressed: widget.fun,
       style: TextButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       ),
@@ -47,15 +47,26 @@ class _PrimaryButtonState extends State<PrimaryButton>
                   mainAxisAlignment: .center,
                   children: [
                     if (widget.leadIcon != null)
-                      Icon(widget.leadIcon, size: 24, color: Colors.white),
+                      Icon(
+                        widget.leadIcon,
+                        size: 24,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                     const SizedBox(width: 5),
                     Text(
                       widget.label,
-                      style: const TextStyle(fontSize: 24, color: Colors.white),
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                     ),
                     const SizedBox(width: 5),
                     if (widget.tailIcon != null)
-                      Icon(widget.tailIcon, size: 24, color: Colors.white),
+                      Icon(
+                        widget.tailIcon,
+                        size: 24,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                   ],
                 ),
         ),

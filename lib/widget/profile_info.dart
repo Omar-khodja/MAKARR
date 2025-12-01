@@ -14,15 +14,21 @@ class ProfileInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white70,
+      color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),
       ),
       elevation: 5,
       child: ListTile(
         leading: Icon(icon),
-        title: Text(title),
-        subtitle: Text(data ?? "Unkown"),
+        title: Text(
+          title,
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
+        subtitle: Text(
+          data ?? "Unkown",
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        ),
       ),
     );
   }

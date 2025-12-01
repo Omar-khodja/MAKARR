@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:makarr/appLogger.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
 import 'package:makarr/screen/createAccounte.dart';
-import 'package:makarr/screen/profile.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,7 +52,7 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
+                      color: Theme.of(context).colorScheme.onSurface,
                       letterSpacing: 5,
                     ),
                     maxLines: 1,
@@ -108,7 +107,7 @@ class _LoginState extends State<Login> {
                     Text(
                       "forgot  password? ",
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ],
@@ -184,7 +183,7 @@ class _LoginState extends State<Login> {
                       TextSpan(
                         text: "Create a new accounte",
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontSize: 18,
                         ),
                         recognizer: TapGestureRecognizer()
