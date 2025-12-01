@@ -36,4 +36,6 @@ class UserProvider extends StateNotifier<UserData?> {
   }
 }
 
-final userProvider = StateNotifierProvider((ref) => UserProvider());
+final userProvider = StateNotifierProvider<UserProvider, UserData?>(
+  (ref) => UserProvider(),
+);

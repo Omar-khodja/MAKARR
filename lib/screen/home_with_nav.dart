@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:makarr/provider/user_Provider.dart';
 import 'package:makarr/screen/home.dart';
 import 'package:makarr/screen/profile.dart';
 import 'package:makarr/screen/report_Problem.dart';
@@ -21,23 +20,14 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
 
   @override
   Widget build(BuildContext context) {
-    final userNotifire = ref.watch(userProvider.notifier);
-
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(screenTitle[selectedScreen]),
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
       ),
-      body: FutureBuilder(
-        future: userNotifire.fetchUserInfo(widget.uId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return screen[selectedScreen];
-        },
-      ),
+      body: IndexedStack(index: selectedScreen, children: screen),
       bottomNavigationBar: GNav(
         backgroundColor: Theme.of(context).colorScheme.surface,
         activeColor: Theme.of(context).colorScheme.primary,

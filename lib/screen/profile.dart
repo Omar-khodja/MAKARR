@@ -24,6 +24,7 @@ class _ProfileState extends ConsumerState<Profile> {
     });
     try {
       await _firebaseAuth.signOut();
+      ref.read(userProvider.notifier).clearState;
       setState(() {
         isLoading = false;
       });
@@ -50,46 +51,46 @@ class _ProfileState extends ConsumerState<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final userDate = ref.read(userProvider);
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
-        child: Column(
-          children: [
-            ProfileHead(
-              name: "${userDate!.firstName} ${userDate.lastName}",
-              city: "Msila_Msila",
+    final userDate = ref.watch(userProvider);
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+      child: userDate == null
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                ProfileHead(
+                  name: "${userDate.firstName} ${userDate.lastName}",
+                  city: "Msila_Msila",
+                ),
+                ProfileInfo(
+                  title: "Birth Date",
+                  data: userDate.birthDate ?? "Unkown",
+                  icon: Icons.calendar_month_outlined,
+                ),
+                ProfileInfo(
+                  title: "Phone",
+                  data: userDate.phone ?? "Unkown",
+                  icon: Icons.phone,
+                ),
+                ProfileInfo(
+                  title: "ID",
+                  data: userDate.id ?? "Unkown",
+                  icon: Icons.badge_outlined,
+                ),
+                ProfileInfo(
+                  title: "Email",
+                  data: userDate.email ?? "Unkown",
+                  icon: Icons.email_outlined,
+                ),
+                const SizedBox(height: 20),
+                PrimaryButton(
+                  label: "Sing Out",
+                  fun: singOut,
+                  tailIcon: Icons.logout,
+                  isLoading: isLoading,
+                ),
+              ],
             ),
-            ProfileInfo(
-              title: "Birth Date",
-              data: userDate.birthDate ?? "Unkown",
-              icon: Icons.calendar_month_outlined,
-            ),
-            ProfileInfo(
-              title: "Phone",
-              data: userDate.phone ?? "Unkown",
-              icon: Icons.phone,
-            ),
-            ProfileInfo(
-              title: "ID",
-              data: userDate.id ?? "Unkown",
-              icon: Icons.badge_outlined,
-            ),
-            ProfileInfo(
-              title: "Email",
-              data: userDate.email ?? "Unkown",
-              icon: Icons.email_outlined,
-            ),
-            const SizedBox(height: 20),
-            PrimaryButton(
-              label: "Sing Out",
-              fun: singOut,
-              tailIcon: Icons.logout,
-              isLoading: isLoading,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

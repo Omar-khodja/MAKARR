@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:makarr/provider/user_Provider.dart';
 import 'package:makarr/screen/home_with_nav.dart';
 import 'package:makarr/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,7 +16,8 @@ const Color kAccentDark = Color(0xFF0A2A43); // Dark blue
 const Color kTextGray = Color(0xFF333333); // Primary text
 const Color kWhite = Color(0xFFFFFFFF); // White
 
-final colorScheme = ColorScheme.fromSeed(seedColor: const Color(0xFF0078C8));
+final colorScheme = ColorScheme.fromSeed(seedColor: const Color(0xFF0078C8)).copyWith(
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,12 +25,12 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -39,7 +41,8 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data != null) {
+            ref.read(userProvider.notifier).fetchUserInfo(snapshot.data!.uid);
             return HomeWithNav(uId: snapshot.data!.uid);
           }
           return const Login();
