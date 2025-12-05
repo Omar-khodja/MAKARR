@@ -8,6 +8,7 @@ import 'package:makarr/widget/Custom_elevatedButton.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:makarr/widget/Image_card.dart';
 import 'package:makarr/widget/user_card_info.dart';
+import 'package:makarr/widget/video_card.dart';
 import 'package:video_player/video_player.dart';
 
 class ReportProblem extends ConsumerStatefulWidget {
@@ -64,13 +65,11 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
 
             if (_imageFile.isNotEmpty)
               Wrap(
-                spacing: 10,
-                runSpacing: 10,
+                spacing: 5,
+                runSpacing: 5,
                 children: _imageFile.map((file) {
                   return SizedBox(
-                    width:
-                        (MediaQuery.of(context).size.width - 60) /
-                        2, // two items per row
+                    width: (MediaQuery.of(context).size.width - 60) / 2,
                     height: 180,
                     child: ImageCard(
                       image: file!,
@@ -86,9 +85,9 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
                       ? _videoController!.pause()
                       : _videoController!.play();
                 },
-                child: AspectRatio(
-                  aspectRatio: _videoController!.value.aspectRatio,
-                  child: VideoPlayer(_videoController!),
+                child: VideoCard(
+                  videoController: _videoController!,
+                  onDelete: deleteVideo,
                 ),
               ),
 
@@ -163,18 +162,17 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
       maxDuration: const Duration(seconds: 60),
     );
     if (xFile != null) {
-      await initializeVideoPlayer(File(xFile.path));
+      _videoController?.dispose();
+      setState(() {
+        _videoController = VideoPlayerController.file(File(xFile.path));
+      });
     }
   }
 
-  Future<void> initializeVideoPlayer(File file) async {
-    _videoController?.dispose();
-    _videoController = VideoPlayerController.file(file);
-
-    await _videoController!.initialize();
-    _videoController!.setLooping(true);
-    _videoController!.play();
-
-    setState(() {});
+  void deleteVideo() {
+    setState(() {
+      _videoController?.dispose();
+      _videoController = null;
+    });
   }
 }
