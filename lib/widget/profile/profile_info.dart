@@ -14,7 +14,7 @@ class ProfileInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.surface,
+      color: Theme.of(context).colorScheme.surfaceContainer,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),
       ),
@@ -23,7 +23,9 @@ class ProfileInfo extends StatelessWidget {
         leading: Icon(icon),
         title: Text(
           title,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         subtitle: Text(
           data ?? "Unkown",

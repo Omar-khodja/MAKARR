@@ -24,14 +24,14 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(screenTitle[selectedScreen]),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
       ),
       body: IndexedStack(index: selectedScreen, children: screen),
       bottomNavigationBar: GNav(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        activeColor: Theme.of(context).colorScheme.primary,
-        color: Theme.of(context).colorScheme.onSurface,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+        activeColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
         tabBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
         mainAxisAlignment: .spaceAround,
         gap: 4,
@@ -39,6 +39,7 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
           vertical: 12,
           horizontal: 10,
         ),
+
         onTabChange: (index) => setState(() {
           selectedScreen = index;
         }),

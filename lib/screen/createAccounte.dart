@@ -191,10 +191,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                 const SizedBox(height: 10),
                 OutLineButton(
                   text: "Login page",
-                  fun: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Login()),
-                  ),
+                  fun: () => Navigator.pop(context),
                   leadIcon: Icons.arrow_back,
                 ),
               ],

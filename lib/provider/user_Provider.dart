@@ -8,6 +8,7 @@ class UserProvider extends StateNotifier<UserData?> {
   Future<void> fetchUserInfo(String id) async {
     if (state != null) return;
     try {
+      AppLogger.i("fetching user data...", className: runtimeType.toString());
       final doc = await FirebaseFirestore.instance
           .collection("Users")
           .doc(id)
@@ -21,7 +22,7 @@ class UserProvider extends StateNotifier<UserData?> {
       }
       UserData().setUsersfromMap(doc.data()!);
       state = UserData();
-      AppLogger.i(state?.email ?? "no data ");
+      AppLogger.i("userdata is featched");
     } on FirebaseException catch (e) {
       AppLogger.e(
         "${e.message.toString()}  ,${e.code}",

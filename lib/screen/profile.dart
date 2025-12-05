@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/appLogger.dart';
 import 'package:makarr/provider/user_Provider.dart';
 import 'package:makarr/widget/primaryButton.dart';
-import 'package:makarr/widget/profile_head.dart';
-import 'package:makarr/widget/profile_info.dart';
+import 'package:makarr/widget/profile/profile_head.dart';
+import 'package:makarr/widget/profile/profile_info.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
 

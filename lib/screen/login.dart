@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
                 CustomTextformfield(
                   controller: _emailController,
                   label: "Enter your email",
-                  icon: Icons.email,
+                  icon: Icons.email_outlined,
                   inputType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null ||
@@ -80,7 +80,7 @@ class _LoginState extends State<Login> {
                   obscureText: !showPassword,
                   decoration: InputDecoration(
                     labelText: 'Enter your password',
-                    prefixIcon: const Icon(Icons.lock),
+                    prefixIcon: const Icon(Icons.lock_outline),
                     border: const OutlineInputBorder(),
 
                     suffixIcon: IconButton(
@@ -101,14 +101,12 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 10),
 
-                Row(
+                const Row(
                   mainAxisAlignment: .end,
                   children: [
                     Text(
                       "forgot  password? ",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                      style: TextStyle(color: Colors.blue),
                     ),
                   ],
                 ),
@@ -182,8 +180,8 @@ class _LoginState extends State<Login> {
                     children: [
                       TextSpan(
                         text: "Create a new accounte",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
+                        style: const TextStyle(
+                          color: Colors.blue,
                           fontSize: 18,
                         ),
                         recognizer: TapGestureRecognizer()

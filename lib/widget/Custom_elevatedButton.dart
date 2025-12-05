@@ -20,7 +20,7 @@ class CustomElevatedbutton extends StatelessWidget {
     return ElevatedButton(
       onPressed: fun,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
 
       child: Row(
@@ -31,14 +31,14 @@ class CustomElevatedbutton extends StatelessWidget {
             Icon(
               leadIcon,
               size: 24,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
           const SizedBox(width: 5),
           Text(
             label,
             style: TextStyle(
               fontSize: 18,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
           ),
           const SizedBox(width: 5),
@@ -46,7 +46,7 @@ class CustomElevatedbutton extends StatelessWidget {
             Icon(
               tailIcon,
               size: 24,
-              color: Theme.of(context).colorScheme.onSurface,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
         ],
       ),

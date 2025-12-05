@@ -7,17 +7,11 @@ import 'package:makarr/screen/home_with_nav.dart';
 import 'package:makarr/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 
-// MAKARR Color Palette (Light Theme)
-
-const Color kPrimaryColor = Color(0xFF0078C8); // Main blue
-const Color kSecondaryColor = Color(0xFF5BB3F0); // Light blue
-const Color kAccentDark = Color(0xFF0A2A43); // Dark blue
-const Color kTextGray = Color(0xFF333333); // Primary text
-const Color kWhite = Color(0xFFFFFFFF); // White
-
-final colorScheme = ColorScheme.fromSeed(seedColor: const Color(0xFF0078C8)).copyWith(
-);
+final colorScheme = ColorScheme.fromSeed(
+  seedColor: Colors.blue.shade900,
+).copyWith();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,23 +25,50 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        brightness: .light,
-        textTheme: GoogleFonts.fjordOneTextTheme(ThemeData.light().textTheme),
-        colorScheme: colorScheme,
-      ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            ref.read(userProvider.notifier).fetchUserInfo(snapshot.data!.uid);
-            return HomeWithNav(uId: snapshot.data!.uid);
-          }
-          return const Login();
-        },
-      ),
+    return DynamicColorBuilder(
+      builder: (lightDynamic, darkDynamic) {
+        ColorScheme lightColorScheme;
+        ColorScheme darkColorScheme;
+        if (lightDynamic != null && darkDynamic != null) {
+          lightColorScheme = lightDynamic.harmonized();
+          darkColorScheme = darkDynamic.harmonized();
+        } else {
+          lightColorScheme = colorScheme;
+          darkColorScheme = ColorScheme.fromSeed(
+            seedColor: Colors.blue.shade900,
+            brightness: Brightness.dark,
+          );
+        }
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            brightness: .light,
+            textTheme: GoogleFonts.fjordOneTextTheme(
+              ThemeData.light().textTheme,
+            ),
+            colorScheme: lightColorScheme,
+          ),
+          darkTheme: ThemeData(
+            brightness: .dark,
+            textTheme: GoogleFonts.fjordOneTextTheme(
+              ThemeData.dark().textTheme,
+            ),
+            colorScheme: darkColorScheme,
+          ),
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                ref
+                    .read(userProvider.notifier)
+                    .fetchUserInfo(snapshot.data!.uid);
+                return HomeWithNav(uId: snapshot.data!.uid);
+              }
+              return const Login();
+            },
+          ),
+        );
+      },
     );
   }
 }

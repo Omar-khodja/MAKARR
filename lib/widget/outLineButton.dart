@@ -19,7 +19,7 @@ class OutLineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: TextButton.styleFrom(
-        foregroundColor: Colors.black,
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadiusGeometry.circular(15),
@@ -32,7 +32,7 @@ class OutLineButton extends StatelessWidget {
           if (image != null) Image.asset(image!, width: 24, height: 24),
           if (leadIcon != null) Icon(leadIcon, size: 24),
           const SizedBox(width: 10),
-          Text(text, style: const TextStyle(color: Colors.black, fontSize: 24)),
+          Text(text, style: const TextStyle(fontSize: 20)),
           const SizedBox(width: 10),
           if (tailIcon != null) Icon(tailIcon, size: 24),
         ],
