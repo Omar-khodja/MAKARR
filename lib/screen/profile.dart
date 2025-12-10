@@ -6,6 +6,7 @@ import 'package:makarr/provider/user_Provider.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:makarr/widget/profile/profile_head.dart';
 import 'package:makarr/widget/profile/profile_info.dart';
+import 'package:makarr/widget/profile/profile_info_shimmer.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
 
@@ -18,6 +19,14 @@ class Profile extends ConsumerStatefulWidget {
 
 class _ProfileState extends ConsumerState<Profile> {
   bool isLoading = false;
+  final List<String> titels = ["Birth", "Phone", "ID", "Email"];
+
+  final List<IconData> icons = [
+    Icons.calendar_month_outlined,
+    Icons.phone,
+    Icons.badge_outlined,
+    Icons.email_outlined,
+  ];
   Future<void> singOut() async {
     setState(() {
       isLoading = true;
@@ -52,18 +61,44 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     final userDate = ref.watch(userProvider);
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
       child: userDate == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const ProfileInfoShimmer()
           : Column(
               children: [
                 ProfileHead(
                   name: "${userDate.firstName} ${userDate.lastName}",
                   city: "Msila_Msila",
                 ),
-                ProfileInfo(
-                  title: "Birth Date",
+                ...List.generate(titels.length, (index) {
+                  final data = [
+                    userDate.birthDate ?? "Unknown",
+                    userDate.phone ?? "Unknown",
+                    userDate.id ?? "Unknown",
+                    userDate.email ?? "Unknown",
+                  ];
+                  return ProfileInfo(
+                    title: titels[index],
+                    data: data[index],
+                    icon: icons[index],
+                  );
+                }),
+                const SizedBox(height: 20),
+                PrimaryButton(
+                  label: "Sing Out",
+                  fun: singOut,
+                  tailIcon: Icons.logout,
+                  isLoading: isLoading,
+                ),
+              ],
+            ),
+    );
+  }
+}
+/* ProfileInfo(
+                  title: "Birth Date",  
                   data: userDate.birthDate ?? "Unkown",
                   icon: Icons.calendar_month_outlined,
                 ),
@@ -82,15 +117,4 @@ class _ProfileState extends ConsumerState<Profile> {
                   data: userDate.email ?? "Unkown",
                   icon: Icons.email_outlined,
                 ),
-                const SizedBox(height: 20),
-                PrimaryButton(
-                  label: "Sing Out",
-                  fun: singOut,
-                  tailIcon: Icons.logout,
-                  isLoading: isLoading,
-                ),
-              ],
-            ),
-    );
-  }
-}
+ */
