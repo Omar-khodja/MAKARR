@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:makarr/provider/user_Provider.dart';
 import 'package:makarr/screen/home_with_nav.dart';
 import 'package:makarr/auth/presentation/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,9 +58,6 @@ class MyApp extends ConsumerWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
-                ref
-                    .read(userProvider.notifier)
-                    .fetchUserInfo(snapshot.data!.uid);
                 return HomeWithNav(uId: snapshot.data!.uid);
               }
               return const Login();

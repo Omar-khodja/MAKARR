@@ -1,26 +1,24 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/appLogger.dart';
+import 'package:makarr/auth/presentation/controler/authNotifire.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
 import 'package:makarr/auth/presentation/screen/createAccounte.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-final _firebaseAuth = FirebaseAuth.instance;
-
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  ConsumerState<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends ConsumerState<Login> {
   final _formkey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool isLoading = false;
   bool showPassword = false;
   @override
   void dispose() {
@@ -31,6 +29,21 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = ref.watch(authNotifireProvider);
+    ref.listen(authNotifireProvider, (previous, next) {
+      if (next.error != null) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              next.error!,
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+      }
+    });
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -116,7 +129,7 @@ class _LoginState extends State<Login> {
                   label: "Singin",
                   fun: _submit,
                   tailIcon: Icons.login,
-                  isLoading: isLoading,
+                  isLoading: auth.isLoading,
                 ),
                 const SizedBox(height: 20),
 
@@ -207,31 +220,15 @@ class _LoginState extends State<Login> {
 
   void _submit() async {
     final bool isValid = _formkey.currentState!.validate();
+    final auth = ref.read(authNotifireProvider.notifier);
     if (!isValid) return;
     try {
-      setState(() {
-        isLoading = true;
-      });
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      String error;
-      setState(() {
-        isLoading = false;
-      });
-      AppLogger.i(
-        e.message ?? "somthing went worng please try again later",
-        className: runtimeType.toString(),
-      );
-
-      error = e.message ?? "somthing went worng please try again later";
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).clearSnackBars();
+      auth.login(_emailController.text.trim(), _passwordController.text.trim());
+    } catch (e) {
+      AppLogger.e(e.toString());
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(error)));
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 }

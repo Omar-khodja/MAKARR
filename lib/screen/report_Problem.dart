@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/appLogger.dart';
-import 'package:makarr/provider/user_Provider.dart';
 import 'package:makarr/widget/Custom_elevatedButton.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:makarr/widget/Image_card.dart';
@@ -30,16 +29,13 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
-    if (user == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
+   
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            UserCardInfo(name: "${user.firstName} ${user.lastName}"),
+            const UserCardInfo(name: "omar khodja"),
             const SizedBox(height: 20),
 
             TextField(

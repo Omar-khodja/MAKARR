@@ -1,14 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/appLogger.dart';
-import 'package:makarr/provider/user_Provider.dart';
+import 'package:makarr/auth/domain/entities/user.dart';
+import 'package:makarr/auth/presentation/controler/authNotifire.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:makarr/widget/profile/profile_head.dart';
 import 'package:makarr/widget/profile/profile_info.dart';
 import 'package:makarr/widget/profile/profile_info_shimmer.dart';
-
-final _firebaseAuth = FirebaseAuth.instance;
 
 class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});
@@ -27,40 +25,20 @@ class _ProfileState extends ConsumerState<Profile> {
     Icons.badge_outlined,
     Icons.email_outlined,
   ];
-  Future<void> singOut() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      await _firebaseAuth.signOut();
-      ref.read(userProvider.notifier).clearState;
-      setState(() {
-        isLoading = false;
-      });
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      if (!mounted) return;
-      AppLogger.e(
-        className: runtimeType.toString(),
-        " ${e.message} ,${e.code}",
-      );
 
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.message ?? "somthing went worng please try again later",
-          ),
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    final userDate = ref.watch(userProvider);
+    final auth = ref.watch(authNotifireProvider.notifier);
+    final userDate = const User(
+      id: "1231651",
+      firstName: "firstName",
+      lastName: "lastName",
+      phone: "phone",
+      email: "email",
+      birthDate: "birthDate",
+      password: "password",
+    );
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
@@ -88,7 +66,7 @@ class _ProfileState extends ConsumerState<Profile> {
                 const SizedBox(height: 20),
                 PrimaryButton(
                   label: "Sing Out",
-                  fun: singOut,
+                  fun: auth.singOut,
                   tailIcon: Icons.logout,
                   isLoading: isLoading,
                 ),

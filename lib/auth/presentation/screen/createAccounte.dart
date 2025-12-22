@@ -1,22 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/appLogger.dart';
+import 'package:makarr/auth/presentation/controler/authNotifire.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
-import 'package:makarr/auth/presentation/screen/login.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:makarr/auth/domain/entities/user.dart';
 
-final _firebaseAuth = FirebaseAuth.instance;
-
-class CreateAccounte extends StatefulWidget {
+class CreateAccounte extends ConsumerStatefulWidget {
   const CreateAccounte({super.key});
 
   @override
-  State<CreateAccounte> createState() => _CreateAccounteState();
+  ConsumerState<CreateAccounte> createState() => _CreateAccounteState();
 }
 
-class _CreateAccounteState extends State<CreateAccounte> {
+class _CreateAccounteState extends ConsumerState<CreateAccounte> {
   final _formkey = GlobalKey<FormState>();
   final _fNameController = TextEditingController();
   final _idController = TextEditingController();
@@ -26,7 +24,6 @@ class _CreateAccounteState extends State<CreateAccounte> {
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
   final _password2Controller = TextEditingController();
-  bool isLoading = false;
 
   @override
   void dispose() {
@@ -44,6 +41,21 @@ class _CreateAccounteState extends State<CreateAccounte> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = ref.watch(authNotifireProvider);
+    ref.listen(authNotifireProvider, (previous, next) {
+      if (next.error != null) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              next.error!,
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+      }
+    });
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -186,7 +198,7 @@ class _CreateAccounteState extends State<CreateAccounte> {
                   label: "Create accounte",
                   fun: _submit,
                   tailIcon: Icons.arrow_forward_rounded,
-                  isLoading: isLoading,
+                  isLoading: auth.isLoading,
                 ),
                 const SizedBox(height: 10),
                 OutLineButton(
@@ -204,55 +216,19 @@ class _CreateAccounteState extends State<CreateAccounte> {
 
   void _submit() async {
     final bool isValid = _formkey.currentState!.validate();
+    final auth = ref.read(authNotifireProvider.notifier);
     if (!isValid) return;
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _password1Controller.text,
-      );
-      if (userCredential.user == null) return;
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(userCredential.user!.uid)
-          .set({
-            'UserId': _idController.text.trim(),
-            'Fname': _fNameController.text.trim(),
-            'Lname': _lNameController.text.trim(),
-            'Phone': _phoneNumberController.text.trim(),
-            'Birth_Date': _birthDateController.text.trim(),
-            'Email': _emailController.text.trim(),
-            'Password': _password1Controller.text.trim(),
-            'ImagUrl': "",
-          });
 
-      if (!mounted) return;
-      setState(() {
-        isLoading = false;
-      });
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute(builder: (context) => const Login()));
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-
-      if (!mounted) return;
-      AppLogger.e(
-        className: runtimeType.toString(),
-        " ${e.message} ,${e.code}",
-      );
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            e.message ?? "somthing went worng please try again later",
-          ),
-        ),
-      );
-    }
+    await auth.createUser(
+      User(
+        id: _idController.text.trim(),
+        firstName: _fNameController.text.trim(),
+        lastName: _lNameController.text.trim(),
+        phone: _phoneNumberController.text.trim(),
+        email: _emailController.text.trim(),
+        birthDate: _birthDateController.text.trim(),
+        password: _password1Controller.text.trim(),
+      ),
+    );
   }
 }
