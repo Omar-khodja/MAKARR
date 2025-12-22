@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:makarr/appLogger.dart';
 import 'package:makarr/controller/custom_TextFormField.dart';
-import 'package:makarr/screen/Auth%20Screen/createAccounte.dart';
+import 'package:makarr/auth/presentation/screen/createAccounte.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
