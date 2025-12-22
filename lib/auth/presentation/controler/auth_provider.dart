@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:makarr/appLogger.dart';
 import 'package:makarr/auth/data/datasource/base_data_sourse.dart';
 import 'package:makarr/auth/data/datasource/firebase_datasource.dart';
 import 'package:makarr/auth/data/repository/authrepository.dart';
@@ -19,11 +20,19 @@ final authRepositoryProvider = Provider<BaseAuthRepo>(
 
 ///user cases provider
 final createUserUseCaseProvider = Provider(
-  (ref) => CreateuserUsecase(baseAuthRepo: ref.read(authRepositoryProvider)),
+  (ref) {
+   AppLogger.i("createUserUseCaseProvider initialized");
+  return CreateuserUsecase(baseAuthRepo: ref.read(authRepositoryProvider));
+  } 
 );
 final loginUseCaseProvider = Provider(
-  (ref) => LoginUsecase(baseAuthRepo: ref.read(authRepositoryProvider)),
+  (ref)  {
+       AppLogger.i("loginUseCaseProvider initialized");
+
+    return LoginUsecase(baseAuthRepo: ref.read(authRepositoryProvider));
+  }
 );
+
 final singOutUseCaseProvider = Provider(
   (ref) => SingoutUsecase(baseAuthRepo: ref.read(authRepositoryProvider)),
 );

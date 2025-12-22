@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/appLogger.dart';
 import 'package:makarr/auth/presentation/controler/authNotifire.dart';
-import 'package:makarr/controller/custom_TextFormField.dart';
+import 'package:makarr/auth/presentation/component/custom_TextFormField.dart';
 import 'package:makarr/widget/outLineButton.dart';
 import 'package:makarr/widget/primaryButton.dart';
 import 'package:makarr/auth/domain/entities/user.dart';
