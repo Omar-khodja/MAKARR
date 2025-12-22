@@ -1,13 +1,9 @@
-abstract class BaseUserRepo {
-  Future<void> createUser({
-    required String email,
-    required String password,
-    required String firstName,
-    required String lastName,
-    required String birthDate,
-    required String id,
-    required String phoneNumber,
-  });
-  Future<void> login(String email, String password);
-  Future<void> singOut();
+import 'package:dartz/dartz.dart';
+import 'package:makarr/auth/domain/entities/user.dart';
+import 'package:makarr/core/error/failure.dart';
+
+abstract class BaseAuthRepo {
+  Future<Either<Failure, Unit>> createUser( User user);
+  Future<Either<Failure, Unit>> login(String email, String password);
+  Future<Either<Failure, Unit>> singOut();
 }

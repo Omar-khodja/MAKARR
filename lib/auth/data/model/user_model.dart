@@ -8,17 +8,18 @@ class UserModel extends User {
     required super.phone,
     required super.email,
     required super.birthDate,
-    required super.imagUrl,
+    required super.password,
   });
-  factory UserModel.fromfirebase(Map<String, dynamic> data) {
+  factory UserModel.fromEntity(User user) {
     return UserModel(
-      id: data['UserId'],
-      firstName: data['Fname'],
-      lastName: data['Lname'],
-      phone: data['Phone'],
-      email: data['Email'],
-      birthDate: data['Birth_Date'],
-      imagUrl: data['ImagUrl'],
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
+      email: user.email,
+      birthDate: user.birthDate,
+      password: user.password,
     );
   }
+
 }

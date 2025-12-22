@@ -6,10 +6,13 @@ import 'package:makarr/core/error/exeptions.dart';
 
 class FirebaseDatasource extends BaseDataSourse {
   @override
-  Future<void> createUser(String email, String password, UserModel user) async {
+  Future<void> createUser(UserModel user) async {
     try {
       final userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(
+            email: user.email,
+            password: user.password,
+          );
 
       await FirebaseFirestore.instance
           .collection("Users")
@@ -20,39 +23,32 @@ class FirebaseDatasource extends BaseDataSourse {
             'Lname': user.lastName.trim(),
             'Phone': user.phone.trim(),
             'Birth_Date': user.birthDate.trim(),
-            'Email': email.trim(),
+            'Email': user.email.trim(),
             'ImagUrl': "",
           });
     } on FirebaseAuthException catch (e) {
       throw AuthException(message: e.message ?? 'Auth error');
-    } on  FirebaseException catch (e) {
-      throw ServerException(errorMessage: e.message ?? 'Server error');
-    }
-  }
-
-  @override
-  Future<UserModel> getUserById(String userid) {
-    try {
-      final doc =
-          FirebaseFirestore.instance.collection("Users").doc(userid);
-      return doc.get().then((documentSnapshot) {
-        if (documentSnapshot.exists) {
-          final data = documentSnapshot.data()!;
-          return UserModel.fromfirebase(data);
-        } else {
-          throw const ServerException(errorMessage: 'User not found');
-        }
-      });
     } on FirebaseException catch (e) {
       throw ServerException(errorMessage: e.message ?? 'Server error');
     }
   }
 
   @override
-  Future<void> login(String email, String password) {
+  Future<void> login(String email, String password) async {
     try {
-      return FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw AuthException(message: e.message ?? 'Auth error');
+    }
+  }
+
+  @override
+  Future<void> singOut() async{
+    try {
+    await FirebaseAuth.instance.signOut();
     } on FirebaseAuthException catch (e) {
       throw AuthException(message: e.message ?? 'Auth error');
     }
