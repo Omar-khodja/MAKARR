@@ -7,8 +7,11 @@ class ProfileHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final darktheme = Theme.of(context).brightness == Brightness.dark;
     return Card(
-      color: Theme.of(context).colorScheme.primaryContainer,
+      color: darktheme
+          ? Theme.of(context).colorScheme.primaryContainer
+          : Theme.of(context).colorScheme.primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadiusGeometry.circular(15),
       ),
@@ -25,14 +28,18 @@ class ProfileHead extends StatelessWidget {
           title: Text(
             name,
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              color: darktheme
+                  ? Theme.of(context).colorScheme.onPrimaryContainer
+                  : Theme.of(context).colorScheme.onPrimary,
               fontWeight: .w700,
             ),
           ),
           subtitle: Text(
             city,
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              color: darktheme
+                  ? Theme.of(context).colorScheme.onPrimaryContainer
+                  : Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),

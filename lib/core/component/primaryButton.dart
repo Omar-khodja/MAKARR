@@ -23,10 +23,14 @@ class _PrimaryButtonState extends State<PrimaryButton>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final darktheme = Theme.of(context).brightness == Brightness.dark;
+
     return TextButton(
       onPressed: widget.fun,
       style: TextButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: darktheme
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.primary,
 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       ),
@@ -50,14 +54,18 @@ class _PrimaryButtonState extends State<PrimaryButton>
                       Icon(
                         widget.leadIcon,
                         size: 24,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        color: darktheme
+                            ? Theme.of(context).colorScheme.onPrimaryContainer
+                            : Theme.of(context).colorScheme.onPrimary,
                       ),
                     const SizedBox(width: 5),
                     Text(
                       widget.label,
                       style: TextStyle(
                         fontSize: 24,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        color: darktheme
+                            ? Theme.of(context).colorScheme.onPrimaryContainer
+                            : Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                     const SizedBox(width: 5),
@@ -65,7 +73,9 @@ class _PrimaryButtonState extends State<PrimaryButton>
                       Icon(
                         widget.tailIcon,
                         size: 24,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        color: darktheme
+                            ? Theme.of(context).colorScheme.onPrimaryContainer
+                            : Theme.of(context).colorScheme.onPrimary,
                       ),
                   ],
                 ),

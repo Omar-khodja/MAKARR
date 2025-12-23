@@ -16,7 +16,7 @@ class HomeWithNav extends ConsumerStatefulWidget {
 
 class _HomeWithNavState extends ConsumerState<HomeWithNav> {
   int selectedScreen = 0;
-  final screen =  [const Home(),const ReportProblem(), Profile()];
+  final screen = [const Home(), const ReportProblem(), Profile()];
   final screenTitle = const ["Home", 'Report Problem', "Profile"];
   @override
   void initState() {
@@ -29,23 +29,36 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
 
   @override
   Widget build(BuildContext context) {
+    final darcktheme = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: darcktheme
+          ? Theme.of(context).colorScheme.surface
+          : Theme.of(context).colorScheme.surfaceContainerHigh,
       appBar: AppBar(
         title: Text(screenTitle[selectedScreen]),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        backgroundColor: darcktheme
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.primary,
+        foregroundColor: darcktheme
+            ? Theme.of(context).colorScheme.onPrimaryContainer
+            : Theme.of(context).colorScheme.onPrimary,
       ),
       body: IndexedStack(index: selectedScreen, children: screen),
       bottomNavigationBar: GNav(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        activeColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        activeColor: darcktheme
+            ? Theme.of(context).colorScheme.onPrimaryContainer
+            : Theme.of(context).colorScheme.onPrimary,
         color: Theme.of(context).colorScheme.onSecondaryContainer,
-        tabBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        tabBackgroundColor: darcktheme
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.primary,
         mainAxisAlignment: .spaceAround,
+
         gap: 4,
+        tabMargin: const EdgeInsetsGeometry.symmetric(vertical: 10),
         padding: const EdgeInsetsGeometry.symmetric(
-          vertical: 12,
+          vertical: 10,
           horizontal: 10,
         ),
 
