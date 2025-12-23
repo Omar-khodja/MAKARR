@@ -18,6 +18,17 @@ class User extends Equatable {
  final String birthDate;
  final String email;
  final String imagUrl;
+ factory User.empty() {
+    return const User(
+      userId: '',
+      fname: '',
+      lname: '',
+      phone: '',
+      birthDate: '',
+      email: '',
+      imagUrl: '',
+    );
+  }
   
   @override
   List<Object?> get props => [

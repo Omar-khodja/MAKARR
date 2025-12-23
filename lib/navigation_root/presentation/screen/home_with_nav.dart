@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
 import 'package:makarr/navigation_root/presentation/screen/home.dart';
 import 'package:makarr/navigation_root/presentation/screen/profile.dart';
 import 'package:makarr/navigation_root/presentation/screen/report_Problem.dart';
@@ -17,6 +18,14 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
   int selectedScreen = 0;
   final screen = const [Home(), ReportProblem(), Profile()];
   final screenTitle = const ["Home", 'Report Problem', "Profile"];
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      ref.read(userNotifireProvider.notifier).featchCurrentUser(widget.uId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
