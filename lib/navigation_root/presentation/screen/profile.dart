@@ -4,8 +4,8 @@ import 'package:makarr/auth/presentation/controler/authNotifire.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/navigation_root/presentation/component/profile/profile_head.dart';
 import 'package:makarr/navigation_root/presentation/component/profile/profile_info.dart';
-import 'package:makarr/navigation_root/presentation/component/profile/profile_info_shimmer.dart';
 import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});
@@ -31,35 +31,40 @@ class _ProfileState extends ConsumerState<Profile> {
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
-      child: user.isLoading
-          ? const ProfileInfoShimmer()
-          : Column(
-              children: [
-                ProfileHead(
-                  name: "${user.user.fname} ${user.user.lname}",
-                  city: "Msila_Msila",
-                ),
-                ...List.generate(titels.length, (index) {
-                  final data = [
-                    user.user.birthDate,
-                    user.user.phone,
-                    user.user.userId,
-                    user.user.email,
-                  ];
-                  return ProfileInfo(
-                    title: titels[index],
-                    data: data[index],
-                    icon: icons[index],
-                  );
-                }),
-                const SizedBox(height: 20),
-                PrimaryButton(
-                  label: "Sing Out",
-                  fun: auth.singOut,
-                  tailIcon: Icons.logout,
-                ),
-              ],
+      child: Column(
+        children: [
+          Skeletonizer(
+            enabled: user.isLoading,
+            child: ProfileHead(
+              name: "${user.user.fname} ${user.user.lname}",
+              city: "Msila_Msila",
             ),
+          ),
+          ...List.generate(titels.length, (index) {
+            final data = [
+              user.user.birthDate,
+              user.user.phone,
+              user.user.userId,
+              user.user.email,
+            ];
+            return Skeletonizer(
+              enabled: user.isLoading,
+              containersColor: Theme.of(context).colorScheme.surface,
+              child: ProfileInfo(
+                title: titels[index],
+                data: data[index],
+                icon: icons[index],
+              ),
+            );
+          }),
+          const SizedBox(height: 20),
+          PrimaryButton(
+            label: "Sing Out",
+            fun: auth.singOut,
+            tailIcon: Icons.logout,
+          ),
+        ],
+      ),
     );
   }
 }
