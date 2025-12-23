@@ -6,6 +6,7 @@ import 'package:makarr/auth/domain/usecase/login_usecase.dart';
 import 'package:makarr/auth/domain/usecase/singout_usecase.dart';
 import 'package:makarr/auth/presentation/controler/auth_provider.dart';
 import 'package:makarr/auth/presentation/controler/authstate.dart';
+import 'package:makarr/core/usecases/baseusecase.dart';
 
 class Authnotifire extends StateNotifier<AuthState> {
   Authnotifire({
@@ -30,7 +31,7 @@ class Authnotifire extends StateNotifier<AuthState> {
   Future<void> login(String email, String password) async {
     state = state.copyWith(isLoading: true, error: null);
 
-    final result = await loginUsecase.call(email, password);
+    final result = await loginUsecase.call((email, password));
     result.fold((l) {
       state = state.copyWith(isLoading: false, error: l.message);
       AppLogger.e(l.message);
@@ -40,7 +41,7 @@ class Authnotifire extends StateNotifier<AuthState> {
   Future<void> singOut() async {
     state = state.copyWith(isLoading: true, error: null);
 
-    final result = await singoutUsecase.call();
+    final result = await singoutUsecase.call(const NoParameters());
     result.fold((l) {
       state = state.copyWith(isLoading: false, error: l.message);
       AppLogger.e(l.message);

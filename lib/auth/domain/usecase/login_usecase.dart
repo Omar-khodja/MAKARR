@@ -1,11 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:makarr/auth/domain/repository/base_auth_repo.dart';
 import 'package:makarr/core/error/failure.dart';
+import 'package:makarr/core/usecases/baseusecase.dart';
 
-class LoginUsecase {
+class LoginUsecase implements UseCase<Unit, (String, String)> {
   LoginUsecase({required this.baseAuthRepo});
   final BaseAuthRepo baseAuthRepo;
-  Future<Either<Failure , Unit>> call(String email, String password) async {
+  @override
+  Future<Either<Failure , Unit>> call((String ,String) params) async {
+    final (email, password) = params;
     return await baseAuthRepo.login(email, password);
   }
 }
