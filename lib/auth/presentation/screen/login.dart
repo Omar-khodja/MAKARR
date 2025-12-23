@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/appLogger.dart';
-import 'package:makarr/auth/domain/entities/user.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
+import 'package:makarr/auth/domain/entities/user_auth.dart';
 import 'package:makarr/auth/presentation/controler/authNotifire.dart';
 import 'package:makarr/auth/presentation/component/custom_TextFormField.dart';
 import 'package:makarr/auth/presentation/screen/createAccounte.dart';
-import 'package:makarr/widget/outLineButton.dart';
-import 'package:makarr/widget/primaryButton.dart';
+import 'package:makarr/core/component/outLineButton.dart';
+import 'package:makarr/core/component/primaryButton.dart';
 
 class Login extends ConsumerStatefulWidget {
   const Login({super.key});

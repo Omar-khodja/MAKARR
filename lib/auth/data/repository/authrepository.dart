@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:makarr/auth/data/datasource/base_data_sourse.dart';
-import 'package:makarr/auth/data/model/user_model.dart';
+import 'package:makarr/auth/data/model/user_auth_model.dart';
 import 'package:makarr/auth/domain/repository/base_auth_repo.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/error/failure.dart';
@@ -12,10 +12,10 @@ class Authrepository extends BaseAuthRepo {
   @override
   Future<Either<Failure, Unit>> createUser(user) async {
     try {
-      final usermodel = UserModel.fromEntity(user);
+      final usermodel = UserAuthModel.fromEntity(user);
       await baseDataSourse.createUser(usermodel);
       return const Right(unit);
-    } on ServerException catch (failure) {
+    } on AuthException catch (failure) {
       return Left(ServerFailure(failure.errorMessage));
     }
   }
@@ -26,7 +26,7 @@ class Authrepository extends BaseAuthRepo {
       await baseDataSourse.login(email, password);
       return const Right(unit);
     } on AuthException catch (failure) {
-      return Left(ServerFailure(failure.message));
+      return Left(ServerFailure(failure.errorMessage));
     }
   }
 
@@ -36,7 +36,7 @@ class Authrepository extends BaseAuthRepo {
       await baseDataSourse.singOut();
       return const Right(unit);
     } on AuthException catch (failure) {
-      return Left(ServerFailure(failure.message));
+      return Left(ServerFailure(failure.errorMessage));
     }
   }
 }

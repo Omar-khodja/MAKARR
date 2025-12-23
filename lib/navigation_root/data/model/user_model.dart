@@ -1,0 +1,24 @@
+import 'package:makarr/navigation_root/domain/entities/user.dart';
+
+class UserModel extends User {
+  const UserModel({
+    required super.userId,
+    required super.fname,
+    required super.lname,
+    required super.phone,
+    required super.birthDate,
+    required super.email,
+    required super.imagUrl,
+  });
+  factory UserModel.fromFireBase(Map<String,dynamic> map){
+    return UserModel(
+      userId: map['UserId']??'',
+      fname: map['Fname']??'',
+      lname: map['Lname']??'',
+      phone: map['Phone']??'',
+      birthDate: map['Birth_Date']??'',
+      email: map['Email']??'',
+      imagUrl: map['ImagUrl']??'',
+    );
+  }
+}

@@ -1,7 +1,7 @@
-import 'package:makarr/auth/domain/entities/user.dart';
+import 'package:makarr/auth/domain/entities/user_auth.dart';
 
-class UserModel extends User {
-  const UserModel({
+class UserAuthModel extends UserAuth {
+  const UserAuthModel({
     required super.id,
     required super.firstName,
     required super.lastName,
@@ -10,8 +10,8 @@ class UserModel extends User {
     required super.birthDate,
     required super.password,
   });
-  factory UserModel.fromEntity(User user) {
-    return UserModel(
+  factory UserAuthModel.fromEntity(UserAuth user) {
+    return UserAuthModel(
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -21,5 +21,4 @@ class UserModel extends User {
       password: user.password,
     );
   }
-
 }

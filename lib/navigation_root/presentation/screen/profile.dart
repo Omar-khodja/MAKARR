@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/appLogger.dart';
-import 'package:makarr/auth/domain/entities/user.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
+import 'package:makarr/auth/domain/entities/user_auth.dart';
 import 'package:makarr/auth/presentation/controler/authNotifire.dart';
-import 'package:makarr/widget/primaryButton.dart';
-import 'package:makarr/widget/profile/profile_head.dart';
-import 'package:makarr/widget/profile/profile_info.dart';
-import 'package:makarr/widget/profile/profile_info_shimmer.dart';
+import 'package:makarr/core/component/primaryButton.dart';
+import 'package:makarr/navigation_root/presentation/component/profile/profile_head.dart';
+import 'package:makarr/navigation_root/presentation/component/profile/profile_info.dart';
+import 'package:makarr/navigation_root/presentation/component/profile/profile_info_shimmer.dart';
 
 class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});
@@ -26,11 +26,10 @@ class _ProfileState extends ConsumerState<Profile> {
     Icons.email_outlined,
   ];
 
-
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authNotifireProvider.notifier);
-    final userDate = const User(
+    final userDate = const UserAuth(
       id: "1231651",
       firstName: "firstName",
       lastName: "lastName",

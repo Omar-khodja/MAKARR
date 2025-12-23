@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/auth/presentation/controler/authNotifire.dart';
 import 'package:makarr/auth/presentation/component/custom_TextFormField.dart';
-import 'package:makarr/widget/outLineButton.dart';
-import 'package:makarr/widget/primaryButton.dart';
-import 'package:makarr/auth/domain/entities/user.dart';
+import 'package:makarr/core/component/outLineButton.dart';
+import 'package:makarr/core/component/primaryButton.dart';
+import 'package:makarr/auth/domain/entities/user_auth.dart';
 
 class CreateAccounte extends ConsumerStatefulWidget {
   const CreateAccounte({super.key});
@@ -219,7 +219,7 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
     if (!isValid) return;
 
     await auth.createUser(
-      User(
+      UserAuth(
         id: _idController.text.trim(),
         firstName: _fNameController.text.trim(),
         lastName: _lNameController.text.trim(),

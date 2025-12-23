@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/appLogger.dart';
-import 'package:makarr/widget/Custom_elevatedButton.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
+import 'package:makarr/core/component/Custom_elevatedButton.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:makarr/widget/Image_card.dart';
-import 'package:makarr/widget/user_card_info.dart';
-import 'package:makarr/widget/video_card.dart';
+import 'package:makarr/navigation_root/presentation/component/Image_card.dart';
+import 'package:makarr/navigation_root/presentation/component/user_card_info.dart';
+import 'package:makarr/navigation_root/presentation/component/video_card.dart';
 import 'package:video_player/video_player.dart';
 
 class ReportProblem extends ConsumerStatefulWidget {

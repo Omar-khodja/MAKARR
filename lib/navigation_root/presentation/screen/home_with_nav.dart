@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:makarr/screen/home.dart';
-import 'package:makarr/screen/profile.dart';
-import 'package:makarr/screen/report_Problem.dart';
+import 'package:makarr/navigation_root/presentation/screen/home.dart';
+import 'package:makarr/navigation_root/presentation/screen/profile.dart';
+import 'package:makarr/navigation_root/presentation/screen/report_Problem.dart';
 
 class HomeWithNav extends ConsumerStatefulWidget {
   const HomeWithNav({super.key, required this.uId});

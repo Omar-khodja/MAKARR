@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:makarr/appLogger.dart';
-import 'package:makarr/auth/domain/entities/user.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
+import 'package:makarr/auth/domain/entities/user_auth.dart';
 import 'package:makarr/auth/domain/usecase/createuser_usecase.dart';
 import 'package:makarr/auth/domain/usecase/login_usecase.dart';
 import 'package:makarr/auth/domain/usecase/singout_usecase.dart';
@@ -17,7 +17,7 @@ class Authnotifire extends StateNotifier<AuthState> {
   final SingoutUsecase singoutUsecase;
   final LoginUsecase loginUsecase;
 
-  Future<void> createUser(User user) async {
+  Future<void> createUser(UserAuth user) async {
     state = state.copyWith(isLoading: true, error: null);
 
     final result = await createuserUsecase.call(user);

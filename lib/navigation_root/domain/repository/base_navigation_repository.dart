@@ -1,0 +1,11 @@
+
+
+import 'package:dartz/dartz.dart';
+import 'package:makarr/core/error/failure.dart';
+import 'package:makarr/navigation_root/domain/entities/user.dart';
+
+abstract class BaseNavigationRepository {
+
+Future<Either<Failure , User>> getCurrentUserInfo(String userId);
+
+}

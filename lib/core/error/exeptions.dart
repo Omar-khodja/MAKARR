@@ -7,7 +7,12 @@ class ServerException implements Exception {
 }
 
 class AuthException  implements Exception {
-  final String message;
+  final String errorMessage;
 
-  const AuthException({required this.message});
+  const AuthException({required this.errorMessage});
+}
+class FirestoreException implements Exception {
+  final String errorMessage;
+
+  const FirestoreException({required this.errorMessage});
 }

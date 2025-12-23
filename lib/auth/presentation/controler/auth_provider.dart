@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/appLogger.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/auth/data/datasource/base_data_sourse.dart';
 import 'package:makarr/auth/data/datasource/firebase_datasource.dart';
 import 'package:makarr/auth/data/repository/authrepository.dart';
