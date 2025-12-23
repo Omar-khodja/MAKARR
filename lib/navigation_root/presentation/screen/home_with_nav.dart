@@ -16,7 +16,7 @@ class HomeWithNav extends ConsumerStatefulWidget {
 
 class _HomeWithNavState extends ConsumerState<HomeWithNav> {
   int selectedScreen = 0;
-  final screen = const [Home(), ReportProblem(), Profile()];
+  final screen =  [const Home(),const ReportProblem(), Profile()];
   final screenTitle = const ["Home", 'Report Problem', "Profile"];
   @override
   void initState() {

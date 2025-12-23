@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/auth/presentation/controler/authNotifire.dart';
@@ -7,16 +8,11 @@ import 'package:makarr/navigation_root/presentation/component/profile/profile_in
 import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class Profile extends ConsumerStatefulWidget {
-  const Profile({super.key});
+class Profile extends ConsumerWidget {
+  Profile({super.key});
 
-  @override
-  ConsumerState<Profile> createState() => _ProfileState();
-}
 
-class _ProfileState extends ConsumerState<Profile> {
   final List<String> titels = ["Birth", "Phone", "ID", "Email"];
-
   final List<IconData> icons = [
     Icons.calendar_month_outlined,
     Icons.phone,
@@ -25,7 +21,7 @@ class _ProfileState extends ConsumerState<Profile> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authNotifireProvider.notifier);
     final user = ref.watch(userNotifireProvider);
 
