@@ -19,10 +19,15 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
-      mainAxisAlignment: .start,
-      crossAxisAlignment: .center,
-      children: [PostCard(carouselController: carouselController)],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: .start,
+        crossAxisAlignment: .center,
+        children: [
+          PostCard(carouselController: carouselController),
+          PostCard(carouselController: carouselController),
+        ],
+      ),
     );
   }
 }

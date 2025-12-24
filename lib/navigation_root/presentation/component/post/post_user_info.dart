@@ -7,7 +7,7 @@ class PostUserInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final darcktheme = Theme.of(context).brightness == Brightness.dark;
     return Padding(
-      padding: const EdgeInsetsGeometry.symmetric(vertical: 10, horizontal: 20),
+      padding: const EdgeInsetsGeometry.symmetric(vertical: 10, horizontal: 10),
       child: SizedBox(
         width: double.infinity,
         child: Row(

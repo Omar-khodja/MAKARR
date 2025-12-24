@@ -23,7 +23,7 @@ class ProfileHead extends StatelessWidget {
           leading: const CircleAvatar(
             radius: 40,
             child: null,
-            backgroundColor: Color.fromARGB(255, 83, 83, 83),
+            backgroundImage: AssetImage("assets/image/noprofilel.png"),
           ),
           title: Text(
             name,
