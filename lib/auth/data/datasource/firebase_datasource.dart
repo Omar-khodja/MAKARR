@@ -17,12 +17,13 @@ class FirebaseDatasource extends BaseDataSourse {
       );
 
       await firestore.collection("Users").doc(userCredential.user!.uid).set({
-        'UserId': user.id.trim(),
         'Fname': user.firstName.trim(),
         'Lname': user.lastName.trim(),
         'Phone': user.phone.trim(),
         'Birth_Date': user.birthDate.trim(),
         'Email': user.email.trim(),
+        'Wilaya': user.wilaya.trim(),
+        'Bladya': user.bladya.trim(),
         'ImagUrl': "",
       });
     } on FirebaseAuthException catch (e) {

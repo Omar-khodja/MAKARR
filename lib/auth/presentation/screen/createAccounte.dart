@@ -5,6 +5,7 @@ import 'package:makarr/auth/presentation/component/custom_TextFormField.dart';
 import 'package:makarr/core/component/outLineButton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/auth/domain/entities/user_auth.dart';
+import 'package:makarr/core/data/algeria_cites.dart';
 
 class CreateAccounte extends ConsumerStatefulWidget {
   const CreateAccounte({super.key});
@@ -12,28 +13,50 @@ class CreateAccounte extends ConsumerStatefulWidget {
   @override
   ConsumerState<CreateAccounte> createState() => _CreateAccounteState();
 }
+//// TODO minimaize this class
 
 class _CreateAccounteState extends ConsumerState<CreateAccounte> {
   final _formkey = GlobalKey<FormState>();
   final _fNameController = TextEditingController();
-  final _idController = TextEditingController();
   final _lNameController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
-  final _password2Controller = TextEditingController();
+  late List<String> wilaya;
+  late List<String> bladia;
+  String? selectedWilaya;
+  String? selectedBladya;
+  @override
+  void initState() {
+    super.initState();
+    wilaya = algeriacites
+        .map((e) {
+          return (e["wilaya_name"] as String);
+        })
+        .toSet()
+        .toList();
+    selectedWilaya = wilaya.first;
+    setBaladya();
+  }
+
+  void setBaladya() {
+    bladia = algeriacites
+        .where((value) => value["wilaya_name"] as String == selectedWilaya)
+        .map((e) => e["daira_name"] as String)
+        .toSet()
+        .toList();
+    selectedBladya = bladia.first;
+  }
 
   @override
   void dispose() {
     _fNameController.dispose();
-    _idController.dispose();
     _phoneNumberController.dispose();
     _lNameController.dispose();
     _birthDateController.dispose();
     _emailController.dispose();
     _password1Controller.dispose();
-    _password2Controller.dispose();
 
     super.dispose();
   }
@@ -124,20 +147,7 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
 
-                CustomTextformfield(
-                  controller: _idController,
-                  label: "ID number",
-                  icon: Icons.badge_outlined,
-                  inputType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.trim().length < 16) {
-                      return "ID must be 16 numbers!";
-                    }
-                    return null;
-                  },
-                ),
                 const SizedBox(height: 20),
                 CustomTextformfield(
                   controller: _birthDateController,
@@ -151,6 +161,7 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
                     return null;
                   },
                 ),
+
                 const SizedBox(height: 20),
                 CustomTextformfield(
                   controller: _emailController,
@@ -179,17 +190,48 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
                     return null;
                   },
                 ),
+
                 const SizedBox(height: 20),
-                CustomTextformfield(
-                  controller: _password2Controller,
-                  label: "Confirm your password",
-                  icon: Icons.lock_outline,
-                  inputType: TextInputType.visiblePassword,
-                  validator: (value) {
-                    if (value == null || value.trim().length < 6) {
-                      return "Password must be at  least 6 characters! ";
-                    }
-                    return null;
+                DropdownButtonFormField<String>(
+                  initialValue: selectedWilaya,
+                  hint: const Text("Select Wilaya"),
+                  decoration: const InputDecoration(
+                    label: Text("Select Wilaya"),
+                  ),
+                  items: wilaya
+                      .map(
+                        (item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedWilaya = value!;
+                      setBaladya();
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                DropdownButtonFormField<String>(
+                  initialValue: selectedBladya,
+                  hint: const Text("Select Bladya"),
+                  decoration: const InputDecoration(
+                    label: Text("Select Bladya"),
+                  ),
+                  items: bladia
+                      .map(
+                        (item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedBladya = value!;
+                    });
                   },
                 ),
                 const SizedBox(height: 20),
@@ -220,14 +262,18 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
 
     await auth.createUser(
       UserAuth(
-        id: _idController.text.trim(),
         firstName: _fNameController.text.trim(),
         lastName: _lNameController.text.trim(),
         phone: _phoneNumberController.text.trim(),
         email: _emailController.text.trim(),
         birthDate: _birthDateController.text.trim(),
         password: _password1Controller.text.trim(),
+        wilaya: selectedWilaya!,
+        bladya: selectedBladya!,
       ),
     );
+    if (!mounted) return;
+    Navigator.pop(context);
+    
   }
 }

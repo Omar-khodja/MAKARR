@@ -10,12 +10,11 @@ import 'package:skeletonizer/skeletonizer.dart';
 class Profile extends ConsumerWidget {
   Profile({super.key});
 
-
-  final List<String> titels = ["Birth", "Phone", "ID", "Email"];
+  final List<String> titels = ["Municipality", "Birth", "Phone", "Email"];
   final List<IconData> icons = [
+    Icons.location_on_outlined,
     Icons.calendar_month_outlined,
     Icons.phone,
-    Icons.badge_outlined,
     Icons.email_outlined,
   ];
 
@@ -37,9 +36,9 @@ class Profile extends ConsumerWidget {
           ),
           ...List.generate(titels.length, (index) {
             final data = [
+              "${user.user.wilaya} - ${user.user.bladya}",
               user.user.birthDate,
               user.user.phone,
-              user.user.userId,
               user.user.email,
             ];
             return Skeletonizer(

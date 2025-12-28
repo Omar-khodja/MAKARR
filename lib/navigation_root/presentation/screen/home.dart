@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,13 +21,16 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: .start,
-        crossAxisAlignment: .center,
-        children: [
-          PostCard(carouselController: carouselController),
-          PostCard(carouselController: carouselController),
-        ],
+      child: Skeletonizer(
+        enabled: false,
+        child: Column(
+          mainAxisAlignment: .start,
+          crossAxisAlignment: .center,
+          children: [
+            PostCard(carouselController: carouselController),
+            PostCard(carouselController: carouselController),
+          ],
+        ),
       ),
     );
   }

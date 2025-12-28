@@ -88,7 +88,6 @@ class PostCard extends StatelessWidget {
               children: [
                 PostIconbutton(icon: FontAwesome5Regular.heart),
                 PostIconbutton(icon: FontAwesome5Regular.comment),
-
                 Spacer(),
                 PostIconbutton(icon: FontAwesome5Regular.bookmark),
               ],
