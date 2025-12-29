@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/navigation_root/data/datasource/base_datasource.dart';
+import 'package:makarr/navigation_root/data/model/report_model.dart';
+import 'package:makarr/navigation_root/domain/entities/report.dart';
 import 'package:makarr/navigation_root/domain/entities/user.dart';
 import 'package:makarr/navigation_root/domain/repository/base_navigation_repository.dart';
 
@@ -19,5 +21,16 @@ class NavigationRepository extends BaseNavigationRepository {
       return const Left(ServerFailure('Failed to fetch user data'));
     }
     
+  }
+
+  @override
+  Future<Either<Failure, void>> setReportToDataBase(Report report) async{
+    try{
+        final reportmodel = ReportModel.fromEntity(report);
+      await baseDataSource.setReport(reportmodel);
+      return const Right(null);
+    }catch(e){
+      return const Left(ServerFailure("Failed to set report"));
+    }
   }
 }
