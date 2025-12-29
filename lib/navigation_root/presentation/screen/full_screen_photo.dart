@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class FullScreenPhoto extends StatelessWidget {
+class FullScreenPhoto extends StatefulWidget {
   const FullScreenPhoto({
     super.key,
     required this.images,
@@ -12,9 +12,25 @@ class FullScreenPhoto extends StatelessWidget {
   final int initialIndex;
 
   @override
+  State<FullScreenPhoto> createState() => _FullScreenPhotoState();
+}
+
+class _FullScreenPhotoState extends State<FullScreenPhoto> {
+  late final PageController pageController;
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: widget.initialIndex);
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    pageController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final PageController pageController =
-        PageController(initialPage: initialIndex);
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -23,9 +39,9 @@ class FullScreenPhoto extends StatelessWidget {
       ),
       body: PhotoViewGallery.builder(
         pageController: pageController,
-        itemCount: images.length,
+        itemCount: widget.images.length,
         builder: (context, index) => PhotoViewGalleryPageOptions(
-          imageProvider: AssetImage(images[index]),
+          imageProvider: AssetImage(widget.images[index]),
           maxScale: PhotoViewComputedScale.covered * 2,
           minScale: PhotoViewComputedScale.contained,
         ),

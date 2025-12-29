@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/navigation_root/presentation/screen/full_screen_photo.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_user_info.dart';

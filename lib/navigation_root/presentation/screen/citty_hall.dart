@@ -28,6 +28,7 @@ class _CittyHallState extends State<CittyHall> {
           children: [
             PostCard(carouselController: carouselController),
             PostCard(carouselController: carouselController),
+            PostCard(carouselController: carouselController),
           ],
         ),
       ),
