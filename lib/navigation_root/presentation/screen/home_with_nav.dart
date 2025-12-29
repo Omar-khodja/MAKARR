@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
-import 'package:makarr/navigation_root/presentation/screen/home.dart';
+import 'package:makarr/navigation_root/presentation/screen/citty_hall.dart';
 import 'package:makarr/navigation_root/presentation/screen/profile.dart';
 import 'package:makarr/navigation_root/presentation/screen/report_Problem.dart';
 
@@ -16,8 +16,8 @@ class HomeWithNav extends ConsumerStatefulWidget {
 
 class _HomeWithNavState extends ConsumerState<HomeWithNav> {
   int selectedScreen = 0;
-  final screen = [const Home(), const ReportProblem(), Profile()];
-  final screenTitle = const ["Home", 'Report Problem', "Profile"];
+  final screen = [const CittyHall(), const ReportProblem(), Profile()];
+  final screenTitle = const ["Citty Hall", 'Report Problem', "Profile"];
   @override
   void initState() {
     super.initState();
@@ -66,7 +66,7 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
           selectedScreen = index;
         }),
         tabs: const [
-          GButton(icon: Icons.home_outlined, text: "Home"),
+          GButton(icon: Icons.home_outlined, text: "Citty Hall"),
           GButton(icon: Icons.campaign_outlined, text: "Report problem"),
           GButton(icon: Icons.person_outline, text: "Profile"),
         ],

@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class CittyHall extends StatefulWidget {
+  const CittyHall({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<CittyHall> createState() => _CittyHallState();
 }
 
-class _HomeState extends State<Home> {
+class _CittyHallState extends State<CittyHall> {
   CarouselController carouselController = CarouselController();
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     carouselController.dispose();
   }

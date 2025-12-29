@@ -1,34 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
+import 'package:makarr/navigation_root/presentation/screen/full_screen_photo.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_user_info.dart';
 
 class PostCard extends StatelessWidget {
   PostCard({super.key, required this.carouselController});
   final CarouselController carouselController;
-  final children = [
-    Container(
-      decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Image.asset("assets/image/imag1.jpg", fit: BoxFit.cover),
-    ),
-    Container(
-      decoration: BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Image.asset("assets/image/imag2.jpg", fit: BoxFit.cover),
-    ),
-    Container(
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Image.asset("assets/image/imag3.jpg", fit: BoxFit.cover),
-    ),
+  final List<String> images = [
+    "assets/image/imag1.jpg",
+    "assets/image/imag2.jpg",
+    "assets/image/imag3.jpg",
   ];
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -61,7 +46,18 @@ class PostCard extends StatelessWidget {
               controller: carouselController,
               itemExtent: width * .8,
               shrinkExtent: height * .2,
-              children: children,
+              children: images
+                  .asMap()
+                  .entries
+                  .map((e) => Image.asset(e.value, fit: BoxFit.fill))
+                  .toList(),
+              onTap: (index) => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      FullScreenPhoto(images: images, initialIndex: index),
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 10),
@@ -86,8 +82,11 @@ class PostCard extends StatelessWidget {
               mainAxisAlignment: .start,
 
               children: [
-                PostIconbutton(icon: FontAwesome5Regular.heart),
-                PostIconbutton(icon: FontAwesome5Regular.comment),
+                PostIconbutton(
+                  icon: FontAwesome5Regular.thumbs_up,
+                  counter: 120,
+                ),
+                PostIconbutton(icon: FontAwesome5Regular.comment, counter: 24),
                 Spacer(),
                 PostIconbutton(icon: FontAwesome5Regular.bookmark),
               ],
