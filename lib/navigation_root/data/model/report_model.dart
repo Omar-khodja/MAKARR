@@ -7,6 +7,9 @@ class ReportModel extends Report {
     required super.date,
     super.images,
     super.video,
+    required super.lat,
+    required super.lng,
+    required super.address,
   });
   Map<String, dynamic> toMap() {
     return {
@@ -23,8 +26,11 @@ class ReportModel extends Report {
       titel: report.titel,
       discreption: report.discreption,
       date: report.date,
-      images: report.images ?? [] ,
-      video: report.video ?? ""
+      images: report.images ?? [],
+      video: report.video ?? "",
+      lat: report.lat,
+      lng: report.lng,
+      address: report.address,
     );
   }
 }

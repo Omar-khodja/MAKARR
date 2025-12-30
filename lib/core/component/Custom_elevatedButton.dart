@@ -14,41 +14,63 @@ class CustomElevatedbutton extends StatelessWidget {
   final IconData? leadIcon;
   final IconData? tailIcon;
   final bool isLoading;
-
   @override
   Widget build(BuildContext context) {
+    final darktheme = Theme.of(context).brightness == Brightness.dark;
+
     return ElevatedButton(
       onPressed: fun,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: darktheme
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.primary,
       ),
 
-      child: Row(
-        mainAxisAlignment: .center,
-        mainAxisSize: .min,
-        children: [
-          if (leadIcon != null)
-            Icon(
-              leadIcon,
-              size: 24,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-          const SizedBox(width: 5),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 18,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-          ),
-          const SizedBox(width: 5),
-          if (tailIcon != null)
-            Icon(
-              tailIcon,
-              size: 24,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-        ],
+      child: AnimatedSize(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 150),
+          transitionBuilder: (child, animation) =>
+              ScaleTransition(scale: animation, child: child),
+          child: isLoading
+              ? const CircularProgressIndicator(
+                  color: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                )
+              : Row(
+                  mainAxisAlignment: .center,
+                  children: [
+                    if (leadIcon != null)
+                      Icon(
+                        leadIcon,
+                        size: 24,
+                        color: darktheme
+                            ? Theme.of(context).colorScheme.onPrimaryContainer
+                            : Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    const SizedBox(width: 5),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: darktheme
+                            ? Theme.of(context).colorScheme.onPrimaryContainer
+                            : Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    if (tailIcon != null)
+                      Icon(
+                        tailIcon,
+                        size: 24,
+                        color: darktheme
+                            ? Theme.of(context).colorScheme.onPrimaryContainer
+                            : Theme.of(context).colorScheme.onPrimary,
+                      ),
+                  ],
+                ),
+        ),
       ),
     );
   }

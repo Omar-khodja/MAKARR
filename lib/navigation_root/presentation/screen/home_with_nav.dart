@@ -34,16 +34,24 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
       backgroundColor: darcktheme
           ? Theme.of(context).colorScheme.surface
           : Theme.of(context).colorScheme.surfaceContainerHigh,
-      appBar: AppBar(
-        title: Text(screenTitle[selectedScreen]),
-        backgroundColor: darcktheme
-            ? Theme.of(context).colorScheme.primaryContainer
-            : Theme.of(context).colorScheme.primary,
-        foregroundColor: darcktheme
-            ? Theme.of(context).colorScheme.onPrimaryContainer
-            : Theme.of(context).colorScheme.onPrimary,
+
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverAppBar(
+            backgroundColor: darcktheme
+                ? Theme.of(context).colorScheme.primaryContainer
+                : Theme.of(context).colorScheme.primary,
+            foregroundColor: darcktheme
+                ? Theme.of(context).colorScheme.onPrimaryContainer
+                : Theme.of(context).colorScheme.onPrimary,
+            title: Text(screenTitle[selectedScreen]),
+            floating: true,
+            snap: true,
+            pinned: false,
+          ),
+        ],
+        body: IndexedStack(index: selectedScreen, children: screen),
       ),
-      body: IndexedStack(index: selectedScreen, children: screen),
       bottomNavigationBar: GNav(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         activeColor: darcktheme

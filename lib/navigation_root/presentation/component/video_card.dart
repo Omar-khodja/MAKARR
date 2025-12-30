@@ -1,14 +1,12 @@
+import 'dart:io';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoCard extends StatefulWidget {
-  const VideoCard({
-    super.key,
-    required this.videoController,
-    required this.onDelete,
-  });
-  final VideoPlayerController videoController;
+  const VideoCard({super.key, required this.videoPath, required this.onDelete});
+  final String videoPath;
   final Function() onDelete;
 
   @override
@@ -17,28 +15,29 @@ class VideoCard extends StatefulWidget {
 
 class _VideoCardState extends State<VideoCard> {
   ChewieController? _chewieController;
+  late VideoPlayerController _controller;
   @override
   void initState() {
     super.initState();
-    widget.videoController.initialize().then((_) {
-      setState(() {
+    _controller = VideoPlayerController.file(File(widget.videoPath))
+      ..initialize().then((_) {
         _chewieController = ChewieController(
-          videoPlayerController: widget.videoController,
+          videoPlayerController: _controller,
           autoPlay: false,
-          looping: false,
+          looping: true,
           zoomAndPan: true,
           autoInitialize: true,
 
-          aspectRatio: widget.videoController.value.aspectRatio,
+          aspectRatio: _controller.value.aspectRatio,
         );
+        setState(() {});
       });
-      setState(() {});
-    });
   }
 
   @override
   void dispose() {
     _chewieController?.dispose();
+    _controller.dispose();
     super.dispose();
   }
 

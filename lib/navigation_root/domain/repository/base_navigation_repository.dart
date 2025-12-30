@@ -9,6 +9,7 @@ abstract class BaseNavigationRepository {
 
 Future<Either<Failure , User>> getCurrentUserInfo(String userId);
 Future<Either<Failure, void>> setReportToDataBase(Report report);
+Future<Either<Failure, Map<String , dynamic>>> getCurrentLocation();
 
 
 }
