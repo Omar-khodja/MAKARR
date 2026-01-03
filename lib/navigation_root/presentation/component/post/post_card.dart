@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:makarr/navigation_root/presentation/screen/full_screen_photo.dart';
+import 'package:makarr/navigation_root/presentation/component/post/postCarousel.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_user_info.dart';
 
 class PostCard extends StatelessWidget {
-  PostCard({super.key, required this.carouselController});
+  const PostCard({super.key, required this.carouselController});
   final CarouselController carouselController;
-  final List<String> images = [
+  static const List<String> images = [
     "assets/image/imag1.jpg",
     "assets/image/imag2.jpg",
     "assets/image/imag3.jpg",
@@ -15,8 +15,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+   
     final darcktheme = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
@@ -41,23 +40,7 @@ class PostCard extends StatelessWidget {
           const SizedBox(height: 15),
           SizedBox(
             height: 250,
-            child: CarouselView(
-              controller: carouselController,
-              itemExtent: width * .8,
-              shrinkExtent: height * .2,
-              children: images
-                  .asMap()
-                  .entries
-                  .map((e) => Image.asset(e.value, fit: BoxFit.fill))
-                  .toList(),
-              onTap: (index) => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      FullScreenPhoto(images: images, initialIndex: index),
-                ),
-              ),
-            ),
+            child: PostCarousel(controller: carouselController, images: images)
           ),
           const SizedBox(height: 10),
           Padding(
@@ -97,3 +80,4 @@ class PostCard extends StatelessWidget {
     );
   }
 }
+

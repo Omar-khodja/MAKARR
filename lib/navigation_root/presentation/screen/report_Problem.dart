@@ -6,6 +6,7 @@ import 'package:makarr/navigation_root/presentation/component/user_card_info.dar
 import 'package:makarr/navigation_root/presentation/controler/reportNotifire.dart';
 import 'package:video_player/video_player.dart';
 
+
 class ReportProblem extends ConsumerStatefulWidget {
   const ReportProblem({super.key});
 
@@ -43,6 +44,7 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
       }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,7 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
                   ),
                   borderRadius: BorderRadius.circular(8), // rounded corners
                 ),
-                child: Text(notifire.position["address"] ?? 'Current location'),
+                child: Text(notifire.position["formatted"] ?? 'Current location'),
               ),
             const SizedBox(height: 12),
             Wrap(

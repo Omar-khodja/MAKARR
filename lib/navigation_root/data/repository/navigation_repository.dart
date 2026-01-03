@@ -1,76 +1,92 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/navigation_root/data/datasource/base_datasource.dart';
 import 'package:makarr/navigation_root/data/model/report_model.dart';
 import 'package:makarr/navigation_root/domain/entities/report.dart';
 import 'package:makarr/navigation_root/domain/entities/user.dart';
 import 'package:makarr/navigation_root/domain/repository/base_navigation_repository.dart';
-import 'package:geocoding/geocoding.dart';
-
+import 'package:dio/dio.dart';
 
 class NavigationRepository extends BaseNavigationRepository {
   NavigationRepository({required this.baseDataSource});
   final BaseDataSource baseDataSource;
+  ///////TODO: user Opencage instad of geocoding
 
   @override
-  
-  Future<Either<Failure,User>> getCurrentUserInfo(String userId)async {
-    try{
-      final user =await baseDataSource.getUserById(userId);
+  Future<Either<Failure, User>> getCurrentUserInfo(String userId) async {
+    try {
+      final user = await baseDataSource.getUserById(userId);
       return Right(user);
-
-    }catch(e){
+    } catch (e) {
       return const Left(ServerFailure('Failed to fetch user data'));
     }
-    
   }
 
   @override
-  Future<Either<Failure, void>> setReportToDataBase(Report report) async{
-    try{
-        final reportmodel = ReportModel.fromEntity(report);
+  Future<Either<Failure, void>> setReportToDataBase(Report report) async {
+    try {
+      final reportmodel = ReportModel.fromEntity(report);
       await baseDataSource.setReport(reportmodel);
       return const Right(null);
-    }catch(e){
+    } catch (e) {
       return const Left(ServerFailure("Failed to set report"));
     }
   }
-  
+
   @override
-  Future<Either<Failure, Map<String , dynamic>>> getCurrentLocation() async{
+  Future<Either<Failure, Map<String, dynamic>>> getCurrentLocation() async {
+    final dio = Dio();
     bool serviceEnabled;
-  LocationPermission permission;
+    LocationPermission permission;
+    final apikey = await dotenv.env["API_KEY"];
 
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-  
-    return const Left(GpsFailure('Location services are disabled. please open GPS'));
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-
-      return const Left(GpsFailure('Location permissions are denied') );
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return const Left(
+        GpsFailure('Location services are disabled. please open GPS'),
+      );
     }
-  }
-  
-  if (permission == LocationPermission.deniedForever) {
-    // Permissions are denied forever, handle appropriately. 
-    return const Left(GpsFailure(
-      'Location permissions are permanently denied, we cannot request permissions.'));
-  } 
-  final Position position = await Geolocator.getCurrentPosition();
-  final List<Placemark> result = await placemarkFromCoordinates(position.latitude , position.longitude);
-  if(result.isEmpty) return const Left(GpsFailure("Unknown location")) ;
-  final placemark = result.first;
 
-    return Right({
-      "lat": position.latitude,
-      "lng": position.longitude,
-      "address": placemark.administrativeArea,
-    });
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return const Left(GpsFailure('Location permissions are denied'));
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return const Left(
+        GpsFailure(
+          'Location permissions are permanently denied, we cannot request permissions.',
+        ),
+      );
+    }
+    try {
+      final Position position = await Geolocator.getCurrentPosition();
+      final response = await dio.get(
+        "https://api.opencagedata.com/geocode/v1/json?q=${position.latitude}%2C+${position.longitude}&key=$apikey",
+      );
+      if (response.data == null){
+        return const Left(GpsFailure("Unknown location"));
+      }
+      final placemark = response.data["results"][0]['components'];
+
+      return Right({
+        "lat": position.latitude,
+        "lng": position.longitude,
+        "formatted":
+            "${placemark["road"] == "unnamed road" ? null : placemark["road"]} , ${placemark["suburb"]} , ${placemark["city"]} , ${placemark["state"]}",
+      });
+    } catch (e) {
+      AppLogger.e(e.toString());
+      return const Left(
+        GpsFailure("can't get current location,try again later !"),
+      );
+    }
   }
 }

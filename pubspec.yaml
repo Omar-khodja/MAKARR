@@ -54,6 +54,8 @@ dependencies:
   photo_view: ^0.15.0
   geolocator: ^14.0.2
   geocoding: ^4.0.0
+  dio: ^5.9.0
+  flutter_dotenv: ^6.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -85,6 +87,7 @@ flutter:
     - assets/image/imag2.jpg
     - assets/image/imag3.jpg
     - assets/image/pdf.png
+    - assets/config/.env
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
