@@ -14,8 +14,10 @@ class ReportNotifireState {
     this.video,
     this.isLoading = false,
     this.error,
+    this.isGettingLocation = false
   });
   final bool isLoading;
+  final bool isGettingLocation;
   final String? error;
   final Map<String, dynamic> position;
   final List<File> imageFile;
@@ -26,6 +28,8 @@ class ReportNotifireState {
     String? error,
     List<File>? imageFile,
     String? video,
+    bool? isGettingLocation
+
   }) {
     return ReportNotifireState(
       position: position ?? this.position,
@@ -33,6 +37,7 @@ class ReportNotifireState {
       error: error,
       imageFile: imageFile ?? this.imageFile,
       video: video ?? this.video,
+      isGettingLocation: isGettingLocation ?? this.isGettingLocation
     );
   }
 }
@@ -44,12 +49,12 @@ class Reportnotifire extends StateNotifier<ReportNotifireState> {
   final ImagePicker _imagePicker = ImagePicker();
 
   Future<void> gerCurrentLocation() async {
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isGettingLocation: true);
     final Either<Failure, Map<String, dynamic>> result = await setReport
         .getCurrentLocation();
     result.fold(
-      (l) => state = state.copyWith(error: l.message, isLoading: false),
-      (r) => state = state.copyWith(isLoading: false, position: r, error: null),
+      (l) => state = state.copyWith(error: l.message, isGettingLocation: false),
+      (r) => state = state.copyWith(isGettingLocation: false, position: r, error: null),
     );
   }
 

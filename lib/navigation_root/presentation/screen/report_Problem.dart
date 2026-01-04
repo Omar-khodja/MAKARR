@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/core/component/Custom_elevatedButton.dart';
+import 'package:makarr/core/component/coustom_elevatedbutton.dart';
 import 'package:makarr/navigation_root/presentation/component/Image_card.dart';
 import 'package:makarr/navigation_root/presentation/component/user_card_info.dart';
 import 'package:makarr/navigation_root/presentation/controler/reportNotifire.dart';
-import 'package:video_player/video_player.dart';
-
 
 class ReportProblem extends ConsumerStatefulWidget {
   const ReportProblem({super.key});
@@ -15,13 +14,13 @@ class ReportProblem extends ConsumerStatefulWidget {
 }
 
 class _ReportProblemState extends ConsumerState<ReportProblem> {
-  VideoPlayerController? _videoController;
-  late final Reportnotifire notifireMethods;
-  @override
+/*   VideoPlayerController? _videoController;
+ */  late final Reportnotifire notifireMethods;
+/*   @override
   void dispose() {
     _videoController?.dispose();
     super.dispose();
-  }
+  } */
 
   @override
   void initState() {
@@ -44,7 +43,6 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,20 +80,18 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
               ),
             ),
             const SizedBox(height: 12),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(
-                  8,
-                ), // space between text and border
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey, // border color
-                    width: 1, // border width
-                  ),
-                  borderRadius: BorderRadius.circular(8), // rounded corners
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(8), // space between text and border
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey, // border color
+                  width: 1, // border width
                 ),
-                child: Text(notifire.position["formatted"] ?? 'Current location'),
+                borderRadius: BorderRadius.circular(8), // rounded corners
               ),
+              child: Text(notifire.position["formatted"] ?? 'Current location'),
+            ),
             const SizedBox(height: 12),
             Wrap(
               spacing: 5,
@@ -129,10 +125,12 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
                     leadIcon: Icons.photo_library_outlined,
                     fun: notifireMethods.pickImage,
                   ),
-                ElevatedButton(
-                  onPressed: notifireMethods.gerCurrentLocation,
-                  child: const Text("Get Current location"),
+                CoustomElevatedbutton(
+                  label: "Get Current location",
+                  fun: notifireMethods.gerCurrentLocation,
+                  isLoading: notifire.isGettingLocation,
                 ),
+
                 /*     if (notifire.imageFile.isEmpty)
                   CustomElevatedbutton(
                     label: 'Video',
