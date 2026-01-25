@@ -32,7 +32,7 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
     final darcktheme = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: darcktheme
-          ? Theme.of(context).colorScheme.surface
+          ? Colors.black
           : Theme.of(context).colorScheme.surfaceContainerHigh,
 
       body: NestedScrollView(

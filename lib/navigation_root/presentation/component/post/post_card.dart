@@ -15,10 +15,10 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
     final darcktheme = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
+      margin: const EdgeInsets.only(bottom: 4, top: 4),
       color: Theme.of(context).colorScheme.surfaceContainer,
       child: Column(
         mainAxisAlignment: .start,
@@ -39,10 +39,12 @@ class PostCard extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           SizedBox(
-            height: 250,
-            child: PostCarousel(controller: carouselController, images: images)
+            height: 300,
+            child: PostCarousel(controller: carouselController, images: images),
           ),
           const SizedBox(height: 10),
+          const Divider(),
+
           Padding(
             padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
             child: ListTile(
@@ -57,7 +59,7 @@ class PostCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-
+          const Divider(),
           const Padding(
             padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
             child: Row(
@@ -74,10 +76,8 @@ class PostCard extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(),
         ],
       ),
     );
   }
 }
-

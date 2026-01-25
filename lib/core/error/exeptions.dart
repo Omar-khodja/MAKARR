@@ -16,3 +16,9 @@ class FirestoreException implements Exception {
 
   const FirestoreException({required this.errorMessage});
 }
+class StorageException implements Exception {
+  final String errorMessage;
+
+  const StorageException({required this.errorMessage});
+}
+

@@ -29,6 +29,7 @@ class Profile extends ConsumerWidget {
           Skeletonizer(
             enabled: user.isLoading,
             child: ProfileHead(
+              imageUrl: user.user.imagUrl,
               name: "${user.user.fname} ${user.user.lname}",
               city: "${user.user.wilaya} - ${user.user.bladya}",
             ),

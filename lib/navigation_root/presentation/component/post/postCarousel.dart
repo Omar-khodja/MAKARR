@@ -32,8 +32,8 @@ class _PostCarouselState extends State<PostCarousel> {
 
     return CarouselView(
       controller: widget.controller,
-      itemExtent: width * .8,
-      shrinkExtent: height * .2,
+      itemExtent: width * .9,
+      shrinkExtent: height * .1,
       children: _children,
       onTap: (index) => Navigator.push(
         context,

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
+import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/navigation_root/data/datasource/base_datasource.dart';
 import 'package:makarr/navigation_root/data/model/report_model.dart';
@@ -13,7 +16,6 @@ import 'package:dio/dio.dart';
 class NavigationRepository extends BaseNavigationRepository {
   NavigationRepository({required this.baseDataSource});
   final BaseDataSource baseDataSource;
-  ///////TODO: user Opencage instad of geocoding
 
   @override
   Future<Either<Failure, User>> getCurrentUserInfo(String userId) async {
@@ -41,7 +43,7 @@ class NavigationRepository extends BaseNavigationRepository {
     final dio = Dio();
     bool serviceEnabled;
     LocationPermission permission;
-    final apikey = await dotenv.env["API_KEY"];
+    final apikey = dotenv.env["API_KEY"];
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -71,7 +73,7 @@ class NavigationRepository extends BaseNavigationRepository {
       final response = await dio.get(
         "https://api.opencagedata.com/geocode/v1/json?q=${position.latitude}%2C+${position.longitude}&key=$apikey",
       );
-      if (response.data == null){
+      if (response.data == null) {
         return const Left(GpsFailure("Unknown location"));
       }
       final placemark = response.data["results"][0]['components'];
@@ -87,6 +89,31 @@ class NavigationRepository extends BaseNavigationRepository {
       return const Left(
         GpsFailure("can't get current location,try again later !"),
       );
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> updateProfileImage(
+    File imageFile,
+    String userId,
+    User currentUser,
+  ) async {
+    try {
+      final imageurl = await baseDataSource.updateProfileImage(
+        imageFile,
+        userId,
+      );
+      final User user = currentUser.copyWith(imagUrl: imageurl);
+      return Right(user);
+    } on StorageException catch (e) {
+      AppLogger.e(e.errorMessage);
+      return  Left(ServerFailure(e.errorMessage));
+    } on FirestoreException catch (e) {
+      AppLogger.e(e.errorMessage);
+      return Left(ServerFailure(e.errorMessage));
+    }catch (e) {
+      AppLogger.e(e.toString());
+      return const Left(ServerFailure("Failed to update profile image"));
     }
   }
 }
