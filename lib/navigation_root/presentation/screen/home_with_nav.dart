@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
+import 'package:makarr/navigation_root/presentation/screen/add_post.dart';
 import 'package:makarr/navigation_root/presentation/screen/citty_hall.dart';
 import 'package:makarr/navigation_root/presentation/screen/profile.dart';
 import 'package:makarr/navigation_root/presentation/screen/report_Problem.dart';
@@ -45,6 +46,16 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
                 ? Theme.of(context).colorScheme.onPrimaryContainer
                 : Theme.of(context).colorScheme.onPrimary,
             title: Text(screenTitle[selectedScreen]),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const AddPost()),
+                  );
+                },
+                icon: const Icon(Icons.add),
+              ),
+            ],
             floating: true,
             snap: true,
             pinned: false,

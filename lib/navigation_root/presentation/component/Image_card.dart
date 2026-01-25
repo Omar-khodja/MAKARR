@@ -18,9 +18,11 @@ class ImageCard extends StatelessWidget {
           height: double.infinity,
         ),
         Positioned(
-          right: 5,
-          top: 5,
+          right: 2,
+          top: 2,
           child: Container(
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               color: Colors.black.withValues(alpha: 0.5),
               shape: BoxShape.circle,

@@ -5,6 +5,7 @@ import 'package:makarr/core/component/coustom_elevatedbutton.dart';
 import 'package:makarr/navigation_root/presentation/component/Image_card.dart';
 import 'package:makarr/navigation_root/presentation/component/user_card_info.dart';
 import 'package:makarr/navigation_root/presentation/controler/reportNotifire.dart';
+import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
 
 class ReportProblem extends ConsumerStatefulWidget {
   const ReportProblem({super.key});
@@ -14,9 +15,10 @@ class ReportProblem extends ConsumerStatefulWidget {
 }
 
 class _ReportProblemState extends ConsumerState<ReportProblem> {
-/*   VideoPlayerController? _videoController;
- */  late final Reportnotifire notifireMethods;
-/*   @override
+  /*   VideoPlayerController? _videoController;
+ */
+  late final Reportnotifire notifireMethods;
+  /*   @override
   void dispose() {
     _videoController?.dispose();
     super.dispose();
@@ -47,6 +49,8 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
   @override
   Widget build(BuildContext context) {
     final notifire = ref.watch(reportNotifireProvider);
+    final user = ref.watch(userNotifireProvider);
+
     showSnackBar();
     return SingleChildScrollView(
       child: Padding(
@@ -57,7 +61,10 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
         child: Column(
           crossAxisAlignment: .center,
           children: [
-            const UserCardInfo(name: "omar khodja"),
+             UserCardInfo(
+              name: "${user.user.fname} ${user.user.lname}",
+              imageUrl: user.user.imagUrl,
+            ),
             const SizedBox(height: 20),
 
             TextField(
@@ -82,13 +89,13 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
             const SizedBox(height: 12),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(8), // space between text and border
+              padding: const EdgeInsets.all(8), 
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.grey, // border color
-                  width: 1, // border width
+                  color: Colors.grey, 
+                  width: 1, 
                 ),
-                borderRadius: BorderRadius.circular(8), // rounded corners
+                borderRadius: BorderRadius.circular(8), 
               ),
               child: Text(notifire.position["formatted"] ?? 'Current location'),
             ),
