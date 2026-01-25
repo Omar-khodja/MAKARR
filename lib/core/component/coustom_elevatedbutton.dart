@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomElevatedbutton extends StatelessWidget {
-  const CustomElevatedbutton({
+class CoustomElevatedbutton extends StatefulWidget {
+  const CoustomElevatedbutton({
     super.key,
     required this.label,
     required this.fun,
@@ -14,17 +14,19 @@ class CustomElevatedbutton extends StatelessWidget {
   final IconData? leadIcon;
   final IconData? tailIcon;
   final bool isLoading;
+
+  @override
+  State<CoustomElevatedbutton> createState() => _CoustomElevatedbuttonState();
+}
+
+class _CoustomElevatedbuttonState extends State<CoustomElevatedbutton>
+    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final darktheme = Theme.of(context).brightness == Brightness.dark;
 
     return ElevatedButton(
-      onPressed: fun,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: darktheme
-            ? Theme.of(context).colorScheme.primaryContainer
-            : Theme.of(context).colorScheme.primary,
-      ),
+      onPressed: widget.fun,
 
       child: AnimatedSize(
         duration: const Duration(milliseconds: 300),
@@ -33,34 +35,36 @@ class CustomElevatedbutton extends StatelessWidget {
           duration: const Duration(milliseconds: 150),
           transitionBuilder: (child, animation) =>
               ScaleTransition(scale: animation, child: child),
-          child: isLoading
-              ? const CircularProgressIndicator(
-                  color: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 30),
+          child: widget.isLoading
+              ? const Padding(
+                  padding: EdgeInsetsGeometry.symmetric(
+                    vertical: 8,
+                    horizontal: 15,
+                  ),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+
+                    color: Colors.white,
+                  ),
                 )
               : Row(
                   mainAxisAlignment: .center,
                   children: [
-                    if (leadIcon != null)
+                    if (widget.leadIcon != null)
                       Icon(
-                        leadIcon,
+                        widget.leadIcon,
+                        size: 24,
                         color: darktheme
                             ? Theme.of(context).colorScheme.onPrimaryContainer
                             : Theme.of(context).colorScheme.onPrimary,
                       ),
                     const SizedBox(width: 5),
-                    Text(
-                      label,
-                      style: TextStyle(
-                        color: darktheme
-                            ? Theme.of(context).colorScheme.onPrimaryContainer
-                            : Theme.of(context).colorScheme.onPrimary,
-                      ),
-                    ),
+                    Text(widget.label),
                     const SizedBox(width: 5),
-                    if (tailIcon != null)
+                    if (widget.tailIcon != null)
                       Icon(
-                        tailIcon,
+                        widget.tailIcon,
+                        size: 24,
                         color: darktheme
                             ? Theme.of(context).colorScheme.onPrimaryContainer
                             : Theme.of(context).colorScheme.onPrimary,

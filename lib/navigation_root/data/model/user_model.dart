@@ -23,4 +23,26 @@ class UserModel extends User {
       bladya: map['Bladya']??'',
     );
   }
+  UserModel copyWith({
+    String? fname,
+    String? lname,
+    String? phone,
+    String? birthDate,
+    String? email,
+    String? imagUrl,
+    String? wilaya,
+    String? bladya,
+  }) {
+    return UserModel(
+      fname: fname ?? this.fname,
+      lname: lname ?? this.lname,
+      phone: phone ?? this.phone,
+      birthDate: birthDate ?? this.birthDate,
+      email: email ?? this.email,
+      imagUrl: imagUrl ?? this.imagUrl,
+      wilaya: wilaya ?? this.wilaya,
+      bladya: bladya ?? this.bladya,
+    );
+  }
 }
+

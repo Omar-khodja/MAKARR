@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:makarr/navigation_root/presentation/screen/home_with_nav.dart';
@@ -16,6 +17,8 @@ final colorScheme = ColorScheme.fromSeed(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseFirestore.instance.clearPersistence();
+  await dotenv.load(fileName: 'assets/config/.env');
   FirebaseFirestore.instance.settings = const Settings(
     cacheSizeBytes: 50 * 1024 * 1024, // 50 MB
   );
