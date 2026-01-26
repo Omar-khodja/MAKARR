@@ -5,29 +5,38 @@ import 'package:equatable/equatable.dart';
 class Post extends Equatable {
  const Post({
     this.id,
+    required this.userId,
     required this.username,
     required this.userImageUrl,
     required this.desciption,
-    required this.pdf,
     required this.time,
+    required this.pdfName,
+    this.pdf,
+    this.pdfUrl,
     this.photos,
     this.photosUrl,
-    this.likeNbr,
-    this.commentNbr,
+    this.likeNbr =0,
+    this.commentNbr = 0,
+    this.whoLiked = const [],
   });
   final String? id ;
+  final String userId;
   final String username;
   final String userImageUrl;
   final String desciption;
+  final String pdfName;
   final List<File>? photos;
   final List<String>? photosUrl;
   final File? pdf;
+  final String? pdfUrl;
   final DateTime? time;
   final int? likeNbr;
   final int? commentNbr;
+  final List<String> whoLiked ;
   @override
   List<Object?> get props => [
     id,
+    userId,
     username,
     userImageUrl,
     desciption,
@@ -37,14 +46,26 @@ class Post extends Equatable {
     time,
     likeNbr,
     commentNbr
+    ,whoLiked,
+    pdfUrl,
+    pdfName,
   ];
   factory Post.empty() {
     return Post(
+      id: null,
+      userId: '',
       username: '',
       userImageUrl: '',
       desciption: '',
       pdf: null,
       time:  DateTime.now(),
+      likeNbr: 0,
+      commentNbr: 0,
+      whoLiked: const [],
+      pdfName: '',
+      photos: [],
+      photosUrl: [],
+      pdfUrl: '',
     );
   }
 }

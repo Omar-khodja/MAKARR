@@ -10,8 +10,11 @@ class SetPostUsecase implements UseCase<void,Post>{
     final BaseNavigationRepository baseNavigationRepository;
 
   @override
-  Future<Either<Failure, dynamic>> call(params) {
-    // TODO: implement call
-    throw UnimplementedError();
+  Future<Either<Failure, String>> call(Post post) {
+    try {
+      return baseNavigationRepository.setPost(post);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 }

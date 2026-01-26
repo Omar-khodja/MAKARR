@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/component/Custom_elevatedButton.dart';
 import 'package:makarr/navigation_root/presentation/component/Image_card.dart';
 import 'package:makarr/navigation_root/presentation/component/user_card_info.dart';
@@ -15,6 +16,44 @@ class AddPost extends ConsumerStatefulWidget {
 }
 
 class _AddPostState extends ConsumerState<AddPost> {
+  final TextEditingController _des = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
+  void submit(
+    AddpostnotifireState state,
+    AddPostNotifire ref,
+    UserNotifireState user,
+  ) {
+    if (_formkey.currentState!.validate()) {
+      AppLogger.i(state.pdf.toString());
+      if (state.imageFile.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "You must add  an image",
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+        return;
+      } else if (state.pdf != null && state.pdf!.path.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "You must add  an Pdf",
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+        return;
+      }
+      ref.savePost(user.user, _des.text.trim());
+      Navigator.of(context).pop();
+    }
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = ref.read(userNotifireProvider);
@@ -24,7 +63,12 @@ class _AddPostState extends ConsumerState<AddPost> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Post"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.check))],
+        actions: [
+          IconButton(
+            onPressed: () => submit(state, notifier, user),
+            icon: const Icon(Icons.check),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,14 +80,24 @@ class _AddPostState extends ConsumerState<AddPost> {
                 imageUrl: user.user.imagUrl,
               ),
               const SizedBox(height: 10),
-              TextField(
-                maxLines: 5,
-                decoration: InputDecoration(
-                  labelText: "What's on your mind, ${user.user.fname}?",
-                  alignLabelWithHint: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+              Form(
+                key: _formkey,
+                child: TextFormField(
+                  controller: _des,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: "What's on your mind, ${user.user.fname}?",
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Description cannot be empty';
+                    }
+                    return null;
+                  },
                 ),
               ),
 
@@ -123,5 +177,11 @@ class _AddPostState extends ConsumerState<AddPost> {
         );
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _des.dispose();
+    super.dispose();
   }
 }

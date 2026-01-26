@@ -1,28 +1,23 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/usecases/baseusecase.dart';
 import 'package:makarr/navigation_root/domain/entities/post.dart';
+import 'package:makarr/navigation_root/domain/entities/user_nav.dart';
 import 'package:makarr/navigation_root/presentation/controler/navigation_provider.dart';
 
 class AddpostnotifireState {
   AddpostnotifireState({
     this.imageFile = const [],
-    this.post = const Post(
-      username: '',
-      userImageUrl: '',
-      desciption: '',
-      pdf: null,
-      time: null,
-    ),
     this.isLoading = false,
     this.error,
     this.pdf,
   });
   final bool isLoading;
-  final Post post;
   final String? error;
   final File? pdf;
   final List<File> imageFile;
@@ -37,6 +32,15 @@ class AddpostnotifireState {
       error: error,
       imageFile: imageFile ?? this.imageFile,
       pdf: pdf ?? this.pdf,
+    );
+  }
+
+  factory AddpostnotifireState.empty() {
+    return AddpostnotifireState(
+      isLoading: false,
+      imageFile: [],
+      error: null,
+      pdf: null,
     );
   }
 }
@@ -98,10 +102,38 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
     AppLogger.i("Removing PDF file");
     state = state.copyWith(pdf: File(""));
   }
+
+  Future<void> savePost(UserNav user, String des) async {
+    final userid = FirebaseAuth.instance.currentUser?.uid;
+    if (des.isEmpty) {
+      state = state.copyWith(error: "You must add a description");
+      return;
+    } else if (state.imageFile.isEmpty &&
+        (state.pdf == null || state.pdf!.path.isEmpty)) {
+      state = state.copyWith(error: "You must add  an image and a pdf file");
+      return;
+    }
+
+    try {
+      final Post post = Post(
+        pdfName: state.pdf!.path.split('/').last,
+        userId: userid!,
+        username: "${user.fname} ${user.lname}",
+        userImageUrl: user.imagUrl,
+        desciption: des,
+        photos: state.imageFile,
+        pdf: state.pdf,
+        time: DateFormat('y-MM-dd HH:mm').parse(DateTime.now().toString()),
+      );
+      await addPostUsecase.call(post);
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
 }
 
 final addPostNotifireProvider =
-    StateNotifierProvider<AddPostNotifire, AddpostnotifireState>(
+    StateNotifierProvider.autoDispose<AddPostNotifire, AddpostnotifireState>(
       (ref) =>
           AddPostNotifire(addPostUsecase: ref.read(setPostUsecaseProvider)),
     );

@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:makarr/navigation_root/domain/entities/user.dart';
+import 'package:makarr/navigation_root/domain/entities/user_nav.dart';
 import 'package:makarr/navigation_root/domain/usecase/featch_current_user_usercase.dart';
 import 'package:makarr/navigation_root/presentation/controler/navigation_provider.dart';
 
 class UserNotifireState {
-  final User user;
+  final UserNav user;
   final bool isLoading;
   final String? error;
   const UserNotifireState({
@@ -16,7 +16,7 @@ class UserNotifireState {
     this.error,
   });
 
-  UserNotifireState copyWith({User? user, bool? isLoading, String? error}) {
+  UserNotifireState copyWith({UserNav? user, bool? isLoading, String? error}) {
     return UserNotifireState(
       user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,
@@ -27,7 +27,7 @@ class UserNotifireState {
 
 class UserNotofire extends StateNotifier<UserNotifireState> {
   UserNotofire({required this.featchCurrentUserUsercase})
-    : super(UserNotifireState(user: User.empty()));
+    : super(UserNotifireState(user: UserNav.empty()));
   final FeatchCurrentUserUsercase featchCurrentUserUsercase;
 
   Future<void> featchCurrentUser(String userId) async {
@@ -60,11 +60,14 @@ class UserNotofire extends StateNotifier<UserNotifireState> {
       userId,
       state.user,
     );
-    result.fold((l) {
-      state = state.copyWith(error: l.message);
-    }, (r) {
-      state = state.copyWith(user: r);
-    });
+    result.fold(
+      (l) {
+        state = state.copyWith(error: l.message);
+      },
+      (r) {
+        state = state.copyWith(user: r);
+      },
+    );
   }
 }
 

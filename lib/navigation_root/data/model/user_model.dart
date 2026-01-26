@@ -1,6 +1,6 @@
-import 'package:makarr/navigation_root/domain/entities/user.dart';
+import 'package:makarr/navigation_root/domain/entities/user_nav.dart';
 
-class UserModel extends User {
+class UserModel extends UserNav {
   const UserModel({
     required super.fname,
     required super.lname,
@@ -11,16 +11,17 @@ class UserModel extends User {
     required super.wilaya,
     required super.bladya,
   });
-  factory UserModel.fromFireBase(Map<String,dynamic> map){
+  
+  factory UserModel.fromFireBase(Map<String, dynamic> map) {
     return UserModel(
-      fname: map['Fname']??'',
-      lname: map['Lname']??'',
-      phone: map['Phone']??'',
-      birthDate: map['Birth_Date']??'',
-      email: map['Email']??'',
-      imagUrl: map['ImagUrl']??'',
-      wilaya: map['Wilaya']??'',
-      bladya: map['Bladya']??'',
+      fname: map['Fname'] ?? '',
+      lname: map['Lname'] ?? '',
+      phone: map['Phone'] ?? '',
+      birthDate: map['Birth_Date'] ?? '',
+      email: map['Email'] ?? '',
+      imagUrl: map['ImagUrl'] ?? '',
+      wilaya: map['Wilaya'] ?? '',
+      bladya: map['Bladya'] ?? '',
     );
   }
   UserModel copyWith({
@@ -45,4 +46,3 @@ class UserModel extends User {
     );
   }
 }
-

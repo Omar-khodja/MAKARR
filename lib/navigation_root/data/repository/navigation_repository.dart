@@ -7,9 +7,11 @@ import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/navigation_root/data/datasource/base_datasource.dart';
+import 'package:makarr/navigation_root/data/model/post_moudel.dart';
 import 'package:makarr/navigation_root/data/model/report_model.dart';
+import 'package:makarr/navigation_root/domain/entities/post.dart';
 import 'package:makarr/navigation_root/domain/entities/report.dart';
-import 'package:makarr/navigation_root/domain/entities/user.dart';
+import 'package:makarr/navigation_root/domain/entities/user_nav.dart';
 import 'package:makarr/navigation_root/domain/repository/base_navigation_repository.dart';
 import 'package:dio/dio.dart';
 
@@ -18,7 +20,7 @@ class NavigationRepository extends BaseNavigationRepository {
   final BaseDataSource baseDataSource;
 
   @override
-  Future<Either<Failure, User>> getCurrentUserInfo(String userId) async {
+  Future<Either<Failure, UserNav>> getCurrentUserInfo(String userId) async {
     try {
       final user = await baseDataSource.getUserById(userId);
       return Right(user);
@@ -93,27 +95,39 @@ class NavigationRepository extends BaseNavigationRepository {
   }
 
   @override
-  Future<Either<Failure, User>> updateProfileImage(
+  Future<Either<Failure, UserNav>> updateProfileImage(
     File imageFile,
     String userId,
-    User currentUser,
+    UserNav currentUser,
   ) async {
     try {
       final imageurl = await baseDataSource.updateProfileImage(
         imageFile,
         userId,
       );
-      final User user = currentUser.copyWith(imagUrl: imageurl);
+      final UserNav user = currentUser.copyWith(imagUrl: imageurl);
       return Right(user);
     } on StorageException catch (e) {
       AppLogger.e(e.errorMessage);
-      return  Left(ServerFailure(e.errorMessage));
+      return Left(ServerFailure(e.errorMessage));
     } on FirestoreException catch (e) {
       AppLogger.e(e.errorMessage);
       return Left(ServerFailure(e.errorMessage));
-    }catch (e) {
+    } catch (e) {
       AppLogger.e(e.toString());
       return const Left(ServerFailure("Failed to update profile image"));
     }
+  }
+
+  @override
+  Future<Either<Failure, String>> setPost(Post post)async {
+    try{
+       await baseDataSource.setPost(PostMoudel.fromEntity(post));
+      return const Right("sep post seccessfully" );
+    }catch(e){
+      AppLogger.e(e.toString());
+      return const Left(ServerFailure("Failed to set post"));
+    }
+    
   }
 }

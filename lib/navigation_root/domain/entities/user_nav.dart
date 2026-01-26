@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
- const User({
+class UserNav extends Equatable {
+  const UserNav({
     required this.fname,
     required this.lname,
     required this.phone,
@@ -12,17 +12,17 @@ class User extends Equatable {
     required this.bladya,
   });
 
- final String fname;
- final String lname;
- final String phone;
- final String birthDate;
- final String email;
- final String imagUrl;
+  final String fname;
+  final String lname;
+  final String phone;
+  final String birthDate;
+  final String email;
+  final String imagUrl;
   final String wilaya;
   final String bladya;
- 
- factory User.empty() {
-    return const User(
+
+  factory UserNav.empty() {
+    return const UserNav(
       fname: '',
       lname: '',
       phone: '',
@@ -33,7 +33,7 @@ class User extends Equatable {
       bladya: '',
     );
   }
-  
+
   @override
   List<Object?> get props => [
     fname,
@@ -43,10 +43,10 @@ class User extends Equatable {
     email,
     imagUrl,
     wilaya,
-    bladya
+    bladya,
   ];
 
-User copyWith({
+  UserNav copyWith({
     String? fname,
     String? lname,
     String? phone,
@@ -56,7 +56,7 @@ User copyWith({
     String? wilaya,
     String? bladya,
   }) {
-    return User(
+    return UserNav(
       fname: fname ?? this.fname,
       lname: lname ?? this.lname,
       phone: phone ?? this.phone,
