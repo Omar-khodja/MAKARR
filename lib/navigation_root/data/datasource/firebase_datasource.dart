@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
@@ -92,4 +91,19 @@ class FirebaseDatasource implements BaseDataSource {
       throw ServerException(errorMessage: 'Unexpected error: $e');
     }
   }
+  
+  @override
+  Future<List<PostMoudel>> getPost() async {
+    try{
+      final snapshot =await firestoreRef.collection("Posts").get();
+      final List<PostMoudel> posts = snapshot.docs.map((item)=> PostMoudel.fromMap(item.data())).toList();
+      return posts;
+
+
+    }on FirebaseException catch(e){
+      throw FirestoreException(errorMessage: 'Unexpected error: $e');
+    }
+  }
+  
+
 }

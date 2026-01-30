@@ -130,4 +130,15 @@ class NavigationRepository extends BaseNavigationRepository {
     }
     
   }
+  
+  @override
+  Future<Either<Failure, List<Post>>> getPost() async{
+    try{
+      final posts = await baseDataSource.getPost() ;
+      return  Right( posts);
+    } catch(e){
+      AppLogger.e(e.toString());
+      return const Left(ServerFailure("Failed to get posts"));
+    }
+  }
 }

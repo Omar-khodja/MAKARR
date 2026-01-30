@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
 
 class PostUserInfo extends StatelessWidget {
-  const PostUserInfo({super.key});
+  const PostUserInfo({super.key , required this.username, required this.imageUrl, required this.time});
+  final String username ;
+  final String imageUrl;
+  final DateTime time;
+
+String timeAgo(DateTime date) {
+    final now = DateTime.now();
+    final diff = now.difference(date);
+
+    if (diff.inSeconds < 60) {
+      return 'just now';
+    } else if (diff.inMinutes < 60) {
+      return '${diff.inMinutes} min ago';
+    } else if (diff.inHours < 24) {
+      return '${diff.inHours} h ago';
+    } else if (diff.inDays < 7) {
+      return '${diff.inDays} d ago';
+    } else {
+      return '${date.day}/${date.month}/${date.year}';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +34,10 @@ class PostUserInfo extends StatelessWidget {
           mainAxisAlignment: .start,
           crossAxisAlignment: .center,
           children: [
-            const CircleAvatar(
+             CircleAvatar(
               radius: 25,
-              backgroundImage: AssetImage("assets/image/noprofilel.png"),
+              foregroundImage: NetworkImage(imageUrl),
+              backgroundColor: Colors.grey,
             ),
             const SizedBox(width: 10),
             Column(
@@ -24,14 +45,14 @@ class PostUserInfo extends StatelessWidget {
               crossAxisAlignment: .start,
               children: [
                 Text(
-                  "Username",
+                  username,
                   style: TextStyle(
                     fontWeight: .w700,
                     color: darcktheme ? Colors.white : Colors.black54,
                   ),
                 ),
                 Text(
-                  "2 hours ago",
+                  timeAgo(time),
                   style: TextStyle(
                     fontSize: 12,
                     color: darcktheme ? Colors.white70 : Colors.black54,

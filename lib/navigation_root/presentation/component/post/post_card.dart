@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:makarr/navigation_root/domain/entities/post.dart';
 import 'package:makarr/navigation_root/presentation/component/post/postCarousel.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_user_info.dart';
+import 'package:makarr/navigation_root/presentation/screen/pdfViewer.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({super.key, required this.carouselController});
+  const PostCard({
+    super.key,
+    required this.carouselController,
+    required this.post,
+  });
   final CarouselController carouselController;
-  static const List<String> images = [
-    "assets/image/imag1.jpg",
-    "assets/image/imag2.jpg",
-    "assets/image/imag3.jpg",
-  ];
+  final Post post;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +26,17 @@ class PostCard extends StatelessWidget {
         mainAxisAlignment: .start,
         crossAxisAlignment: .center,
         children: [
-          const PostUserInfo(),
+           PostUserInfo(
+            imageUrl: post.userImageUrl,
+            time: post.time!,
+            username: post.username,
+          ),
           const SizedBox(height: 10),
 
           Padding(
             padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
             child: Text(
-              "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              post.desciption,
               style: TextStyle(
                 fontSize: 18,
                 color: darcktheme ? Colors.white : Colors.black,
@@ -40,7 +46,10 @@ class PostCard extends StatelessWidget {
           const SizedBox(height: 15),
           SizedBox(
             height: 300,
-            child: PostCarousel(controller: carouselController, images: images),
+            child: PostCarousel(
+              controller: carouselController,
+              images: post.photosUrl!,
+            ),
           ),
           const SizedBox(height: 10),
           const Divider(),
@@ -48,14 +57,23 @@ class PostCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
             child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Pdfviewer(
+                      pdfUrl: post.pdfUrl,
+                    ),
+                  ),
+                );
+              },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
               tileColor: Theme.of(context).colorScheme.secondaryContainer,
               leading: Image.asset("assets/image/pdf.png", width: 40),
-              title: const Text("Project_Space2.pdf"),
+              title:  Text(post.pdfName),
               subtitle: const Text("2.5 MB"),
-              trailing: const Icon(Icons.download_outlined),
             ),
           ),
           const SizedBox(height: 10),

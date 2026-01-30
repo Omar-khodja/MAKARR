@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:makarr/navigation_root/presentation/controler/navigation_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class FullScreenPhoto extends StatefulWidget {
+class FullScreenPhoto extends ConsumerStatefulWidget {
   const FullScreenPhoto({
     super.key,
     required this.images,
@@ -12,19 +15,19 @@ class FullScreenPhoto extends StatefulWidget {
   final int initialIndex;
 
   @override
-  State<FullScreenPhoto> createState() => _FullScreenPhotoState();
+  ConsumerState<FullScreenPhoto> createState() => _FullScreenPhotoState();
 }
 
-class _FullScreenPhotoState extends State<FullScreenPhoto> {
+class _FullScreenPhotoState extends ConsumerState<FullScreenPhoto> {
   late final PageController pageController;
   @override
   void initState() {
     super.initState();
     pageController = PageController(initialPage: widget.initialIndex);
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     pageController.dispose();
   }
@@ -41,7 +44,10 @@ class _FullScreenPhotoState extends State<FullScreenPhoto> {
         pageController: pageController,
         itemCount: widget.images.length,
         builder: (context, index) => PhotoViewGalleryPageOptions(
-          imageProvider: AssetImage(widget.images[index]),
+          imageProvider: CachedNetworkImageProvider(
+            widget.images[index],
+            cacheManager: ref.read(photoViewCacheManagerProvider),
+          ),
           maxScale: PhotoViewComputedScale.covered * 2,
           minScale: PhotoViewComputedScale.contained,
         ),

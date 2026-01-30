@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_card.dart';
+import 'package:makarr/navigation_root/presentation/controler/get_postNotifire.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class CittyHall extends StatefulWidget {
+class CittyHall extends ConsumerStatefulWidget {
   const CittyHall({super.key});
 
   @override
-  State<CittyHall> createState() => _CittyHallState();
+  ConsumerState<CittyHall> createState() => _CittyHallState();
 }
 
-class _CittyHallState extends State<CittyHall> {
+class _CittyHallState extends ConsumerState<CittyHall> {
   CarouselController carouselController = CarouselController();
   @override
   void dispose() {
@@ -18,19 +20,26 @@ class _CittyHallState extends State<CittyHall> {
   }
 
   @override
+  void initState() {
+    super.initState();
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(getPostNotifireProvider.notifier).getPost();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Skeletonizer(
-        enabled: false,
-        child: Column(
-          mainAxisAlignment: .start,
-          crossAxisAlignment: .center,
-          children: [
-            PostCard(carouselController: carouselController),
-            PostCard(carouselController: carouselController),
-            PostCard(carouselController: carouselController),
-          ],
-        ),
+    final state = ref.watch(getPostNotifireProvider);
+    return Skeletonizer(
+      enabled: state.isLoading,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: state.post.length,
+        itemBuilder: (context, index) {
+          final post = state.post[index];
+          return PostCard(carouselController: carouselController, post: post);
+        },
       ),
     );
   }

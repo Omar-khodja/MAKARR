@@ -9,5 +9,7 @@ abstract class BaseDataSource {
   Future<void> setReport(ReportModel report);
   Future<String> updateProfileImage(File imageFile,String userId);
   Future<void> setPost(PostMoudel post);
+  Future<List<PostMoudel>> getPost();
+
 
 }

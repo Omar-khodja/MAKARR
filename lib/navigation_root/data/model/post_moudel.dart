@@ -34,6 +34,23 @@ class PostMoudel extends Post {
       whoLiked: post.whoLiked,
     );
   }
+  factory PostMoudel.fromMap(Map<String, dynamic> map) {
+    return PostMoudel(
+      id: map['id'] ?? '',
+      userId: map['userId'] ?? '',
+      username: map['username'] ?? '',
+      userImageUrl: map['userImageUrl'] ?? '',
+      desciption: map['desciption'] ?? '',
+      photosUrl: List<String>.from(map['photosUrl'] ?? []),
+      pdfUrl: map['pdfUrl'] ?? '',
+      pdfName: map['pdfName'] ?? '',
+      time: DateTime.parse(map['time']),
+      likeNbr: map['likeNbr'] ?? 0,
+      commentNbr: map['commentNbr'] ?? 0,
+      whoLiked: List<String>.from(map['whoLiked'] ?? []),
+    );
+
+  }
   Map<String, dynamic> toMap() {
     return {
       'id': id ?? '',
