@@ -31,7 +31,7 @@ class _PostCarouselState extends ConsumerState<PostCarousel> {
       children: widget.images
           .map(
             (image) => CachedNetworkImage(
-              cacheManager: ref.watch(photoViewCacheManagerProvider),
+              cacheManager: ref.read(photoViewCacheManagerProvider),
               imageUrl: image,
               fit: BoxFit.cover,
               cacheKey: image.split('?').first,

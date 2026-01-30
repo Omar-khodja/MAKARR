@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:makarr/navigation_root/presentation/controler/get_postNotifire.dart';
 import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
 import 'package:makarr/navigation_root/presentation/screen/add_post.dart';
 import 'package:makarr/navigation_root/presentation/screen/citty_hall.dart';
@@ -24,6 +25,9 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
     super.initState();
 
     Future.microtask(() {
+       WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(getPostNotifireProvider.notifier).getPost();
+      });
       ref.read(userNotifireProvider.notifier).featchCurrentUser(widget.uId);
     });
   }

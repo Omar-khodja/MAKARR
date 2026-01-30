@@ -20,26 +20,23 @@ class _CittyHallState extends ConsumerState<CittyHall> {
   }
 
   @override
-  void initState() {
-    super.initState();
-     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(getPostNotifireProvider.notifier).getPost();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final state = ref.watch(getPostNotifireProvider);
-    return Skeletonizer(
-      enabled: state.isLoading,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: state.post.length,
-        itemBuilder: (context, index) {
-          final post = state.post[index];
-          return PostCard(carouselController: carouselController, post: post);
-        },
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.read(getPostNotifireProvider.notifier).getPost();
+      },
+      child: Skeletonizer(
+        enabled: state.isLoading,
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: state.post.length,
+          itemBuilder: (context, index) {
+            final post = state.post[index];
+            return PostCard(carouselController: carouselController, post: post);
+          },
+        ),
       ),
     );
   }

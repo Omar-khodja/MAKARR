@@ -91,19 +91,20 @@ class FirebaseDatasource implements BaseDataSource {
       throw ServerException(errorMessage: 'Unexpected error: $e');
     }
   }
-  
+
   @override
   Future<List<PostMoudel>> getPost() async {
-    try{
-      final snapshot =await firestoreRef.collection("Posts").get();
-      final List<PostMoudel> posts = snapshot.docs.map((item)=> PostMoudel.fromMap(item.data())).toList();
+    try {
+      final snapshot = await firestoreRef
+          .collection("Posts")
+          .orderBy("time", descending: true)
+          .get();
+      final List<PostMoudel> posts = snapshot.docs
+          .map((item) => PostMoudel.fromMap(item.data()))
+          .toList();
       return posts;
-
-
-    }on FirebaseException catch(e){
+    } on FirebaseException catch (e) {
       throw FirestoreException(errorMessage: 'Unexpected error: $e');
     }
   }
-  
-
 }
