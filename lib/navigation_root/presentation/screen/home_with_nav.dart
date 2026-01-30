@@ -43,6 +43,7 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
+            
             backgroundColor: darcktheme
                 ? Theme.of(context).colorScheme.primaryContainer
                 : Theme.of(context).colorScheme.primary,

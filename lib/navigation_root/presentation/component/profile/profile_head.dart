@@ -34,9 +34,8 @@ class ProfileHead extends ConsumerWidget {
         leading: CircleAvatar(
           radius: 30,
           child: null,
-          backgroundImage: imageUrl.isEmpty
-              ? const AssetImage("assets/image/noprofilel.png")
-              : NetworkImage(imageUrl) as ImageProvider,
+          foregroundImage: NetworkImage(imageUrl) as ImageProvider,
+          backgroundImage: const AssetImage("assets/image/noprofilel.png"),
         ),
         title: Text(
           name,

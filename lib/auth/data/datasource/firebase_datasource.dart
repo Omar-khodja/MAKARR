@@ -17,6 +17,7 @@ class FirebaseDatasource extends BaseDataSourse {
       );
 
       await firestore.collection("Users").doc(userCredential.user!.uid).set({
+        "id" : userCredential.user!.uid,
         'Fname': user.firstName.trim(),
         'Lname': user.lastName.trim(),
         'Phone': user.phone.trim(),
@@ -25,6 +26,7 @@ class FirebaseDatasource extends BaseDataSourse {
         'Wilaya': user.wilaya.trim(),
         'Bladya': user.bladya.trim(),
         'ImagUrl': "",
+        'type':"Client"
       });
     } on FirebaseAuthException catch (e) {
       throw AuthException(errorMessage: e.message ?? 'Auth error');

@@ -26,7 +26,7 @@ class PostCard extends StatelessWidget {
         mainAxisAlignment: .start,
         crossAxisAlignment: .center,
         children: [
-           PostUserInfo(
+          PostUserInfo(
             imageUrl: post.userImageUrl,
             time: post.time!,
             username: post.username,
@@ -38,7 +38,7 @@ class PostCard extends StatelessWidget {
             child: Text(
               post.desciption,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 color: darcktheme ? Colors.white : Colors.black,
               ),
             ),
@@ -61,9 +61,7 @@ class PostCard extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Pdfviewer(
-                      pdfUrl: post.pdfUrl,
-                    ),
+                    builder: (context) => Pdfviewer(pdfUrl: post.pdfUrl),
                   ),
                 );
               },
@@ -72,25 +70,28 @@ class PostCard extends StatelessWidget {
               ),
               tileColor: Theme.of(context).colorScheme.secondaryContainer,
               leading: Image.asset("assets/image/pdf.png", width: 40),
-              title:  Text(post.pdfName),
+              title: Text(post.pdfName),
               subtitle: const Text("2.5 MB"),
             ),
           ),
           const SizedBox(height: 10),
           const Divider(),
-          const Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+          Padding(
+            padding: const EdgeInsetsGeometry.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: .start,
 
               children: [
                 PostIconbutton(
                   icon: FontAwesome5Regular.thumbs_up,
-                  counter: 120,
+                  counter: post.likeNbr,
                 ),
-                PostIconbutton(icon: FontAwesome5Regular.comment, counter: 24),
-                Spacer(),
-                PostIconbutton(icon: FontAwesome5Regular.bookmark),
+                PostIconbutton(
+                  icon: FontAwesome5Regular.comment,
+                  counter: post.commentNbr,
+                ),
+                const Spacer(),
+                const PostIconbutton(icon: FontAwesome5Regular.bookmark),
               ],
             ),
           ),

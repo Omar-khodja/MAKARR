@@ -2,6 +2,7 @@ import 'package:makarr/navigation_root/domain/entities/user_nav.dart';
 
 class UserModel extends UserNav {
   const UserModel({
+    required super.id,
     required super.fname,
     required super.lname,
     required super.phone,
@@ -10,10 +11,12 @@ class UserModel extends UserNav {
     required super.imagUrl,
     required super.wilaya,
     required super.bladya,
+    super.type,
   });
-  
+
   factory UserModel.fromFireBase(Map<String, dynamic> map) {
     return UserModel(
+      id: map['id'] ?? '',
       fname: map['Fname'] ?? '',
       lname: map['Lname'] ?? '',
       phone: map['Phone'] ?? '',
@@ -22,9 +25,11 @@ class UserModel extends UserNav {
       imagUrl: map['ImagUrl'] ?? '',
       wilaya: map['Wilaya'] ?? '',
       bladya: map['Bladya'] ?? '',
+      type: map['type'] ?? '',
     );
   }
   UserModel copyWith({
+    String? id,
     String? fname,
     String? lname,
     String? phone,
@@ -33,8 +38,10 @@ class UserModel extends UserNav {
     String? imagUrl,
     String? wilaya,
     String? bladya,
+    String? type,
   }) {
     return UserModel(
+      id: id ?? this.id,
       fname: fname ?? this.fname,
       lname: lname ?? this.lname,
       phone: phone ?? this.phone,
@@ -43,6 +50,7 @@ class UserModel extends UserNav {
       imagUrl: imagUrl ?? this.imagUrl,
       wilaya: wilaya ?? this.wilaya,
       bladya: bladya ?? this.bladya,
+      type: type ?? this.type,
     );
   }
 }
