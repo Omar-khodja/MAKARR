@@ -7,7 +7,6 @@ import 'package:makarr/navigation_root/domain/usecase/featch_current_user_userca
 import 'package:makarr/navigation_root/domain/usecase/get_post_usecase.dart';
 import 'package:makarr/navigation_root/domain/usecase/set_post_usecase.dart';
 import 'package:makarr/navigation_root/domain/usecase/set_report_usecase.dart';
-import 'package:makarr/navigation_root/presentation/controler/photoViewCachManager.dart';
 
 final baseDataSource = Provider<BaseDataSource>((ref) => FirebaseDatasource());
 
@@ -31,4 +30,3 @@ final getPostUsecaseProvider = Provider<GetPostUsecase>(
   (ref) => GetPostUsecase(ref.read(navigationRepository)),
 );
 ////////PhotoViewCacheManager
-final photoViewCacheManagerProvider = Provider((ref) => PhotoViewCacheManager());

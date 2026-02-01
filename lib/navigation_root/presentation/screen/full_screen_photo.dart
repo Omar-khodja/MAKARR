@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/navigation_root/presentation/controler/navigation_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -44,10 +43,7 @@ class _FullScreenPhotoState extends ConsumerState<FullScreenPhoto> {
         pageController: pageController,
         itemCount: widget.images.length,
         builder: (context, index) => PhotoViewGalleryPageOptions(
-          imageProvider: CachedNetworkImageProvider(
-            widget.images[index],
-            cacheManager: ref.read(photoViewCacheManagerProvider),
-          ),
+          imageProvider: CachedNetworkImageProvider(widget.images[index]),
           maxScale: PhotoViewComputedScale.covered * 2,
           minScale: PhotoViewComputedScale.contained,
         ),

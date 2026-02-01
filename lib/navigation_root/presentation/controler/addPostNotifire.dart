@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
@@ -126,6 +128,14 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
         time: DateFormat('y-MM-dd HH:mm').parse(DateTime.now().toString()),
       );
       await addPostUsecase.call(post);
+      Fluttertoast.showToast(
+        msg: "Successfully published",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16,
+      );
     } catch (e) {
       state = state.copyWith(error: e.toString());
     }

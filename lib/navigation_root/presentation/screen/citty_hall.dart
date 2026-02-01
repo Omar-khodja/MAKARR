@@ -4,6 +4,7 @@ import 'package:makarr/navigation_root/domain/entities/post.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_card.dart';
 import 'package:makarr/navigation_root/presentation/controler/get_postNotifire.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CittyHall extends ConsumerStatefulWidget {
   const CittyHall({super.key});
@@ -26,11 +27,21 @@ class _CittyHallState extends ConsumerState<CittyHall> {
     return RefreshIndicator(
       onRefresh: () async {
         ref.read(getPostNotifireProvider.notifier).getPost();
+
+        Fluttertoast.showToast(
+          msg: "Reloading...",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
       },
       child: state.when(
-        data: (data) => Skeletonizer(
-          enabled: false,
-          child: ListView.builder(
+        data: (data) {
+          if (data.isEmpty) return const Center(child: Text("No post yet!!"));
+
+          return ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: data.length,
@@ -41,14 +52,14 @@ class _CittyHallState extends ConsumerState<CittyHall> {
                 post: post,
               );
             },
-          ),
-        ),
+          );
+        },
         error: (error, stackTrace) => Center(child: Text(error.toString())),
         loading: () => Skeletonizer(
           enabled: true,
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: 2,
+            itemCount: 1,
             itemBuilder: (context, index) {
               return PostCard(
                 carouselController: carouselController,
@@ -61,7 +72,9 @@ class _CittyHallState extends ConsumerState<CittyHall> {
                       "If you want, I can rewrite your full CittyHall + PostCarousel + CachedNetworkImage + PhotoView using AsyncValue, pull-to-refresh, sorted posts, and stable image caching, fully production-ready.",
                   time: DateTime.now(),
                   pdfName: "",
-                  photosUrl:const  ["https://firebasestorage.googleapis.com/v0/b/makarr-bc736.firebasestorage.app/o/profile_images%2FgW6AJ2U71dVXZOh7LdogxC3Tbfp2.jpg?alt=media&token=e761f634-a337-4285-ba18-c10c5cfb5e89"]
+                  photosUrl: const [
+                    "https://firebasestorage.googleapis.com/v0/b/makarr-bc736.firebasestorage.app/o/profile_images%2FgW6AJ2U71dVXZOh7LdogxC3Tbfp2.jpg?alt=media&token=e761f634-a337-4285-ba18-c10c5cfb5e89",
+                  ],
                 ),
               );
             },

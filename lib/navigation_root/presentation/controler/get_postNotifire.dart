@@ -10,6 +10,8 @@ class GetPostnotifire extends StateNotifier<AsyncValue<List<Post>>> {
   final UseCase<List<Post>, NoParameters> getPostUsecase;
   Future<void> getPost() async {
     state = const AsyncValue.loading();
+    
+    await Future.delayed(const Duration(seconds: 5));
     final resulr = await getPostUsecase.call(const NoParameters());
     state = resulr.fold(
       (failure) {

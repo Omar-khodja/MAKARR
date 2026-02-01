@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/navigation_root/presentation/controler/navigation_provider.dart';
 import 'package:makarr/navigation_root/presentation/screen/full_screen_photo.dart';
 
 class PostCarousel extends ConsumerStatefulWidget {
@@ -31,7 +30,6 @@ class _PostCarouselState extends ConsumerState<PostCarousel> {
       children: widget.images
           .map(
             (image) => CachedNetworkImage(
-              cacheManager: ref.read(photoViewCacheManagerProvider),
               imageUrl: image,
               fit: BoxFit.cover,
               cacheKey: image.split('?').first,
