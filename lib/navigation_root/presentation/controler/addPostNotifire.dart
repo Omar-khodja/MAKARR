@@ -142,6 +142,7 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
   }
 }
 
+
 final addPostNotifireProvider =
     StateNotifierProvider.autoDispose<AddPostNotifire, AddpostnotifireState>(
       (ref) =>

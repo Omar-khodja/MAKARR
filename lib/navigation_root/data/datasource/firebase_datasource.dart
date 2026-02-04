@@ -107,4 +107,25 @@ class FirebaseDatasource implements BaseDataSource {
       throw FirestoreException(errorMessage: 'Unexpected error: $e');
     }
   }
+
+  @override
+  Future<void> setLike(String userId, String postId, String action) async {
+    try {
+      if (action == "Like") {
+        await firestoreRef.collection("Posts").doc(postId).update({
+          "likeNbr": FieldValue.increment(1),
+          "whoLiked": FieldValue.arrayUnion([userId]),
+        });
+      } else {
+        await firestoreRef.collection("Posts").doc(postId).update({
+          "likeNbr": FieldValue.increment(-1),
+          "whoLiked": FieldValue.arrayRemove([userId]),
+        });
+      }
+    } on FirebaseException catch (e) {
+      throw FirestoreException(errorMessage: e.message!);
+    } catch (e) {
+      throw ServerException(errorMessage: e.toString());
+    }
+  }
 }

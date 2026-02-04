@@ -168,7 +168,7 @@ class _AddPostState extends ConsumerState<AddPost> {
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
+            content: Text(  
               next.error.toString(),
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),

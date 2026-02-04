@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 
 class PostIconbutton extends StatelessWidget {
-  const PostIconbutton({super.key, required this.icon, this.counter});
+  const PostIconbutton({
+    super.key,
+    required this.icon,
+    this.counter,
+    required this.active,
+    required this.onPressed,
+  });
   final IconData icon;
   final int? counter;
+  final bool active;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Row(
         children: [
-          Icon(icon),
+          active ? Icon(icon, color: Colors.red) : Icon(icon),
           const SizedBox(width: 5),
           if (counter != null) Text("$counter"),
         ],

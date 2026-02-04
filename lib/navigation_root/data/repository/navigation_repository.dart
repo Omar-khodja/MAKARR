@@ -141,4 +141,14 @@ class NavigationRepository extends BaseNavigationRepository {
       return const Left(ServerFailure("Failed to get posts"));
     }
   }
+  
+  @override
+  Future<void> setLike(String userId, String postId, String action) async {
+    try{
+      await baseDataSource.setLike(userId, postId, action);
+
+    }catch(e){
+      AppLogger.e(e.toString());
+    }
+  }
 }

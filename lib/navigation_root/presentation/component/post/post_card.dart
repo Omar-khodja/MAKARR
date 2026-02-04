@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:makarr/navigation_root/domain/entities/post.dart';
 import 'package:makarr/navigation_root/presentation/component/post/postCarousel.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_user_info.dart';
+import 'package:makarr/navigation_root/presentation/controler/get_postNotifire.dart';
 import 'package:makarr/navigation_root/presentation/screen/pdfViewer.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends ConsumerWidget {
   const PostCard({
     super.key,
     required this.carouselController,
     required this.post,
+    required this.userId,
   });
   final CarouselController carouselController;
   final Post post;
+  final String userId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final darcktheme = Theme.of(context).brightness == Brightness.dark;
+    final state = ref.read(getPostNotifireProvider.notifier);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 4, top: 4),
@@ -83,15 +88,20 @@ class PostCard extends StatelessWidget {
 
               children: [
                 PostIconbutton(
-                  icon: FontAwesome5Regular.thumbs_up,
+                  icon: post.whoLiked.contains(userId)
+                      ? FontAwesome5Solid.heart
+                      : FontAwesome5Regular.heart,
                   counter: post.likeNbr,
+                  active: post.whoLiked.contains(userId),
+                  onPressed: () => state.setLike(userId, post),
                 ),
-                PostIconbutton(
-                  icon: FontAwesome5Regular.comment,
-                  counter: post.commentNbr,
-                ),
+
                 const Spacer(),
-                const PostIconbutton(icon: FontAwesome5Regular.bookmark),
+                PostIconbutton(
+                  icon: FontAwesome5Regular.bookmark,
+                  active: false,
+                  onPressed: () {},
+                ),
               ],
             ),
           ),

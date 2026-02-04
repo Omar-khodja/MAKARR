@@ -14,4 +14,13 @@ class GetPostUsecase implements UseCase<List<Post>, NoParameters>  {
       return posts;
    
   }
+  
+  Future<void> setLike(String userId, Post post)async {
+    final action = post.whoLiked.contains(userId);
+    return await baseNavigationRepository.setLike(
+      userId,
+      post.id!,
+      action ? "UnLike" : "Like",
+    );
+  }
 }

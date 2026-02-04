@@ -10,6 +10,7 @@ abstract class BaseDataSource {
   Future<String> updateProfileImage(File imageFile,String userId);
   Future<void> setPost(PostMoudel post);
   Future<List<PostMoudel>> getPost();
+  Future<void> setLike(String userId, String postId, String action);
 
 
 }

@@ -68,4 +68,38 @@ class Post extends Equatable {
       pdfUrl: '',
     );
   }
+
+  Post copyWith({
+    String? id,
+    String? userId,
+    String? username,
+    String? userImageUrl,
+    String? desciption,
+    String? pdfName,
+    List<File>? photos,
+    List<String>? photosUrl,
+    File? pdf,
+    String? pdfUrl,
+    DateTime? time,
+    int? likeNbr,
+    int? commentNbr,
+    List<String>? whoLiked,
+  }) {
+    return Post(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      username: username ?? this.username,
+      userImageUrl: userImageUrl ?? this.userImageUrl,
+      desciption: desciption ?? this.desciption,
+      pdfName: pdfName ?? this.pdfName,
+      photos: photos ?? this.photos,
+      photosUrl: photosUrl ?? this.photosUrl,
+      pdf: pdf ?? this.pdf,
+      pdfUrl: pdfUrl ?? this.pdfUrl,
+      time: time ?? this.time,
+      likeNbr: likeNbr ?? this.likeNbr,
+      commentNbr: commentNbr ?? this.commentNbr,
+      whoLiked: whoLiked ?? this.whoLiked,
+    );
+  }
 }

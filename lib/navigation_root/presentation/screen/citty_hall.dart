@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/navigation_root/domain/entities/post.dart';
 import 'package:makarr/navigation_root/presentation/component/post/post_card.dart';
 import 'package:makarr/navigation_root/presentation/controler/get_postNotifire.dart';
+import 'package:makarr/navigation_root/presentation/controler/userNotifire.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -24,6 +25,7 @@ class _CittyHallState extends ConsumerState<CittyHall> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(getPostNotifireProvider);
+    final user = ref.read(userNotifireProvider);
     return RefreshIndicator(
       onRefresh: () async {
         ref.read(getPostNotifireProvider.notifier).getPost();
@@ -34,7 +36,7 @@ class _CittyHallState extends ConsumerState<CittyHall> {
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.black87,
           textColor: Colors.white,
-          fontSize: 16,
+          fontSize: 16, 
         );
       },
       child: state.when(
@@ -48,6 +50,7 @@ class _CittyHallState extends ConsumerState<CittyHall> {
             itemBuilder: (context, index) {
               final post = data[index];
               return PostCard(
+                userId: user.user.id,
                 carouselController: carouselController,
                 post: post,
               );
@@ -62,6 +65,7 @@ class _CittyHallState extends ConsumerState<CittyHall> {
             itemCount: 1,
             itemBuilder: (context, index) {
               return PostCard(
+                userId: "",
                 carouselController: carouselController,
                 post: Post(
                   userId: "",

@@ -16,6 +16,6 @@ abstract class BaseNavigationRepository {
     UserNav currentUser,
   );
   Future<Either<Failure, String>> setPost(Post post);
-    Future<Either<Failure, List<Post>>> getPost();
-
+  Future<Either<Failure, List<Post>>> getPost();
+  Future<void> setLike(String userId, String postId, String action);
 }
