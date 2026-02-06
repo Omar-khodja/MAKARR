@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,28 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseFirestore.instance.clearPersistence();
   await dotenv.load(fileName: 'assets/config/.env');
+  AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Colors.blue,
+        ledColor: Colors.white,
+      ),
+    ],
+    // Channel groups are only visual and are not required
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupKey: 'basic_channel_group',
+        channelGroupName: 'Basic group',
+      ),
+    ],
+    debug: true,
+  );
   FirebaseFirestore.instance.settings = const Settings(
     cacheSizeBytes: 50 * 1024 * 1024, // 50 MB
   );

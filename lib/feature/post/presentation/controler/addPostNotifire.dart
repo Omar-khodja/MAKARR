@@ -1,8 +1,7 @@
 import 'dart:io';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
@@ -122,13 +121,14 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
         time: DateFormat('y-MM-dd HH:mm').parse(DateTime.now().toString()),
       );
       await addPostUsecase.call(post);
-      Fluttertoast.showToast(
-        msg: "Successfully published",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16,
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 1,
+          channelKey: 'basic_channel',
+          title: 'Post Added',
+          body: 'Your post has been added successfully!',
+          notificationLayout: NotificationLayout.Default,
+        ),
       );
     } catch (e) {
       state = state.copyWith(error: e.toString());

@@ -112,7 +112,8 @@ class PostCard extends ConsumerWidget {
                 PostIconbutton(
                   icon: FontAwesome5Regular.bookmark,
                   active: false,
-                  onPressed: () {},
+                  onPressed: () { 
+                  },
                 ),
               ],
             ),
