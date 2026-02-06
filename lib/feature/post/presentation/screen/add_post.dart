@@ -25,29 +25,7 @@ class _AddPostState extends ConsumerState<AddPost> {
   ) {
     if (_formkey.currentState!.validate()) {
       AppLogger.i(state.pdf.toString());
-      if (state.imageFile.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "You must add  an image",
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-        return;
-      } else if (state.pdf != null && state.pdf!.path.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              "You must add  an Pdf",
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-        return;
-      }
+
       ref.savePost(user.user, _des.text.trim());
       Navigator.of(context).pop();
     }
@@ -168,7 +146,7 @@ class _AddPostState extends ConsumerState<AddPost> {
       if (next.error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(  
+            content: Text(
               next.error.toString(),
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),

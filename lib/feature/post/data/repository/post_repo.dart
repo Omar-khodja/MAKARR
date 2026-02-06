@@ -17,7 +17,7 @@ class PostRepo implements BasePostRepo {
       return const Right("sep post seccessfully");
     } catch (e) {
       AppLogger.e(e.toString());
-      return const Left(ServerFailure("Failed to set post"));
+      return  Left(ServerFailure(e.toString()));
     }
   }
 

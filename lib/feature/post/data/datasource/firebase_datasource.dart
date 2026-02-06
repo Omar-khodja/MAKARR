@@ -8,26 +8,31 @@ import 'package:makarr/feature/post/data/model/post_moudel.dart';
 class FirebaseDatasource implements BaseDatasourcePost {
   final FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
   final FirebaseStorage storageRef = FirebaseStorage.instance;
-   @override
+  @override
   Future<void> setPost(PostMoudel post) async {
     final List<String> photosUrl = [];
-    String pdfUrl;
+    String pdfUrl = "";
 
     try {
       final postref = await firestoreRef.collection("Posts").add(post.toMap());
-      for (int i = 0; i < post.photos!.length; i++) {
-        final imageRef = storageRef.ref().child(
-          'post_images/${postref.id}/image_$i.jpg',
-        );
-        await imageRef.putFile(post.photos![i]);
-        final imageUrl = await imageRef.getDownloadURL();
-        photosUrl.add(imageUrl);
+      if (post.photos?.isNotEmpty == true) {
+        AppLogger.i("photo just accesse");
+        for (int i = 0; i < post.photos!.length; i++) {
+          final imageRef = storageRef.ref().child(
+            'post_images/${postref.id}/image_$i.jpg',
+          );
+          await imageRef.putFile(post.photos![i]);
+          final imageUrl = await imageRef.getDownloadURL();
+          photosUrl.add(imageUrl);
+        }
       }
-      final fileRef = storageRef.ref().child('post_pdfs/${postref.id}.pdf');
-      await fileRef.putFile(post.pdf!);
-      pdfUrl = await fileRef.getDownloadURL();
-      AppLogger.i(photosUrl.toString());
-      AppLogger.i(pdfUrl);
+      if (post.pdf != null) {
+        AppLogger.i("pdf just accesse");
+
+        final fileRef = storageRef.ref().child('post_pdfs/${postref.id}.pdf');
+        await fileRef.putFile(post.pdf!);
+        pdfUrl = await fileRef.getDownloadURL();
+      }
       await postref.update({
         "id": postref.id,
         'photosUrl': photosUrl,
@@ -75,5 +80,5 @@ class FirebaseDatasource implements BaseDatasourcePost {
     } catch (e) {
       throw ServerException(errorMessage: e.toString());
     }
-  } 
+  }
 }

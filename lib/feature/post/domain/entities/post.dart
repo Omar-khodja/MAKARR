@@ -10,7 +10,7 @@ class Post extends Equatable {
     required this.userImageUrl,
     required this.desciption,
     required this.time,
-    required this.pdfName,
+    this.pdfName ,
     this.pdf,
     this.pdfUrl,
     this.photos,
@@ -24,7 +24,7 @@ class Post extends Equatable {
   final String username;
   final String userImageUrl;
   final String desciption;
-  final String pdfName;
+  final String? pdfName;
   final List<File>? photos;
   final List<String>? photosUrl;
   final File? pdf;

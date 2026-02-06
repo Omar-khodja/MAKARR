@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -106,20 +105,15 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
   }
 
   Future<void> savePost(UserNav user, String des) async {
-    final userid = FirebaseAuth.instance.currentUser?.uid;
+    final userid = user.id;
     if (des.isEmpty) {
       state = state.copyWith(error: "You must add a description");
       return;
-    } else if (state.imageFile.isEmpty &&
-        (state.pdf == null || state.pdf!.path.isEmpty)) {
-      state = state.copyWith(error: "You must add  an image and a pdf file");
-      return;
     }
-
     try {
       final Post post = Post(
-        pdfName: state.pdf!.path.split('/').last,
-        userId: userid!,
+        pdfName: state.pdf?.path.split('/').last ?? "",
+        userId: userid,
         username: "${user.fname} ${user.lname}",
         userImageUrl: user.imagUrl,
         desciption: des,
@@ -141,7 +135,6 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
     }
   }
 }
-
 
 final addPostNotifireProvider =
     StateNotifierProvider.autoDispose<AddPostNotifire, AddpostnotifireState>(

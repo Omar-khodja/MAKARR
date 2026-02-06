@@ -6,6 +6,7 @@ import 'package:makarr/feature/post/presentation/component/post/postCarousel.dar
 import 'package:makarr/feature/post/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/feature/post/presentation/component/post/post_user_info.dart';
 import 'package:makarr/feature/post/presentation/controler/get_postNotifire.dart';
+import 'package:makarr/feature/post/presentation/screen/give_opinion.dart';
 import 'package:makarr/feature/post/presentation/screen/pdfViewer.dart';
 
 class PostCard extends ConsumerWidget {
@@ -42,6 +43,7 @@ class PostCard extends ConsumerWidget {
             padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
             child: Text(
               post.desciption,
+              textAlign: .start,
               style: TextStyle(
                 fontSize: 16,
                 color: darcktheme ? Colors.white : Colors.black,
@@ -49,36 +51,37 @@ class PostCard extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 15),
-          SizedBox(
-            height: 300,
-            child: PostCarousel(
-              controller: carouselController,
-              images: post.photosUrl!,
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Divider(),
-
-          Padding(
-            padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
-            child: ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Pdfviewer(pdfUrl: post.pdfUrl),
-                  ),
-                );
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          if (post.photosUrl?.isNotEmpty == true)
+            SizedBox(
+              height: 300,
+              child: PostCarousel(
+                controller: carouselController,
+                images: post.photosUrl!,
               ),
-              tileColor: Theme.of(context).colorScheme.secondaryContainer,
-              leading: Image.asset("assets/image/pdf.png", width: 40),
-              title: Text(post.pdfName),
-              subtitle: const Text("2.5 MB"),
             ),
-          ),
+          const SizedBox(height: 10),
+          if (post.pdfUrl?.isNotEmpty == true) const Divider(),
+          if (post.pdfUrl?.isNotEmpty == true)
+            Padding(
+              padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Pdfviewer(pdfUrl: post.pdfUrl),
+                    ),
+                  );
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                tileColor: Theme.of(context).colorScheme.secondaryContainer,
+                leading: Image.asset("assets/image/pdf.png", width: 40),
+                title: Text(post.pdfName!),
+                subtitle: const Text("2.5 MB"),
+              ),
+            ),
           const SizedBox(height: 10),
           const Divider(),
           Padding(
@@ -94,6 +97,15 @@ class PostCard extends ConsumerWidget {
                   counter: post.likeNbr,
                   active: post.whoLiked.contains(userId),
                   onPressed: () => state.setLike(userId, post),
+                ),
+                PostIconbutton(
+                  icon: FontAwesome5Regular.comments,
+                  counter: 22,
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const GiveOpinion(),
+                    ),
+                  ),
                 ),
 
                 const Spacer(),

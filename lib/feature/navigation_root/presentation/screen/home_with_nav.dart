@@ -46,11 +46,12 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
 
       body: NotificationListener<UserScrollNotification>(
         onNotification: (notification) {
-          if(notification.direction == ScrollDirection.reverse){
+          if (notification.direction == ScrollDirection.reverse) {
             setState(() {
               _isNavVisible = false;
             });
-          }if(notification.direction == ScrollDirection.forward){
+          }
+          if (notification.direction == ScrollDirection.forward) {
             setState(() {
               _isNavVisible = true;
             });
@@ -71,16 +72,7 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
                     ? clientScreenTitel[selectedScreen]
                     : cittyHalltScreenTitel[selectedScreen],
               ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const AddPost()),
-                    );
-                  },
-                  icon: const Icon(Icons.add),
-                ),
-              ],
+
               floating: true,
               snap: true,
               pinned: false,
@@ -152,6 +144,4 @@ class _HomeWithNavState extends ConsumerState<HomeWithNav> {
       ref.read(userNotifireProvider.notifier).featchCurrentUser(widget.uId);
     });
   }
-
-  
 }
