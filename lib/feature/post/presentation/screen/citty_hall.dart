@@ -36,25 +36,32 @@ class _CittyHallState extends ConsumerState<CittyHall> {
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.black87,
           textColor: Colors.white,
-          fontSize: 16, 
+          fontSize: 16,
         );
       },
       child: state.when(
         data: (data) {
           if (data.isEmpty) return const Center(child: Text("No post yet!!"));
 
-          return ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final post = data[index];
-              return PostCard(
-                userId: user.user.id,
-                carouselController: carouselController,
-                post: post,
-              );
-            },
+          return Column(
+            children: [
+              
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final post = data[index];
+                    return PostCard(
+                      userId: user.user.id,
+                      carouselController: carouselController,
+                      post: post,
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
         error: (error, stackTrace) => Center(child: Text(error.toString())),
