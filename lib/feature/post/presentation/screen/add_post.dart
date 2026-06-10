@@ -5,7 +5,7 @@ import 'package:makarr/core/component/Custom_elevatedButton.dart';
 import 'package:makarr/feature/post/presentation/component/Image_card.dart';
 import 'package:makarr/feature/post/presentation/component/user_card_info.dart';
 import 'package:makarr/feature/post/presentation/controler/addPostNotifire.dart';
-import 'package:makarr/feature/navigation_root/presentation/controler/userNotifire.dart';
+import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/feature/post/presentation/screen/pdfViewer.dart';
 
 class AddPost extends ConsumerStatefulWidget {

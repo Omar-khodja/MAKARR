@@ -63,8 +63,8 @@ class Post extends Equatable {
       commentNbr: 0,
       whoLiked: const [],
       pdfName: '',
-      photos: [],
-      photosUrl: [],
+      photos: const [],
+      photosUrl: const [],
       pdfUrl: '',
     );
   }

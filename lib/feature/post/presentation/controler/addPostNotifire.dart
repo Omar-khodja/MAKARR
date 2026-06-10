@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/usecases/baseusecase.dart';
 import 'package:makarr/feature/post/domain/entities/post.dart';
-import 'package:makarr/feature/navigation_root/domain/entities/user_nav.dart';
+import 'package:makarr/feature/profile/domain/entities/user_nav.dart';
 import 'package:makarr/feature/post/presentation/controler/post_provider.dart';
 
 class AddpostnotifireState {

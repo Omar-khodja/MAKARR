@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/feature/post/domain/entities/post.dart';
 import 'package:makarr/feature/post/presentation/component/post/post_card.dart';
 import 'package:makarr/feature/post/presentation/controler/get_postNotifire.dart';
-import 'package:makarr/feature/navigation_root/presentation/controler/userNotifire.dart';
+import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -79,8 +79,7 @@ class _CittyHallState extends ConsumerState<CittyHall> {
                   username: "username",
                   userImageUrl:
                       "https://firebasestorage.googleapis.com/v0/b/makarr-bc736.firebasestorage.app/o/profile_images%2FgW6AJ2U71dVXZOh7LdogxC3Tbfp2.jpg?alt=media&token=e761f634-a337-4285-ba18-c10c5cfb5e89",
-                  desciption:
-                      "If you want, I can rewrite your full CittyHall + PostCarousel + CachedNetworkImage + PhotoView using AsyncValue, pull-to-refresh, sorted posts, and stable image caching, fully production-ready.",
+                  desciption:"lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                   time: DateTime.now(),
                   pdfName: "",
                   photosUrl: const [
