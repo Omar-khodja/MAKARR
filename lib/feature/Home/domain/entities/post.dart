@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 
 class Post extends Equatable {
- const Post({
+  const Post({
     this.id,
     required this.userId,
     required this.username,
@@ -11,16 +11,18 @@ class Post extends Equatable {
     required this.desciption,
     required this.time,
     required this.location,
-    this.pdfName ,
+    required this.question,
+    this.pdfName,
     this.pdf,
     this.pdfUrl,
     this.photos,
     this.photosUrl,
-    this.likeNbr =0,
+    this.likeNbr = 0,
     this.opinion = 0,
     this.whoLiked = const [],
+    this.option = const [],
   });
-  final String? id ;
+  final String? id;
   final String userId;
   final String username;
   final String userImageUrl;
@@ -33,8 +35,10 @@ class Post extends Equatable {
   final DateTime? time;
   final int? likeNbr;
   final int? opinion;
-  final List<String> whoLiked ;
+  final List<String> whoLiked;
   final String location;
+  final String question;
+  final List<String?>? option;
   @override
   List<Object?> get props => [
     id,
@@ -47,8 +51,8 @@ class Post extends Equatable {
     pdf,
     time,
     likeNbr,
-    opinion
-    ,whoLiked,
+    opinion,
+    whoLiked,
     pdfUrl,
     pdfName,
   ];
@@ -60,7 +64,7 @@ class Post extends Equatable {
       userImageUrl: '',
       desciption: '',
       pdf: null,
-      time:  DateTime.now(),
+      time: DateTime.now(),
       likeNbr: 0,
       opinion: 0,
       whoLiked: const [],
@@ -69,6 +73,8 @@ class Post extends Equatable {
       photosUrl: const [],
       pdfUrl: '',
       location: '',
+      question: '',
+      option: const [],
     );
   }
 
@@ -105,6 +111,8 @@ class Post extends Equatable {
       opinion: opinion ?? this.opinion,
       whoLiked: whoLiked ?? this.whoLiked,
       location: location ?? this.location,
+      question: question ,
+      option: option ,
     );
   }
 }

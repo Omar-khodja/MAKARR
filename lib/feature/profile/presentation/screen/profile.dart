@@ -20,7 +20,7 @@ class Profile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(authNotifierProvider.notifier);
+    final auth = ref.read(authNotifierProvider.notifier);
     final userState = ref.watch(userNotifireProvider);
     
 
@@ -61,7 +61,7 @@ class Profile extends ConsumerWidget {
               ProfileHead(
                 imageUrl: userepmty.imagUrl,
                 name: "${userepmty.fname} ${userepmty.lname}",
-                city: "${userepmty..wilaya} - ${userepmty.bladya}",
+                city: "${userepmty.wilaya} - ${userepmty.bladya}",
               ),
               ...List.generate(titels.length, (index) {
                 final data = [userepmty.birthDate, userepmty.phone, userepmty.email];

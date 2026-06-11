@@ -9,6 +9,8 @@ class PostMoudel extends Post {
     required super.id,
     required super.userId,
     required super.pdfName,
+    required super.question,
+    super.option,
 
     super.pdf,
     super.pdfUrl,
@@ -24,6 +26,7 @@ class PostMoudel extends Post {
       username: post.username,
       userImageUrl: post.userImageUrl,
       desciption: post.desciption,
+      question: post.question,
       pdf: post.pdf,
       pdfName: post.pdfName,
       time: post.time,
@@ -35,15 +38,16 @@ class PostMoudel extends Post {
       opinion: post.opinion,
       whoLiked: post.whoLiked,
       location: post.location,
+      option: post.option,
     );
   }
   factory PostMoudel.fromMap(Map<String, dynamic> map) {
     return PostMoudel(
-      id: map['id'] ,
+      id: map['id'],
       userId: map['userId'],
-      username: map['username'] ,
-      userImageUrl: map['userImageUrl'] ,
-      desciption: map['desciption'] ,
+      username: map['username'],
+      userImageUrl: map['userImageUrl'],
+      desciption: map['desciption'],
       photosUrl: List<String>.from(map['photosUrl'] ?? []),
       pdfUrl: map['pdfUrl'] ?? '',
       pdfName: map['pdfName'] ?? '',
@@ -51,15 +55,17 @@ class PostMoudel extends Post {
       likeNbr: map['likeNbr'] ?? 0,
       opinion: map['opinion'] ?? 0,
       whoLiked: List<String>.from(map['whoLiked'] ?? []),
-      location: map['location'] ?? '' ,
+      location: map['location'] ?? '',
+      question: map['question'] ?? '',
+      option: List<String>.from(map['option'] ?? []),
     );
   }
   Map<String, dynamic> toMap() {
     return {
       'id': id ?? '',
-      'userId': userId ,
+      'userId': userId,
       'username': username,
-      'userImageUrl': userImageUrl ,
+      'userImageUrl': userImageUrl,
       'desciption': desciption,
       'photosUrl': photosUrl ?? [],
       'pdfUrl': pdfUrl ?? '',
@@ -69,6 +75,8 @@ class PostMoudel extends Post {
       'opinion': opinion,
       'whoLiked': whoLiked,
       'location': location,
+      'question': question,
+      'option': option,
     };
   }
 }

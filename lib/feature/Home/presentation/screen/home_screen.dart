@@ -105,6 +105,7 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
                   photosUrl: const [
                     "https://firebasestorage.googleapis.com/v0/b/makarr-bc736.firebasestorage.app/o/profile_images%2FgW6AJ2U71dVXZOh7LdogxC3Tbfp2.jpg?alt=media&token=e761f634-a337-4285-ba18-c10c5cfb5e89",
                   ],
+                  question: "question ?",
                 ),
               );
             },

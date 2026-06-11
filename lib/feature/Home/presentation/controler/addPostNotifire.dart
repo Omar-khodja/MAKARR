@@ -103,7 +103,13 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
     state = state.copyWith(pdf: File(""));
   }
 
-  Future<void> savePost(UserNav user, String des, String location) async {
+  Future<void> savePost({
+    required UserNav user,
+    required String des,
+    required String location,
+    required String question,
+    List<String?>? options,
+  }) async {
     final userid = user.id;
     if (des.isEmpty) {
       state = state.copyWith(error: "You must add a description");
@@ -116,10 +122,12 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
         username: "${user.fname} ${user.lname}",
         userImageUrl: user.imagUrl,
         desciption: des,
+        question: question ,
         photos: state.imageFile,
         pdf: state.pdf,
         time: DateFormat('y-MM-dd HH:mm').parse(DateTime.now().toString()),
         location: location,
+        option: options ?? const [],
       );
       await addPostUsecase.call(post);
       AwesomeNotifications().createNotification(
