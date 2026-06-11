@@ -50,12 +50,19 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
+
+  @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  String? _lastFetchedUid;
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) {
         ColorScheme lightColorScheme;
@@ -89,12 +96,22 @@ class MyApp extends ConsumerWidget {
           home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
-                ref
-                    .read(userNotifireProvider.notifier)
-                    .featchCurrentUser(snapshot.data!.uid);
+              final user = snapshot.data;
+
+              if (user != null) {
+                if (_lastFetchedUid != user.uid) {
+                  _lastFetchedUid = user.uid;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (!mounted) return;
+                    ref
+                        .read(userNotifireProvider.notifier)
+                        .featchCurrentUser(user.uid);
+                  });
+                }
                 return const NavigationScreen();
               }
+
+              _lastFetchedUid = null;
               return const Login();
             },
           ),

@@ -20,7 +20,7 @@ class Profile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(authNotifireProvider.notifier);
+    final auth = ref.watch(authNotifierProvider.notifier);
     final userState = ref.watch(userNotifireProvider);
     
 
@@ -32,7 +32,7 @@ class Profile extends ConsumerWidget {
             ProfileHead(
               imageUrl: user.imagUrl,
               name: "${user.fname} ${user.lname}",
-              city: "${user..wilaya} - ${user.bladya}",
+              city: "${user.wilaya} - ${user.bladya}",
             ),
             ...List.generate(titels.length, (index) {
               final data = [user.birthDate, user.phone, user.email];
@@ -45,7 +45,7 @@ class Profile extends ConsumerWidget {
             const SizedBox(height: 20),
             PrimaryButton(
               label: "Sing Out",
-              fun: auth.singOut,
+              fun: auth.signOut,
               tailIcon: Icons.logout,
             ),
           ],
@@ -74,7 +74,7 @@ class Profile extends ConsumerWidget {
               const SizedBox(height: 20),
               PrimaryButton(
                 label: "Sing Out",
-                fun: auth.singOut,
+                fun: auth.signOut,
                 tailIcon: Icons.logout,
               ),
             ],

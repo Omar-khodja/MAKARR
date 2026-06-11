@@ -4,11 +4,11 @@ import 'package:makarr/feature/auth/domain/repository/base_auth_repo.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/core/usecases/baseusecase.dart';
 
-class CreateuserUsecase implements UseCase<Unit, UserAuth> {
+class CreateuserUsecase implements UseCase<void, UserAuth> {
   CreateuserUsecase({required this.baseAuthRepo});
   final BaseAuthRepo baseAuthRepo;
   @override 
-  Future<Either<Failure, Unit>> call(UserAuth user) async {
+  Future<Either<Failure, void>> call(UserAuth user) async {
     return await baseAuthRepo.createUser(user);
   }
 }

@@ -27,23 +27,12 @@ class _LoginState extends ConsumerState<Login> {
     super.dispose();
   }
 
+ 
+
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authNotifireProvider);
-    ref.listen(authNotifireProvider, (previous, next) {
-      if (next.error != null) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              next.error!,
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-      }
-    });
+    final auth = ref.watch(authNotifierProvider);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -129,7 +118,6 @@ class _LoginState extends ConsumerState<Login> {
                   label: "Singin",
                   fun: _submit,
                   tailIcon: Icons.login,
-                  isLoading: auth.isLoading,
                 ),
                 const SizedBox(height: 20),
 
@@ -220,7 +208,7 @@ class _LoginState extends ConsumerState<Login> {
 
   void _submit() async {
     final bool isValid = _formkey.currentState!.validate();
-    final auth = ref.read(authNotifireProvider.notifier);
+    final auth = ref.read(authNotifierProvider.notifier);
     if (!isValid) return;
     try {
       auth.login(_emailController.text.trim(), _passwordController.text.trim());

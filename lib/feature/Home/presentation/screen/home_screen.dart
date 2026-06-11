@@ -21,10 +21,21 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
     super.dispose();
     carouselController.dispose();
   }
-  initState() {
+
+  @override
+  void initState() {
     super.initState();
-    final user = ref.read(userNotifireProvider);
-    ref.read(getPostNotifireProvider.notifier).getPost("${user.value!.wilaya} - ${user.value!.bladya}");
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
+      final user = ref.read(userNotifireProvider);
+      if (user.value == null) return;
+
+      ref
+          .read(getPostNotifireProvider.notifier)
+          .getPost("${user.value!.wilaya} - ${user.value!.bladya}");
+    });
   }
 
 
