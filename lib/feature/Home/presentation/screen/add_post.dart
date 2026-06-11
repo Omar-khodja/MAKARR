@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/component/Custom_elevatedButton.dart';
-import 'package:makarr/feature/post/presentation/component/Image_card.dart';
-import 'package:makarr/feature/post/presentation/component/user_card_info.dart';
-import 'package:makarr/feature/post/presentation/controler/addPostNotifire.dart';
+import 'package:makarr/core/component/primaryButton.dart';
+import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
+import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
+import 'package:makarr/feature/Home/presentation/controler/addPostNotifire.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
-import 'package:makarr/feature/post/presentation/screen/pdfViewer.dart';
+import 'package:makarr/feature/Home/presentation/screen/pdfViewer.dart';
+import 'package:makarr/feature/auth/presentation/component/custom_dropbox.dart';
+import 'package:makarr/feature/profile/domain/entities/user_nav.dart';
 
 class AddPost extends ConsumerStatefulWidget {
   const AddPost({super.key});
@@ -18,15 +21,31 @@ class AddPost extends ConsumerStatefulWidget {
 class _AddPostState extends ConsumerState<AddPost> {
   final TextEditingController _des = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+
+
+  String? selectedWilaya = "Adrar";
+  String? selectedBladya = "Aoulef";
   void submit(
     AddpostnotifireState state,
     AddPostNotifire ref,
-    UserNotifireState user,
+    UserNav user,
+    
   ) {
     if (_formkey.currentState!.validate()) {
-      AppLogger.i(state.pdf.toString());
+      if(selectedBladya == null || selectedWilaya == null){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Please select a location",
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+        return;
+      }
 
-      ref.savePost(user.user, _des.text.trim());
+      ref.savePost(user, _des.text.trim(), "$selectedWilaya - $selectedBladya");
       Navigator.of(context).pop();
     }
     return;
@@ -34,19 +53,14 @@ class _AddPostState extends ConsumerState<AddPost> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.read(userNotifireProvider);
+    final userState = ref.read(userNotifireProvider);
     final notifier = ref.read(addPostNotifireProvider.notifier);
     final state = ref.watch(addPostNotifireProvider);
     showSnackBar();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Post"),
-        actions: [
-          IconButton(
-            onPressed: () => submit(state, notifier, user),
-            icon: const Icon(Icons.check),
-          ),
-        ],
+       
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -54,8 +68,16 @@ class _AddPostState extends ConsumerState<AddPost> {
           child: Column(
             children: [
               UserCardInfo(
-                name: "${user.user.fname} ${user.user.lname}",
-                imageUrl: user.user.imagUrl,
+                name: "${userState.value!.fname} ${userState.value!.lname}",
+                imageUrl: userState.value!.imagUrl,
+              ),
+              const SizedBox(height: 10),
+              CustomDropbox(
+                onChange: (w, b) {
+                  selectedBladya = b;
+                  selectedWilaya = w;
+                  AppLogger.i("Selected location: $selectedWilaya - $selectedBladya");
+                },
               ),
               const SizedBox(height: 10),
               Form(
@@ -64,7 +86,7 @@ class _AddPostState extends ConsumerState<AddPost> {
                   controller: _des,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    labelText: "What's on your mind, ${user.user.fname}?",
+                    labelText: "What's on your mind, ${userState.value!.fname}?",
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -133,6 +155,12 @@ class _AddPostState extends ConsumerState<AddPost> {
                     isLoading: state.isLoading,
                   ),
                 ],
+              ),
+              const SizedBox(height: 20),
+              PrimaryButton(
+                label: "Post",
+                fun: () => submit(state, notifier, userState.value!),
+                isLoading: state.isLoading,
               ),
             ],
           ),

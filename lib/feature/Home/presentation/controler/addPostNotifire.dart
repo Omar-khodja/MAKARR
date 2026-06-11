@@ -6,9 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/usecases/baseusecase.dart';
-import 'package:makarr/feature/post/domain/entities/post.dart';
+import 'package:makarr/feature/Home/domain/entities/post.dart';
 import 'package:makarr/feature/profile/domain/entities/user_nav.dart';
-import 'package:makarr/feature/post/presentation/controler/post_provider.dart';
+import 'package:makarr/feature/Home/presentation/controler/post_provider.dart';
 
 class AddpostnotifireState {
   AddpostnotifireState({
@@ -103,7 +103,7 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
     state = state.copyWith(pdf: File(""));
   }
 
-  Future<void> savePost(UserNav user, String des) async {
+  Future<void> savePost(UserNav user, String des, String location) async {
     final userid = user.id;
     if (des.isEmpty) {
       state = state.copyWith(error: "You must add a description");
@@ -119,6 +119,7 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
         photos: state.imageFile,
         pdf: state.pdf,
         time: DateFormat('y-MM-dd HH:mm').parse(DateTime.now().toString()),
+        location: location,
       );
       await addPostUsecase.call(post);
       AwesomeNotifications().createNotification(

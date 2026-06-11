@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:makarr/feature/post/domain/entities/post.dart';
-import 'package:makarr/feature/post/presentation/component/post/postCarousel.dart';
-import 'package:makarr/feature/post/presentation/component/post/post_iconbutton.dart';
-import 'package:makarr/feature/post/presentation/component/post/post_user_info.dart';
-import 'package:makarr/feature/post/presentation/controler/get_postNotifire.dart';
-import 'package:makarr/feature/post/presentation/screen/give_opinion.dart';
-import 'package:makarr/feature/post/presentation/screen/pdfViewer.dart';
+import 'package:makarr/feature/Home/domain/entities/post.dart';
+import 'package:makarr/feature/Home/presentation/component/post/postCarousel.dart';
+import 'package:makarr/feature/Home/presentation/component/post/post_iconbutton.dart';
+import 'package:makarr/feature/Home/presentation/component/post/post_user_info.dart';
+import 'package:makarr/feature/Home/presentation/controler/get_postNotifire.dart';
+import 'package:makarr/feature/Home/presentation/screen/give_opinion.dart';
+import 'package:makarr/feature/Home/presentation/screen/pdfViewer.dart';
 
 class PostCard extends ConsumerWidget {
   const PostCard({

@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/failure.dart';
-import 'package:makarr/feature/post/data/datasource/base_datasource_post.dart';
-import 'package:makarr/feature/post/data/model/post_moudel.dart';
-import 'package:makarr/feature/post/domain/entities/post.dart';
-import 'package:makarr/feature/post/domain/repository/base_post_repo.dart';
+import 'package:makarr/feature/Home/data/datasource/base_datasource_post.dart';
+import 'package:makarr/feature/Home/data/model/post_moudel.dart';
+import 'package:makarr/feature/Home/domain/entities/post.dart';
+import 'package:makarr/feature/Home/domain/repository/base_post_repo.dart';
 
 class PostRepo implements BasePostRepo {
   PostRepo({required this.baseDataSourcepost});
@@ -22,9 +22,9 @@ class PostRepo implements BasePostRepo {
   }
 
   @override
-  Future<Either<Failure, List<Post>>> getPost() async {
+  Future<Either<Failure, List<Post>>> getPost(String location) async {
     try {
-      final posts = await baseDataSourcepost.getPost();
+      final posts = await baseDataSourcepost.getPost(location);
       return Right(posts);
     } catch (e) {
       AppLogger.e(e.toString());

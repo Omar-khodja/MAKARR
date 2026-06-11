@@ -1,0 +1,144 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:makarr/core/controler/userNotifire.dart';
+import 'package:makarr/feature/Home/presentation/screen/add_post.dart';
+import 'package:makarr/feature/Home/presentation/screen/home_screen.dart';
+import 'package:makarr/feature/profile/presentation/screen/profile.dart';
+import 'package:makarr/feature/Report_Problem/presentation/screen/report_Problem.dart';
+
+class NavigationScreen extends ConsumerStatefulWidget {
+  const NavigationScreen({super.key});
+
+  @override
+  ConsumerState<NavigationScreen> createState() => _NavigationScreen();
+}
+
+class _NavigationScreen extends ConsumerState<NavigationScreen> {
+  int selectedScreen = 0;
+  final screenForClient = [
+    const HomeScreen(),
+    const ReportProblem(),
+    Profile(),
+  ];
+  final screenForCittyHall = [const HomeScreen(), Profile()];
+  final clientScreenTitel = const ["Citty Hall", 'Report Problem', "Profile"];
+  final cittyHalltScreenTitel = const ["Citty Hall", "Profile"];
+  final gButtonForClient = const [
+    GButton(icon: Icons.home_outlined, text: "Home"),
+    GButton(icon: Icons.campaign_outlined, text: "Report problem"),
+    GButton(icon: Icons.person_outline, text: "Profile"),
+  ];
+  final gButtonForCittyhall = const [
+    GButton(icon: Icons.home_outlined, text: "Home"),
+
+    GButton(icon: Icons.person_outline, text: "Profile"),
+  ];
+  bool _isNavVisible = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final userState = ref.watch(userNotifireProvider);
+    final darcktheme = Theme.of(context).brightness == Brightness.dark;
+    return userState.when(
+      data: (user) => Scaffold(
+        backgroundColor: darcktheme
+            ? Colors.black
+            : Theme.of(context).colorScheme.surfaceContainerHigh,
+
+        body: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            if (notification.direction == ScrollDirection.reverse) {
+              setState(() {
+                _isNavVisible = false;
+              });
+            }
+            if (notification.direction == ScrollDirection.forward) {
+              setState(() {
+                _isNavVisible = true;
+              });
+            }
+            return true;
+          },
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverAppBar(
+                backgroundColor: darcktheme
+                    ? Theme.of(context).colorScheme.primaryContainer
+                    : Theme.of(context).colorScheme.primary,
+                foregroundColor: darcktheme
+                    ? Theme.of(context).colorScheme.onPrimaryContainer
+                    : Theme.of(context).colorScheme.onPrimary,
+                title: Text(
+                  user.type == "Client"
+                      ? clientScreenTitel[selectedScreen]
+                      : cittyHalltScreenTitel[selectedScreen],
+                ),
+
+                floating: true,
+                snap: true,
+                pinned: false,
+              ),
+            ],
+            body: IndexedStack(
+              index: selectedScreen,
+              children: user.type == "Client"
+                  ? screenForClient
+                  : screenForCittyHall,
+            ),
+          ),
+        ),
+        floatingActionButton: AnimatedScale(
+          scale: _isNavVisible ? 1 : 0,
+          duration: const Duration(milliseconds: 300),
+          child: FloatingActionButton(
+            onPressed: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => const AddPost())),
+            child: const Icon(Icons.add_box_outlined),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+
+        bottomNavigationBar: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: _isNavVisible ? 60 : 0,
+          child: Wrap(
+            children: [
+              GNav(
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+                activeColor: darcktheme
+                    ? Theme.of(context).colorScheme.onPrimaryContainer
+                    : Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.onSecondaryContainer,
+                tabBackgroundColor: darcktheme
+                    ? Theme.of(context).colorScheme.primaryContainer
+                    : Theme.of(context).colorScheme.primary,
+                mainAxisAlignment: .spaceAround,
+
+                gap: 4,
+                tabMargin: const EdgeInsetsGeometry.symmetric(vertical: 10),
+                padding: const EdgeInsetsGeometry.symmetric(
+                  vertical: 10,
+                  horizontal: 10,
+                ),
+
+                onTabChange: (index) => setState(() {
+                  selectedScreen = index;
+                }),
+                tabs: user.type == "Client"
+                    ? gButtonForClient
+                    : gButtonForCittyhall,
+              ),
+            ],
+          ),
+        ),
+      ),
+      error: (e, stackTrace) =>
+          Scaffold(body: Center(child: Text(e.toString()))),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+    );
+  }
+}

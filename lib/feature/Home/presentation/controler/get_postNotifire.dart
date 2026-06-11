@@ -1,19 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:makarr/core/usecases/baseusecase.dart';
-import 'package:makarr/feature/post/domain/entities/post.dart';
-import 'package:makarr/feature/post/domain/usecase/get_post_usecase.dart';
-import 'package:makarr/feature/post/presentation/controler/post_provider.dart';
+import 'package:makarr/feature/Home/domain/entities/post.dart';
+import 'package:makarr/feature/Home/domain/usecase/get_post_usecase.dart';
+import 'package:makarr/feature/Home/presentation/controler/post_provider.dart';
 
 class GetPostnotifire extends StateNotifier<AsyncValue<List<Post>>> {
   GetPostnotifire({required this.getPostUsecase})
     : super(const AsyncValue.loading());
   final GetPostUsecase getPostUsecase;
-  Future<void> getPost() async {
+  Future<void> getPost(String location) async {
     state = const AsyncValue.loading();
 
     await Future.delayed(const Duration(seconds: 3));
-    final resulr = await getPostUsecase.call(const NoParameters());
+    final resulr = await getPostUsecase.call(location);
     state = resulr.fold(
       (failure) {
         return AsyncValue.error(failure.message, StackTrace.current);

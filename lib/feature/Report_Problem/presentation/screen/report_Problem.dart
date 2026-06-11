@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/core/component/Custom_elevatedButton.dart';
 import 'package:makarr/core/component/coustom_elevatedbutton.dart';
-import 'package:makarr/feature/post/presentation/component/Image_card.dart';
-import 'package:makarr/feature/post/presentation/component/user_card_info.dart';
+import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
+import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
 import 'package:makarr/feature/Report_Problem/presentation/controler/reportNotifire.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
 
@@ -62,8 +62,8 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
           crossAxisAlignment: .center,
           children: [
              UserCardInfo(
-              name: "${user.user.fname} ${user.user.lname}",
-              imageUrl: user.user.imagUrl,
+              name: "${user.value!.fname} ${user.value!.lname}",
+              imageUrl: user.value!.imagUrl,
             ),
             const SizedBox(height: 20),
 

@@ -10,13 +10,14 @@ class Post extends Equatable {
     required this.userImageUrl,
     required this.desciption,
     required this.time,
+    required this.location,
     this.pdfName ,
     this.pdf,
     this.pdfUrl,
     this.photos,
     this.photosUrl,
     this.likeNbr =0,
-    this.commentNbr = 0,
+    this.opinion = 0,
     this.whoLiked = const [],
   });
   final String? id ;
@@ -31,8 +32,9 @@ class Post extends Equatable {
   final String? pdfUrl;
   final DateTime? time;
   final int? likeNbr;
-  final int? commentNbr;
+  final int? opinion;
   final List<String> whoLiked ;
+  final String location;
   @override
   List<Object?> get props => [
     id,
@@ -45,7 +47,7 @@ class Post extends Equatable {
     pdf,
     time,
     likeNbr,
-    commentNbr
+    opinion
     ,whoLiked,
     pdfUrl,
     pdfName,
@@ -60,12 +62,13 @@ class Post extends Equatable {
       pdf: null,
       time:  DateTime.now(),
       likeNbr: 0,
-      commentNbr: 0,
+      opinion: 0,
       whoLiked: const [],
       pdfName: '',
       photos: const [],
       photosUrl: const [],
       pdfUrl: '',
+      location: '',
     );
   }
 
@@ -82,8 +85,9 @@ class Post extends Equatable {
     String? pdfUrl,
     DateTime? time,
     int? likeNbr,
-    int? commentNbr,
+    int? opinion,
     List<String>? whoLiked,
+    String? location,
   }) {
     return Post(
       id: id ?? this.id,
@@ -98,8 +102,9 @@ class Post extends Equatable {
       pdfUrl: pdfUrl ?? this.pdfUrl,
       time: time ?? this.time,
       likeNbr: likeNbr ?? this.likeNbr,
-      commentNbr: commentNbr ?? this.commentNbr,
+      opinion: opinion ?? this.opinion,
       whoLiked: whoLiked ?? this.whoLiked,
+      location: location ?? this.location,
     );
   }
 }

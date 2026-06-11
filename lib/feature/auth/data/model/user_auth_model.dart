@@ -10,6 +10,7 @@ class UserAuthModel extends UserAuth {
     required super.password,
     required super.wilaya,
     required super.bladya,
+    required super.type,
   });
   factory UserAuthModel.fromEntity(UserAuth user) {
     return UserAuthModel(
@@ -21,6 +22,8 @@ class UserAuthModel extends UserAuth {
       password: user.password,
       wilaya: user.wilaya,
       bladya: user.bladya,
+      type: user.type,
     );
   }
+
 }

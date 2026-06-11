@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:makarr/home_with_nav.dart';
+import 'package:makarr/core/controler/userNotifire.dart';
+import 'package:makarr/navigation_screen.dart';
 import 'package:makarr/feature/auth/presentation/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -89,7 +90,10 @@ class MyApp extends ConsumerWidget {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data != null) {
-                return HomeWithNav(uId: snapshot.data!.uid);
+                ref
+                    .read(userNotifireProvider.notifier)
+                    .featchCurrentUser(snapshot.data!.uid);
+                return const NavigationScreen();
               }
               return const Login();
             },
