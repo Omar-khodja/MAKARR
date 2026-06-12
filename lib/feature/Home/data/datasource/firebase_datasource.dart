@@ -64,15 +64,15 @@ class FirebaseDatasource implements BaseDatasourcePost {
   }
 
   @override
-  Future<void> setLike(String userId, String postId, String action) async {
+  Future<void> setLike(String userId, String postId, String action,String location) async {
     try {
       if (action == "Like") {
-        await firestoreRef.collection("Posts").doc(postId).update({
+        await firestoreRef.collection("Locations").doc(location).collection("Posts").doc(postId).update({
           "likeNbr": FieldValue.increment(1),
           "whoLiked": FieldValue.arrayUnion([userId]),
         });
       } else {
-        await firestoreRef.collection("Posts").doc(postId).update({
+        await firestoreRef.collection("Locations").doc(location).collection("Posts").doc(postId).update({
           "likeNbr": FieldValue.increment(-1),
           "whoLiked": FieldValue.arrayRemove([userId]),
         });

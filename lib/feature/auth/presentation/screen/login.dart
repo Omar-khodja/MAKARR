@@ -31,7 +31,6 @@ class _LoginState extends ConsumerState<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authNotifierProvider);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -157,17 +156,8 @@ class _LoginState extends ConsumerState<Login> {
 
                 OutLineButton(
                   text: "Sing in with Facebook",
-                  fun: () {
-                    AppLogger.i(
-                      "information logger",
-                      className: runtimeType.toString(),
-                    );
-                    AppLogger.d("debug logger");
-                    AppLogger.e("error logger");
-                    AppLogger.w("worning logger");
-                    AppLogger.w("wtf logger");
-                  },
-                  image: "assets/logo/facebook.png",
+                  fun: () {}
+                   
                 ),
                 const SizedBox(height: 20),
 

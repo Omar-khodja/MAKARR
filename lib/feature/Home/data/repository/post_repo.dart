@@ -33,9 +33,11 @@ class PostRepo implements BasePostRepo {
   }
 
   @override
-  Future<void> setLike(String userId, String postId, String action) async {
+  Future<void> setLike(String userId, String postId, String action,
+    String location,
+  ) async {
     try {
-      await baseDataSourcepost.setLike(userId, postId, action);
+      await baseDataSourcepost.setLike(userId, postId, action, location);
     } catch (e) {
       AppLogger.e(e.toString());
     }

@@ -21,6 +21,7 @@ class GetPostUsecase implements UseCase<List<Post>, String>  {
       userId,
       post.id!,
       action ? "UnLike" : "Like",
+      post.location,
     );
   }
 }
