@@ -12,7 +12,7 @@ import 'package:makarr/feature/Report_Problem/domain/repository/base_report_repo
 class ReportRepo implements BaseReportRepo {
   ReportRepo(this.baseDataSource);
   final ReportBaseDataSource baseDataSource;
-    @override
+  @override
   Future<Either<Failure, void>> setReportToDataBase(Report report) async {
     try {
       final reportmodel = ReportModel.fromEntity(report);
@@ -22,6 +22,7 @@ class ReportRepo implements BaseReportRepo {
       return const Left(ServerFailure("Failed to set report"));
     }
   }
+
   @override
   Future<Either<Failure, Map<String, dynamic>>> getCurrentLocation() async {
     final dio = Dio();
@@ -75,6 +76,4 @@ class ReportRepo implements BaseReportRepo {
       );
     }
   }
-
-
-  }
+}

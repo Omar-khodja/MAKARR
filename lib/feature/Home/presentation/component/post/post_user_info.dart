@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class PostUserInfo extends StatelessWidget {
-  const PostUserInfo({super.key , required this.username, required this.imageUrl, required this.time});
-  final String username ;
+  const PostUserInfo({
+    super.key,
+    required this.username,
+    required this.imageUrl,
+    required this.time,
+  });
+  final String username;
   final String imageUrl;
   final DateTime time;
 
-String timeAgo(DateTime date) {
+  String timeAgo(DateTime date) {
     final now = DateTime.now();
     final diff = now.difference(date);
 
@@ -34,7 +39,7 @@ String timeAgo(DateTime date) {
           mainAxisAlignment: .start,
           crossAxisAlignment: .center,
           children: [
-             CircleAvatar(
+            CircleAvatar(
               radius: 25,
               foregroundImage: NetworkImage(imageUrl),
               backgroundColor: Colors.grey,

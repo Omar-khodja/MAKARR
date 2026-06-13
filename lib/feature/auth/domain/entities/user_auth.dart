@@ -16,21 +16,21 @@ class UserAuth extends Equatable {
   final String lastName;
   final String phone;
   final String email;
-  final String type ;
+  final String type;
   final String birthDate;
   final String password;
   final String wilaya;
   final String bladya;
 
-    @override
-    List<Object?> get props => [
-      firstName,
-      lastName,
-      phone,
-      email,
-      birthDate,
-      password,
-      wilaya,
-      bladya
-    ];
+  @override
+  List<Object?> get props => [
+    firstName,
+    lastName,
+    phone,
+    email,
+    birthDate,
+    password,
+    wilaya,
+    bladya,
+  ];
 }

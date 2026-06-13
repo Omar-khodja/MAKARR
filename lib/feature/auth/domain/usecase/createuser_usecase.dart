@@ -7,7 +7,7 @@ import 'package:makarr/core/usecases/baseusecase.dart';
 class CreateuserUsecase implements UseCase<void, UserAuth> {
   CreateuserUsecase({required this.baseAuthRepo});
   final BaseAuthRepo baseAuthRepo;
-  @override 
+  @override
   Future<Either<Failure, void>> call(UserAuth user) async {
     return await baseAuthRepo.createUser(user);
   }

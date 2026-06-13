@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/feature/Home/data/datasource/base_datasource_post.dart';
+import 'package:makarr/feature/Home/data/model/opinio_model.dart';
 import 'package:makarr/feature/Home/data/model/post_moudel.dart';
 
 class FirebaseDatasource implements BaseDatasourcePost {
@@ -64,23 +65,51 @@ class FirebaseDatasource implements BaseDatasourcePost {
   }
 
   @override
-  Future<void> setLike(String userId, String postId, String action,String location) async {
+  Future<void> setLike(
+    String userId,
+    String postId,
+    String action,
+    String location,
+  ) async {
     try {
       if (action == "Like") {
-        await firestoreRef.collection("Locations").doc(location).collection("Posts").doc(postId).update({
-          "likeNbr": FieldValue.increment(1),
-          "whoLiked": FieldValue.arrayUnion([userId]),
-        });
+        await firestoreRef
+            .collection("Locations")
+            .doc(location)
+            .collection("Posts")
+            .doc(postId)
+            .update({
+              "likeNbr": FieldValue.increment(1),
+              "whoLiked": FieldValue.arrayUnion([userId]),
+            });
       } else {
-        await firestoreRef.collection("Locations").doc(location).collection("Posts").doc(postId).update({
-          "likeNbr": FieldValue.increment(-1),
-          "whoLiked": FieldValue.arrayRemove([userId]),
-        });
+        await firestoreRef
+            .collection("Locations")
+            .doc(location)
+            .collection("Posts")
+            .doc(postId)
+            .update({
+              "likeNbr": FieldValue.increment(-1),
+              "whoLiked": FieldValue.arrayRemove([userId]),
+            });
       }
     } on FirebaseException catch (e) {
       throw FirestoreException(errorMessage: e.message!);
     } catch (e) {
       throw ServerException(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<void> setOpinion(OpinioModel opinio) async {
+    try {
+      await firestoreRef
+          .collection("Opinions")
+          .doc(opinio.postLocation)
+          .collection(opinio.postId)
+          .add(opinio.toJson());
+    } on FirebaseException catch (e) {
+      throw FirestoreException(errorMessage: e.message!);
     }
   }
 }

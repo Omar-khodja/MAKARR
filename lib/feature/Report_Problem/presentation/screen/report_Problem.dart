@@ -61,7 +61,7 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
         child: Column(
           crossAxisAlignment: .center,
           children: [
-             UserCardInfo(
+            UserCardInfo(
               name: "${user.value!.fname} ${user.value!.lname}",
               imageUrl: user.value!.imagUrl,
             ),
@@ -89,13 +89,10 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
             const SizedBox(height: 12),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(8), 
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey, 
-                  width: 1, 
-                ),
-                borderRadius: BorderRadius.circular(8), 
+                border: Border.all(color: Colors.grey, width: 1),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Text(notifire.position["formatted"] ?? 'Current location'),
             ),

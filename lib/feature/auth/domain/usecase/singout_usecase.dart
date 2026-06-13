@@ -7,7 +7,7 @@ class SingoutUsecase implements UseCase<void, NoParameters> {
   SingoutUsecase({required this.baseAuthRepo});
   final BaseAuthRepo baseAuthRepo;
   @override
-  Future<Either<Failure, void>> call(NoParameters  params) async {
+  Future<Either<Failure, void>> call(NoParameters params) async {
     return await baseAuthRepo.singOut();
   }
 }

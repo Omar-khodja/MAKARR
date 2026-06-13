@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/core/usecases/baseusecase.dart';
-import 'package:makarr/feature/Home/domain/entities/post.dart';
+import 'package:makarr/feature/Home/domain/entities/opinion.dart';
 import 'package:makarr/feature/Home/domain/repository/base_post_repo.dart';
 
-class SetPostUsecase implements UseCase<void, Post> {
-  SetPostUsecase(this.basePostRepo);
+class OpinionUsecase extends UseCase<void, Opinion> {
+  OpinionUsecase(this.basePostRepo);
 
   final BasePostRepo basePostRepo;
 
   @override
-  Future<Either<Failure, String>> call(Post post) {
-    return basePostRepo.setPost(post);
+  Future<Either<Failure, void>> call(Opinion opinio) {
+    return basePostRepo.setOpinion(opinio);
   }
 }

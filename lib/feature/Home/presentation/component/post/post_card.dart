@@ -99,11 +99,10 @@ class PostCard extends ConsumerWidget {
                   onPressed: () => state.setLike(userId, post),
                 ),
                 PostIconbutton(
-                  icon: FontAwesome5Regular.comments,
-                  counter: 22,
+                  icon: FontAwesome5Regular.comment,
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const GiveOpinion(),
+                      builder: (context) => GiveOpinion(post: post),
                     ),
                   ),
                 ),
@@ -112,8 +111,7 @@ class PostCard extends ConsumerWidget {
                 PostIconbutton(
                   icon: FontAwesome5Regular.bookmark,
                   active: false,
-                  onPressed: () { 
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),

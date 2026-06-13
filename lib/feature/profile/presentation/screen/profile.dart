@@ -22,7 +22,6 @@ class Profile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.read(authNotifierProvider.notifier);
     final userState = ref.watch(userNotifireProvider);
-    
 
     return userState.when(
       data: (user) => Container(
@@ -52,7 +51,7 @@ class Profile extends ConsumerWidget {
         ),
       ),
       error: (e, stackTrace) => Text(e.toString()),
-      loading: () { 
+      loading: () {
         final userepmty = UserNav.empty();
         return Skeletonizer(
           enabled: true,
@@ -64,7 +63,11 @@ class Profile extends ConsumerWidget {
                 city: "${userepmty.wilaya} - ${userepmty.bladya}",
               ),
               ...List.generate(titels.length, (index) {
-                final data = [userepmty.birthDate, userepmty.phone, userepmty.email];
+                final data = [
+                  userepmty.birthDate,
+                  userepmty.phone,
+                  userepmty.email,
+                ];
                 return ProfileInfo(
                   title: titels[index],
                   data: data[index],

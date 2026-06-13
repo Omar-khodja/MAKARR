@@ -38,16 +38,16 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(getPostNotifireProvider);
     final user = ref.read(userNotifireProvider);
-   
+
     return RefreshIndicator(
       onRefresh: () async {
-        ref.read(getPostNotifireProvider.notifier).getPost("${user.value!.wilaya} - ${user.value!.bladya}");
+        ref
+            .read(getPostNotifireProvider.notifier)
+            .getPost("${user.value!.wilaya} - ${user.value!.bladya}");
 
         Fluttertoast.showToast(
           msg: "Reloading...",
@@ -64,7 +64,6 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
 
           return Column(
             children: [
-              
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
@@ -98,7 +97,8 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
                   username: "username",
                   userImageUrl:
                       "https://firebasestorage.googleapis.com/v0/b/makarr-bc736.firebasestorage.app/o/profile_images%2FgW6AJ2U71dVXZOh7LdogxC3Tbfp2.jpg?alt=media&token=e761f634-a337-4285-ba18-c10c5cfb5e89",
-                  desciption:"lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                  desciption:
+                      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                   time: DateTime.now(),
                   pdfName: "",
                   location: "${user.value!.wilaya} - ${user.value!.bladya}",

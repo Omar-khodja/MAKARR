@@ -41,9 +41,6 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
 
   @override
   Widget build(BuildContext context) {
- 
-    final auth = ref.watch(authNotifierProvider);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -169,7 +166,6 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
                   label: "Create accounte",
                   fun: _submit,
                   tailIcon: Icons.arrow_forward_rounded,
-                  isLoading: auth.isLoading,
                 ),
                 const SizedBox(height: 10),
                 OutLineButton(

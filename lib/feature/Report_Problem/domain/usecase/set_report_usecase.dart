@@ -13,7 +13,8 @@ class SetReportUsecase implements UseCase<void, Report> {
   Future<Either<Failure, dynamic>> call(Report report) async {
     return await baseReportRepo.setReportToDataBase(report);
   }
-  Future<Either<Failure , Map<String , dynamic>>> getCurrentLocation()async {
-   return await baseReportRepo.getCurrentLocation();
+
+  Future<Either<Failure, Map<String, dynamic>>> getCurrentLocation() async {
+    return await baseReportRepo.getCurrentLocation();
   }
 }

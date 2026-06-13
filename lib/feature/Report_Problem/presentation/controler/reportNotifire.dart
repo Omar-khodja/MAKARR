@@ -14,7 +14,7 @@ class ReportNotifireState {
     this.video,
     this.isLoading = false,
     this.error,
-    this.isGettingLocation = false
+    this.isGettingLocation = false,
   });
   final bool isLoading;
   final bool isGettingLocation;
@@ -28,8 +28,7 @@ class ReportNotifireState {
     String? error,
     List<File>? imageFile,
     String? video,
-    bool? isGettingLocation
-
+    bool? isGettingLocation,
   }) {
     return ReportNotifireState(
       position: position ?? this.position,
@@ -37,7 +36,7 @@ class ReportNotifireState {
       error: error,
       imageFile: imageFile ?? this.imageFile,
       video: video ?? this.video,
-      isGettingLocation: isGettingLocation ?? this.isGettingLocation
+      isGettingLocation: isGettingLocation ?? this.isGettingLocation,
     );
   }
 }
@@ -54,7 +53,11 @@ class Reportnotifire extends StateNotifier<ReportNotifireState> {
         .getCurrentLocation();
     result.fold(
       (l) => state = state.copyWith(error: l.message, isGettingLocation: false),
-      (r) => state = state.copyWith(isGettingLocation: false, position: r, error: null),
+      (r) => state = state.copyWith(
+        isGettingLocation: false,
+        position: r,
+        error: null,
+      ),
     );
   }
 

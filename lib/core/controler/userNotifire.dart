@@ -7,10 +7,6 @@ import 'package:makarr/feature/profile/domain/entities/user_nav.dart';
 import 'package:makarr/feature/profile/domain/usecase/featch_current_user_usercase.dart';
 import 'package:makarr/feature/profile/presentation/controler/navigation_provider.dart';
 
-
-
-
-
 class UserNotofire extends StateNotifier<AsyncValue<UserNav>> {
   UserNotofire({required this.featchCurrentUserUsercase})
     : super(const AsyncValue.loading());
@@ -20,15 +16,15 @@ class UserNotofire extends StateNotifier<AsyncValue<UserNav>> {
     state = const AsyncValue.loading();
     final result = await featchCurrentUserUsercase.call(userId);
     result.fold((l) {
-      state =  AsyncValue.error(l, StackTrace.current);
+      state = AsyncValue.error(l, StackTrace.current);
     }, (r) => state = AsyncValue.data(r));
   }
 
   Future<void> updateProfileImage(String userId, String action) async {
     final currentUser = state.value;
-    if (currentUser == null) return; 
+    if (currentUser == null) return;
     final ImagePicker imagePicker = ImagePicker();
-     XFile? xFiles;
+    XFile? xFiles;
     if (action == 'camera') {
       xFiles = await imagePicker.pickImage(
         source: ImageSource.camera,
@@ -50,7 +46,10 @@ class UserNotofire extends StateNotifier<AsyncValue<UserNav>> {
     );
     result.fold(
       (l) {
-        state =  AsyncValue.error('Failed to update profile image', StackTrace.current);
+        state = AsyncValue.error(
+          'Failed to update profile image',
+          StackTrace.current,
+        );
       },
       (r) {
         state = AsyncValue.data(r);

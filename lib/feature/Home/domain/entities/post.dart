@@ -111,8 +111,8 @@ class Post extends Equatable {
       opinion: opinion ?? this.opinion,
       whoLiked: whoLiked ?? this.whoLiked,
       location: location ?? this.location,
-      question: question ,
-      option: option ,
+      question: question,
+      option: option,
     );
   }
 }

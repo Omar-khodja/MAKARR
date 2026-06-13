@@ -4,7 +4,5 @@ import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
 
 abstract class BaseReportRepo {
   Future<Either<Failure, void>> setReportToDataBase(Report report);
-    Future<Either<Failure, Map<String, dynamic>>> getCurrentLocation();
-
-
+  Future<Either<Failure, Map<String, dynamic>>> getCurrentLocation();
 }

@@ -5,7 +5,7 @@ class PostIconbutton extends StatelessWidget {
     super.key,
     required this.icon,
     this.counter,
-     this.active = false,
+    this.active = false,
     required this.onPressed,
   });
   final IconData icon;

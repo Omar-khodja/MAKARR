@@ -25,5 +25,4 @@ class UserAuthModel extends UserAuth {
       type: user.type,
     );
   }
-
 }

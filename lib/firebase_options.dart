@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'makarr-bc736.firebasestorage.app',
     measurementId: 'G-6W51R2Q2VV',
   );
-
 }

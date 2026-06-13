@@ -27,11 +27,8 @@ class _LoginState extends ConsumerState<Login> {
     super.dispose();
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -154,11 +151,7 @@ class _LoginState extends ConsumerState<Login> {
                 ),
                 const SizedBox(height: 10),
 
-                OutLineButton(
-                  text: "Sing in with Facebook",
-                  fun: () {}
-                   
-                ),
+                OutLineButton(text: "Sing in with Facebook", fun: () {}),
                 const SizedBox(height: 20),
 
                 Text.rich(

@@ -122,7 +122,7 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
         username: "${user.fname} ${user.lname}",
         userImageUrl: user.imagUrl,
         desciption: des,
-        question: question ,
+        question: question,
         photos: state.imageFile,
         pdf: state.pdf,
         time: DateFormat('y-MM-dd HH:mm').parse(DateTime.now().toString()),

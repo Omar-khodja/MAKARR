@@ -11,5 +11,4 @@ abstract class BaseNavigationRepository {
     String userId,
     UserNav currentUser,
   );
-
 }

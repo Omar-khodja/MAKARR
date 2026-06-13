@@ -11,7 +11,7 @@ class UserNav extends Equatable {
     required this.imagUrl,
     required this.wilaya,
     required this.bladya,
-     this.type = "Client",
+    this.type = "Client",
   });
   final String id;
   final String fname;
@@ -35,7 +35,7 @@ class UserNav extends Equatable {
       imagUrl: '',
       wilaya: '',
       bladya: '',
-      type: ""
+      type: "",
     );
   }
 
@@ -75,8 +75,7 @@ class UserNav extends Equatable {
       imagUrl: imagUrl ?? this.imagUrl,
       wilaya: wilaya ?? this.wilaya,
       bladya: bladya ?? this.bladya,
-      type: type ?? this.type
-
+      type: type ?? this.type,
     );
   }
 }

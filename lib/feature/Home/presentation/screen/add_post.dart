@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
-import 'package:makarr/core/component/Custom_elevatedButton.dart';
+import 'package:makarr/core/component/outLineButton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
 import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
@@ -112,24 +112,24 @@ class _AddPostState extends ConsumerState<AddPost> {
                       },
                     ),
                     const SizedBox(height: 20),
-                   TextFormField(
-                        controller: _des,
-                        maxLines: 5,
-                        decoration: InputDecoration(
-                          labelText:
-                              "What's on your mind, ${userState.value!.fname}?",
-                          alignLabelWithHint: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                    TextFormField(
+                      controller: _des,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        labelText:
+                            "What's on your mind, ${userState.value!.fname}?",
+                        alignLabelWithHint: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Description cannot be empty';
-                          }
-                          return null;
-                        },
                       ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Description cannot be empty';
+                        }
+                        return null;
+                      },
+                    ),
 
                     const SizedBox(height: 12),
 
@@ -173,16 +173,15 @@ class _AddPostState extends ConsumerState<AddPost> {
                       mainAxisAlignment: .spaceAround,
                       crossAxisAlignment: .center,
                       children: [
-                        CustomElevatedbutton(
-                          label: 'Photo',
+                        OutLineButton(
+                          text: 'Photo',
                           leadIcon: Icons.photo_library_outlined,
                           fun: notifier.pickImages,
                         ),
-                        CustomElevatedbutton(
-                          label: 'pdf',
+                        OutLineButton(
+                          text: 'pdf',
                           leadIcon: Icons.photo_library_outlined,
                           fun: notifier.pickPdfFile,
-                          isLoading: state.isLoading,
                         ),
                       ],
                     ),
@@ -206,22 +205,22 @@ class _AddPostState extends ConsumerState<AddPost> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextFormField(
-                      controller: _question,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        labelText: "Question?",
-                        alignLabelWithHint: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                    controller: _question,
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      labelText: "Question?",
+                      alignLabelWithHint: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Question cannot be empty';
-                        }
-                        return null;
-                      },
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Question cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
 
                   const SizedBox(height: 12),
                   Expanded(
@@ -244,7 +243,7 @@ class _AddPostState extends ConsumerState<AddPost> {
                   Row(
                     mainAxisAlignment: .spaceEvenly,
                     children: [
-                      PrimaryButton(
+                      OutLineButton(
                         fun: () {
                           _pageController.previousPage(
                             duration: const Duration(milliseconds: 300),
@@ -252,7 +251,7 @@ class _AddPostState extends ConsumerState<AddPost> {
                           );
                         },
                         leadIcon: Icons.arrow_back_ios,
-                        label: "Back",
+                        text: "Back",
                       ),
                       PrimaryButton(
                         fun: () => submit(state, notifier, userState.value!),

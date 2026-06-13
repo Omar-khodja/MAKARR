@@ -7,12 +7,11 @@ import 'package:makarr/feature/profile/data/repository/profile_repository.dart';
 import 'package:makarr/feature/profile/domain/repository/base_profile_repository.dart';
 import 'package:makarr/feature/profile/domain/usecase/featch_current_user_usercase.dart';
 
-
 final baseDataSource = Provider<BaseDataSource>((ref) {
   final FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
-final FirebaseStorage storageRef = FirebaseStorage.instance;
+  final FirebaseStorage storageRef = FirebaseStorage.instance;
   return FirebaseDatasource(firestoreRef: firestoreRef, storageRef: storageRef);
-} );
+});
 
 final navigationRepository = Provider<BaseNavigationRepository>(
   (ref) => NavigationRepository(baseDataSource: ref.read(baseDataSource)),
@@ -24,6 +23,5 @@ final featchCurrentUserUsercaseProvider = Provider<FeatchCurrentUserUsercase>(
     baseNavigationRepository: ref.read(navigationRepository),
   ),
 );
-
 
 ////////PhotoViewCacheManager

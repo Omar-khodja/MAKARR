@@ -8,8 +8,8 @@ import 'package:makarr/feature/profile/data/model/user_model.dart';
 
 class FirebaseDatasource implements BaseDataSource {
   FirebaseDatasource({required this.firestoreRef, required this.storageRef});
-  final FirebaseFirestore firestoreRef ;
-  final FirebaseStorage storageRef ;
+  final FirebaseFirestore firestoreRef;
+  final FirebaseStorage storageRef;
   @override
   Future<UserModel> getUserById(String userId) async {
     try {
@@ -23,8 +23,6 @@ class FirebaseDatasource implements BaseDataSource {
       throw FirestoreException(errorMessage: e.message ?? 'Server error');
     }
   }
-
- 
 
   @override
   Future<String> updateProfileImage(File imageFile, String userId) async {
@@ -50,6 +48,4 @@ class FirebaseDatasource implements BaseDataSource {
       throw ServerException(errorMessage: 'An unexpected error occurred: $e');
     }
   }
-
-
 }

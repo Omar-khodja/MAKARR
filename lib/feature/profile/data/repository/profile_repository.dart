@@ -22,9 +22,6 @@ class NavigationRepository extends BaseNavigationRepository {
     }
   }
 
-
- 
-  
   @override
   Future<Either<Failure, UserNav>> updateProfileImage(
     File imageFile,
@@ -49,6 +46,4 @@ class NavigationRepository extends BaseNavigationRepository {
       return const Left(ServerFailure("Failed to update profile image"));
     }
   }
-
-
 }

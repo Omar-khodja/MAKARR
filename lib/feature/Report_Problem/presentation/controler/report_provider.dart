@@ -11,6 +11,10 @@ final reportBaseDataSourceProvider = Provider<ReportBaseDataSource>((ref) {
   final FirebaseStorage storageRef = FirebaseStorage.instance;
   return FireBaseDataSource(firestoreRef: firestoreRef, storageRef: storageRef);
 });
-final reportRepositoryProvider = Provider((ref) => ReportRepo(ref.read(reportBaseDataSourceProvider)));
+final reportRepositoryProvider = Provider(
+  (ref) => ReportRepo(ref.read(reportBaseDataSourceProvider)),
+);
 //////use case
-final setReportUsecaseProvider = Provider((ref) => SetReportUsecase(ref.read(reportRepositoryProvider)));
+final setReportUsecaseProvider = Provider(
+  (ref) => SetReportUsecase(ref.read(reportRepositoryProvider)),
+);

@@ -46,7 +46,6 @@ void main() async {
   FirebaseFirestore.instance.settings = const Settings(
     cacheSizeBytes: 50 * 1024 * 1024, // 50 MB
   );
-  
 
   runApp(const ProviderScope(child: MyApp()));
 }
