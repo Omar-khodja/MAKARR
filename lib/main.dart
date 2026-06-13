@@ -1,5 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +9,7 @@ import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/navigation_screen.dart';
 import 'package:makarr/feature/auth/presentation/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mapbox;
 import 'firebase_options.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 
@@ -19,10 +20,9 @@ final colorScheme = ColorScheme.fromSeed(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseFirestore.instance.clearPersistence();
+  await firestore.FirebaseFirestore.instance.clearPersistence();
   await dotenv.load(fileName: 'assets/config/.env');
   AwesomeNotifications().initialize(
-    // set the icon to null if you want to use the default app icon
     null,
     [
       NotificationChannel(
@@ -34,7 +34,6 @@ void main() async {
         ledColor: Colors.white,
       ),
     ],
-    // Channel groups are only visual and are not required
     channelGroups: [
       NotificationChannelGroup(
         channelGroupKey: 'basic_channel_group',
@@ -43,10 +42,11 @@ void main() async {
     ],
     debug: true,
   );
-  FirebaseFirestore.instance.settings = const Settings(
+  firestore.FirebaseFirestore.instance.settings = const firestore.Settings(
     cacheSizeBytes: 50 * 1024 * 1024, // 50 MB
   );
 
+  mapbox.MapboxOptions.setAccessToken(dotenv.env['ACCESS_TOKEN']!);
   runApp(const ProviderScope(child: MyApp()));
 }
 

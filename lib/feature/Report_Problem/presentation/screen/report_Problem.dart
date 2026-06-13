@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/core/component/Custom_elevatedButton.dart';
@@ -6,6 +7,7 @@ import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
 import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
 import 'package:makarr/feature/Report_Problem/presentation/controler/reportNotifire.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class ReportProblem extends ConsumerStatefulWidget {
   const ReportProblem({super.key});
@@ -15,14 +17,8 @@ class ReportProblem extends ConsumerStatefulWidget {
 }
 
 class _ReportProblemState extends ConsumerState<ReportProblem> {
-  /*   VideoPlayerController? _videoController;
- */
+  late MapboxMap mapboxMap;
   late final Reportnotifire notifireMethods;
-  /*   @override
-  void dispose() {
-    _videoController?.dispose();
-    super.dispose();
-  } */
 
   @override
   void initState() {
@@ -112,12 +108,6 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
               }).toList(),
             ),
 
-            /*   if (notifire.video != null)
-              VideoCard(
-                videoPath: notifire.video!,
-                onDelete: notifireMethods.deleteVideo,
-              ),
- */
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: .spaceEvenly,
@@ -134,15 +124,37 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
                   fun: notifireMethods.gerCurrentLocation,
                   isLoading: notifire.isGettingLocation,
                 ),
-
-                /*     if (notifire.imageFile.isEmpty)
-                  CustomElevatedbutton(
-                    label: 'Video',
-                    leadIcon: Icons.video_library_outlined,
-                    fun: notifireMethods.pickVideo,
-                  ), */
               ],
             ),
+            const SizedBox(height: 12),
+            if (notifire.position["lat"] != null)
+              SizedBox(
+                width: double.infinity,
+                height: 250,
+              
+                child: ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(12),
+                  child: MapWidget(
+                    onMapCreated: (controller) async {
+                      final lat = notifire.position["lat"];
+                      final lng = notifire.position["lng"];
+                      mapboxMap = controller;
+                      mapboxMap.setCamera(
+                        CameraOptions(
+                          center: Point(coordinates: Position(lng, lat)),
+                          zoom: 12.0,
+                        ),
+                      );
+                      await mapboxMap.location.updateSettings(
+                        LocationComponentSettings(
+                          enabled: true,
+                          pulsingEnabled: true,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
           ],
         ),
       ),
