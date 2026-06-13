@@ -41,22 +41,6 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(authNotifireProvider, (previous, next) {
-      if (next.error != null) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              next.error!,
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-      }
-    });
-    final auth = ref.watch(authNotifireProvider);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -182,7 +166,6 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
                   label: "Create accounte",
                   fun: _submit,
                   tailIcon: Icons.arrow_forward_rounded,
-                  isLoading: auth.isLoading,
                 ),
                 const SizedBox(height: 10),
                 OutLineButton(
@@ -202,7 +185,7 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
     AppLogger.i(selectedBladya.toString());
     AppLogger.i(selectedWilaya.toString());
     final bool isValid = _formkey.currentState!.validate();
-    final auth = ref.read(authNotifireProvider.notifier);
+    final auth = ref.read(authNotifierProvider.notifier);
     if (!isValid) return;
 
     await auth.createUser(

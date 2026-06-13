@@ -19,19 +19,15 @@ final authRepositoryProvider = Provider<BaseAuthRepo>(
 );
 
 ///user cases provider
-final createUserUseCaseProvider = Provider(
-  (ref) {
-   AppLogger.i("createUserUseCaseProvider initialized");
+final createUserUseCaseProvider = Provider((ref) {
+  AppLogger.i("createUserUseCaseProvider initialized");
   return CreateuserUsecase(baseAuthRepo: ref.read(authRepositoryProvider));
-  } 
-);
-final loginUseCaseProvider = Provider(
-  (ref)  {
-       AppLogger.i("loginUseCaseProvider initialized");
+});
+final loginUseCaseProvider = Provider((ref) {
+  AppLogger.i("loginUseCaseProvider initialized");
 
-    return LoginUsecase(baseAuthRepo: ref.read(authRepositoryProvider));
-  }
-);
+  return LoginUsecase(baseAuthRepo: ref.read(authRepositoryProvider));
+});
 
 final singOutUseCaseProvider = Provider(
   (ref) => SingoutUsecase(baseAuthRepo: ref.read(authRepositoryProvider)),

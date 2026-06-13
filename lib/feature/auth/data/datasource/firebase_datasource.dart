@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/feature/auth/data/datasource/base_data_sourse.dart';
 import 'package:makarr/feature/auth/data/model/user_auth_model.dart';
 import 'package:makarr/core/error/exeptions.dart';
@@ -17,7 +18,7 @@ class FirebaseDatasource extends BaseDataSourse {
       );
 
       await firestore.collection("Users").doc(userCredential.user!.uid).set({
-        "id" : userCredential.user!.uid,
+        "id": userCredential.user!.uid,
         'Fname': user.firstName.trim(),
         'Lname': user.lastName.trim(),
         'Phone': user.phone.trim(),
@@ -26,7 +27,7 @@ class FirebaseDatasource extends BaseDataSourse {
         'Wilaya': user.wilaya.trim(),
         'Bladya': user.bladya.trim(),
         'ImagUrl': "",
-        'type':"Client"
+        'type': "Client",
       });
     } on FirebaseAuthException catch (e) {
       throw AuthException(errorMessage: e.message ?? 'Auth error');
@@ -38,12 +39,23 @@ class FirebaseDatasource extends BaseDataSourse {
   @override
   Future<void> login(String email, String password) async {
     try {
+      AppLogger.i("Attempting to log in with email: $email,$password");
       await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      throw AuthException(errorMessage: e.message ?? 'Auth error');
+      if (e.code == 'user-not-found') {
+        throw const AuthException(
+          errorMessage: 'No user found for that email.',
+        );
+      } else if (e.code == 'wrong-password') {
+        throw const AuthException(errorMessage: 'Wrong password provided.');
+      } else if (e.code == 'invalid-email') {
+        throw const AuthException(errorMessage: 'Invalid email format.');
+      } else {
+        throw AuthException(errorMessage: e.message ?? 'Auth error');
+      }
     }
   }
 

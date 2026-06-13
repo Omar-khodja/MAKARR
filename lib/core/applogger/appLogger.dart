@@ -4,11 +4,7 @@ import 'package:logger/logger.dart';
 class AppLogger {
   static final Logger _logger = Logger(
     level: kReleaseMode ? Level.warning : Level.trace,
-    printer: PrettyPrinter(
-      methodCount: 0,
-      errorMethodCount: 5,
-      lineLength: 90,
-    ),
+    printer: PrettyPrinter(methodCount: 0, errorMethodCount: 5, lineLength: 90),
   );
 
   static String _format(String message, String? className) {

@@ -1,10 +1,12 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:makarr/feature/navigation_root/presentation/screen/home_with_nav.dart';
+import 'package:makarr/core/controler/userNotifire.dart';
+import 'package:makarr/navigation_screen.dart';
 import 'package:makarr/feature/auth/presentation/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -19,6 +21,28 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseFirestore.instance.clearPersistence();
   await dotenv.load(fileName: 'assets/config/.env');
+  AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Colors.blue,
+        ledColor: Colors.white,
+      ),
+    ],
+    // Channel groups are only visual and are not required
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupKey: 'basic_channel_group',
+        channelGroupName: 'Basic group',
+      ),
+    ],
+    debug: true,
+  );
   FirebaseFirestore.instance.settings = const Settings(
     cacheSizeBytes: 50 * 1024 * 1024, // 50 MB
   );
@@ -26,12 +50,19 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
+
+  @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+  String? _lastFetchedUid;
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) {
         ColorScheme lightColorScheme;
@@ -65,9 +96,22 @@ class MyApp extends ConsumerWidget {
           home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
-                return HomeWithNav(uId: snapshot.data!.uid);
+              final user = snapshot.data;
+
+              if (user != null) {
+                if (_lastFetchedUid != user.uid) {
+                  _lastFetchedUid = user.uid;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (!mounted) return;
+                    ref
+                        .read(userNotifireProvider.notifier)
+                        .featchCurrentUser(user.uid);
+                  });
+                }
+                return const NavigationScreen();
               }
+
+              _lastFetchedUid = null;
               return const Login();
             },
           ),

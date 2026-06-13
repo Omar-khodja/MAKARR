@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:makarr/core/error/failure.dart';
 
 abstract class UseCase<T, params> {
-
   Future<Either<Failure, T>> call(params params);
 }
 
