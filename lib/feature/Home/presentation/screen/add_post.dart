@@ -20,6 +20,8 @@ class AddPost extends ConsumerStatefulWidget {
 
 class _AddPostState extends ConsumerState<AddPost> {
   final TextEditingController _des = TextEditingController();
+  final TextEditingController _title = TextEditingController();
+
   final TextEditingController _question = TextEditingController();
   final List<TextEditingController> _optionCtrls = [
     TextEditingController(),
@@ -29,7 +31,7 @@ class _AddPostState extends ConsumerState<AddPost> {
     TextEditingController(),
   ];
 
-  final _formkey1 = GlobalKey<FormState>();
+  final _formkey = GlobalKey<FormState>();
 
   final PageController _pageController = PageController();
   int currentpage = 0;
@@ -40,6 +42,7 @@ class _AddPostState extends ConsumerState<AddPost> {
     _pageController.dispose();
     _des.dispose();
     _question.dispose();
+    _title.dispose();
     for (var ctrl in _optionCtrls) {
       ctrl.dispose();
     }
@@ -47,7 +50,7 @@ class _AddPostState extends ConsumerState<AddPost> {
   }
 
   void submit(AddpostnotifireState state, AddPostNotifire ref, UserNav user) {
-    if (_formkey1.currentState!.validate()) {
+    if (_formkey.currentState!.validate()) {
       if (selectedBladya == null || selectedWilaya == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -64,6 +67,7 @@ class _AddPostState extends ConsumerState<AddPost> {
       ref.savePost(
         user: user,
         des: _des.text.trim(),
+        title: _title.text.trim(),
         location: "$selectedWilaya - $selectedBladya",
         question: _question.text.trim(),
         options: _optionCtrls.map((ctrl) => ctrl.text.trim()).toList(),
@@ -81,7 +85,7 @@ class _AddPostState extends ConsumerState<AddPost> {
     return Scaffold(
       appBar: AppBar(title: const Text("Add Post")),
       body: Form(
-        key: _formkey1,
+        key: _formkey,
         child: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
@@ -111,6 +115,24 @@ class _AddPostState extends ConsumerState<AddPost> {
                         );
                       },
                     ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _title,
+                      decoration: InputDecoration(
+                        labelText: "Project name",
+                        alignLabelWithHint: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty || value.length <15 ) {
+                          return 'Description cannot be empty or less than 15 latter';
+                        }
+                        return null;
+                      },
+                    ),
+
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: _des,

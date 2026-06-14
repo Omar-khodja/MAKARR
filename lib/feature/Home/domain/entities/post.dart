@@ -6,6 +6,7 @@ class Post extends Equatable {
   const Post({
     this.id,
     required this.userId,
+    required this.title,
     required this.username,
     required this.userImageUrl,
     required this.desciption,
@@ -23,6 +24,7 @@ class Post extends Equatable {
     this.option = const [],
   });
   final String? id;
+  final String title;
   final String userId;
   final String username;
   final String userImageUrl;
@@ -55,10 +57,12 @@ class Post extends Equatable {
     whoLiked,
     pdfUrl,
     pdfName,
+    time
   ];
   factory Post.empty() {
     return Post(
       id: null,
+      title: "",
       userId: '',
       username: '',
       userImageUrl: '',
@@ -80,6 +84,7 @@ class Post extends Equatable {
 
   Post copyWith({
     String? id,
+    String? title,
     String? userId,
     String? username,
     String? userImageUrl,
@@ -97,6 +102,7 @@ class Post extends Equatable {
   }) {
     return Post(
       id: id ?? this.id,
+      title:  title ?? this.title,
       userId: userId ?? this.userId,
       username: username ?? this.username,
       userImageUrl: userImageUrl ?? this.userImageUrl,

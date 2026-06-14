@@ -10,6 +10,7 @@ class PostMoudel extends Post {
     required super.userId,
     required super.pdfName,
     required super.question,
+    required super.title,
     super.option,
 
     super.pdf,
@@ -24,6 +25,7 @@ class PostMoudel extends Post {
   factory PostMoudel.fromEntity(Post post) {
     return PostMoudel(
       username: post.username,
+      title: post.title,
       userImageUrl: post.userImageUrl,
       desciption: post.desciption,
       question: post.question,
@@ -44,6 +46,7 @@ class PostMoudel extends Post {
   factory PostMoudel.fromMap(Map<String, dynamic> map) {
     return PostMoudel(
       id: map['id'],
+      title: map["title"],
       userId: map['userId'],
       username: map['username'],
       userImageUrl: map['userImageUrl'],
@@ -55,14 +58,15 @@ class PostMoudel extends Post {
       likeNbr: map['likeNbr'] ?? 0,
       opinion: map['opinion'] ?? 0,
       whoLiked: List<String>.from(map['whoLiked'] ?? []),
-      location: map['location'] ?? '',
-      question: map['question'] ?? '',
+      location: map['location'],
+      question: map['question'],
       option: List<String>.from(map['option'] ?? []),
     );
   }
   Map<String, dynamic> toMap() {
     return {
       'id': id ?? '',
+      "title": title,
       'userId': userId,
       'username': username,
       'userImageUrl': userImageUrl,

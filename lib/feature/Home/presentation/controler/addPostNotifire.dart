@@ -106,19 +106,18 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
   Future<void> savePost({
     required UserNav user,
     required String des,
+    required String title,
     required String location,
     required String question,
     List<String?>? options,
   }) async {
     final userid = user.id;
-    if (des.isEmpty) {
-      state = state.copyWith(error: "You must add a description");
-      return;
-    }
+   
     try {
       final Post post = Post(
         pdfName: state.pdf?.path.split('/').last ?? "",
         userId: userid,
+        title: title,
         username: "${user.fname} ${user.lname}",
         userImageUrl: user.imagUrl,
         desciption: des,
