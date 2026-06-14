@@ -10,8 +10,10 @@ class Opinion extends Equatable {
     required this.userId,
     required this.question,
     required this.userProfile,
+    required this.postTitle
   });
   final String id;
+  final String postTitle;
   final String postId;
   final String opinion;
   final String? comment;
@@ -30,5 +32,6 @@ class Opinion extends Equatable {
     userProfile,
     id,
     question,
+    postTitle
   ];
 }

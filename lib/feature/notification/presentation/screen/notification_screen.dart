@@ -1,15 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:makarr/feature/notification/presentation/controler/location_notifire_provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-class NotificationScreen extends StatefulWidget {
+class NotificationScreen extends ConsumerStatefulWidget {
   const NotificationScreen({super.key});
 
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  ConsumerState<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _NotificationScreenState extends ConsumerState<NotificationScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(locationProvider.notifier).getLocations();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Notification screen"),);
+    final location = ref.watch(locationProvider);
+    return RefreshIndicator(
+      onRefresh: () => ref.read(locationProvider.notifier).getLocations(),
+      child: location.when(
+        data: (data) => data.isEmpty
+            ? const Center(child: Text("Notification are empty"))
+            : ListView.builder(
+                itemCount: data.length,
+                itemBuilder: (context, index) => Card(
+                  child: ListTile(
+                    title: Text(data[index]),
+                    trailing: const Icon(Icons.keyboard_arrow_right),
+                  ),
+                ),
+              ),
+        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        loading: () => const Skeletonizer(
+          child: Column(
+            mainAxisAlignment: .start,
+            children: [
+              ListTile(title: Text("data")),
+              ListTile(title: Text("data")),
+              ListTile(title: Text("data")),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

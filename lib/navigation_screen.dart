@@ -49,7 +49,7 @@ import 'package:makarr/feature/notification/presentation/screen/notification_scr
 
           return Scaffold(
             backgroundColor: darcktheme
-                ? Colors.black
+              ? Theme.of(context).colorScheme.surface
                 : Theme.of(context).colorScheme.surfaceContainerHigh,
 
             body: NotificationListener<UserScrollNotification>(

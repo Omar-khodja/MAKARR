@@ -3,9 +3,9 @@ import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/feature/Home/data/datasource/base_datasource_post.dart';
-import 'package:makarr/feature/Home/data/model/opinio_model.dart';
+import 'package:makarr/core/models/opinion_model.dart';
 import 'package:makarr/feature/Home/data/model/post_moudel.dart';
-import 'package:makarr/feature/Home/domain/entities/opinion.dart';
+import 'package:makarr/core/entities/opinion.dart';
 import 'package:makarr/feature/Home/domain/entities/post.dart';
 import 'package:makarr/feature/Home/domain/repository/base_post_repo.dart';
 
@@ -52,7 +52,7 @@ class PostRepo implements BasePostRepo {
   @override
   Future<Either<Failure, void>> setOpinion(Opinion opinio) async {
     try {
-      await baseDataSourcepost.setOpinion(OpinioModel.fromEntity(opinio));
+      await baseDataSourcepost.setOpinion(OpinionModel.fromEntity(opinio));
       return const Right(null);
     } on FirestoreException catch (e) {
       AppLogger.e(e.toString());

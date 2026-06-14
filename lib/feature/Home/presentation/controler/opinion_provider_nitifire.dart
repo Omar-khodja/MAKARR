@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:makarr/feature/Home/domain/entities/opinion.dart';
+import 'package:makarr/core/entities/opinion.dart';
 import 'package:makarr/feature/Home/domain/usecase/pinion_usecase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makarr/feature/Home/presentation/controler/post_provider.dart';

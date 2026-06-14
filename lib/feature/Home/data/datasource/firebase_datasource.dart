@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/feature/Home/data/datasource/base_datasource_post.dart';
-import 'package:makarr/feature/Home/data/model/opinio_model.dart';
+import 'package:makarr/core/models/opinion_model.dart';
 import 'package:makarr/feature/Home/data/model/post_moudel.dart';
 
 class FirebaseDatasource implements BaseDatasourcePost {
@@ -101,12 +101,15 @@ class FirebaseDatasource implements BaseDatasourcePost {
   }
 
   @override
-  Future<void> setOpinion(OpinioModel opinio) async {
+  Future<void> setOpinion(OpinionModel opinio) async {
     try {
+      await firestoreRef.collection("Opinions").doc(opinio.postLocation).set({
+        "title": opinio.postLocation,
+      });
       await firestoreRef
           .collection("Opinions")
           .doc(opinio.postLocation)
-          .collection(opinio.postId)
+          .collection(opinio.postTitle)
           .add(opinio.toJson());
     } on FirebaseException catch (e) {
       throw FirestoreException(errorMessage: e.message!);

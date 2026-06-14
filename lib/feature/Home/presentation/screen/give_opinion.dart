@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
-import 'package:makarr/feature/Home/domain/entities/opinion.dart';
+import 'package:makarr/core/entities/opinion.dart';
 import 'package:makarr/feature/Home/domain/entities/post.dart';
 import 'package:makarr/feature/Home/presentation/controler/opinion_provider_nitifire.dart';
 
@@ -20,16 +20,18 @@ class _GiveOpinionState extends ConsumerState<GiveOpinion> {
 
   void submit() async {
     final user = ref.read(userNotifireProvider);
+    final post = widget.post;
     final bool result = await ref
         .read(opinionProvider.notifier)
         .setOpinion(
           Opinion(
-            postId: widget.post.id!,
+            postId: post.id!,
+            postTitle: post.title,
             opinion: selectedOption!,
             userId: user.value!.id,
-            postLocation: widget.post.location,
+            postLocation: post.location,
             userProfile: user.value!.imagUrl,
-            question: widget.post.question,
+            question: post.question,
 
             comment: comment,
           ),

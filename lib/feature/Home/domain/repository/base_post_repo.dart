@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:makarr/core/error/failure.dart';
-import 'package:makarr/feature/Home/domain/entities/opinion.dart';
+import 'package:makarr/core/entities/opinion.dart';
 import 'package:makarr/feature/Home/domain/entities/post.dart';
 
 abstract class BasePostRepo {

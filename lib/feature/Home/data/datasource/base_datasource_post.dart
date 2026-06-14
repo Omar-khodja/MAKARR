@@ -1,4 +1,4 @@
-import 'package:makarr/feature/Home/data/model/opinio_model.dart';
+import 'package:makarr/core/models/opinion_model.dart';
 import 'package:makarr/feature/Home/data/model/post_moudel.dart';
 
 abstract class BaseDatasourcePost {
@@ -10,5 +10,5 @@ abstract class BaseDatasourcePost {
     String action,
     String location,
   );
-  Future<void> setOpinion(OpinioModel opinio);
+  Future<void> setOpinion(OpinionModel opinio);
 }

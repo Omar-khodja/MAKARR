@@ -1,7 +1,7 @@
-import 'package:makarr/feature/Home/domain/entities/opinion.dart';
+import 'package:makarr/core/entities/opinion.dart';
 
-class OpinioModel extends Opinion {
-  OpinioModel({
+class OpinionModel extends Opinion {
+ const OpinionModel({
     required super.postId,
     required super.opinion,
     super.comment,
@@ -10,10 +10,12 @@ class OpinioModel extends Opinion {
     required super.userProfile,
     required super.id,
     required super.question,
+    required super.postTitle
   });
-  factory OpinioModel.fromJson(Map<String, dynamic> json) {
-    return OpinioModel(
+  factory OpinionModel.fromJson(Map<String, dynamic> json) {
+    return OpinionModel(
       id: json['id'],
+      postTitle: json["postTitle"],
       postId: json['postId'],
       opinion: json['opinion'],
       comment: json['comment'],
@@ -23,9 +25,10 @@ class OpinioModel extends Opinion {
       question: json["question"],
     );
   }
-  factory OpinioModel.fromEntity(Opinion opinio) {
-    return OpinioModel(
+  factory OpinionModel.fromEntity(Opinion opinio) {
+    return OpinionModel(
       id: opinio.id,
+      postTitle: opinio.postTitle,
       postId: opinio.postId,
       opinion: opinio.opinion,
       comment: opinio.comment,

@@ -15,7 +15,8 @@ import 'package:dynamic_color/dynamic_color.dart';
 
 final colorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue.shade900,
-).copyWith();
+).copyWith(secondary: Colors.deepPurple, surface: Colors.grey.shade100);
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
