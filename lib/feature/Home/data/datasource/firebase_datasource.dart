@@ -109,7 +109,15 @@ class FirebaseDatasource implements BaseDatasourcePost {
       await firestoreRef
           .collection("Opinions")
           .doc(opinio.postLocation)
-          .collection(opinio.postTitle)
+          .collection("PostTitle")
+          .doc(opinio.postTitle)
+          .set({"title": opinio.postTitle});
+      await firestoreRef
+          .collection("Opinions")
+          .doc(opinio.postLocation)
+          .collection("PostTitle")
+          .doc(opinio.postTitle)
+          .collection("PostOpinion")
           .add(opinio.toJson());
     } on FirebaseException catch (e) {
       throw FirestoreException(errorMessage: e.message!);

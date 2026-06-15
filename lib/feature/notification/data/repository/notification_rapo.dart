@@ -9,18 +9,23 @@ class NotificationRapo implements BaseNotificationsRepo {
   NotificationRapo({required this.datasource});
   final BaseNotificationDataSource datasource;
   @override
-  Future<Either<Failure, List<String>>> getLocation()async{
-    try{
+  Future<Either<Failure, List<String>>> getLocation() async {
+    try {
       final List<String> response = await datasource.getLocation();
       return right(response);
-    }on FirestoreException catch(e){
+    } on FirestoreException catch (e) {
       return Left(ServerFailure(e.errorMessage));
     }
   }
 
   @override
-  Future<Either<Failure, Opinion>> getOpinion() {
-    // TODO: implement getOpinion
-    throw UnimplementedError();
+  Future<Either<Failure, List<String>>> getPostTitles(String location) async {
+    try {
+      final result = await datasource.getPostTitles(location);
+      return right(result);
+    } on FirestoreException catch (e) {
+      return Left(ServerFailure(e.errorMessage));
+
+    }
   }
-} 
+}

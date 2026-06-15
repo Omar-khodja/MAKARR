@@ -8,21 +8,38 @@ class NotificationsDatasource extends BaseNotificationDataSource {
   final FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
   @override
   Future<List<String>> getLocation() async {
-    try{
+    try {
       final snapshot = await firestoreRef.collection("Opinions").get();
 
-      final List<String> titles = snapshot.docs.map((items) => items.id ).toList();
-      AppLogger.i(titles.toString());
+      final List<String> titles = snapshot.docs
+          .map((items) => items.id)
+          .toList();
       return titles;
-
-    }on FirebaseException catch(e){
-      throw FirestoreException(errorMessage: e.message ?? "cant featch posts for unkown reason!");
+    } on FirebaseException catch (e) {
+      throw FirestoreException(
+        errorMessage: e.message ?? "cant featch posts for unkown reason!",
+      );
     }
   }
-  
+
   @override
-  Future<OpinionModel> getOpinion() {
-    // TODO: implement getOpinion
-    throw UnimplementedError();
+   Future<List<String>> getPostTitles(String location) async {
+    try {
+      final snapshot = await firestoreRef
+          .collection("Opinions")
+          .doc(location)
+          .collection("PostTitle")
+          .get();
+
+      final List<String> titles = snapshot.docs
+          .map((items) => items.id)
+          .toList();
+      return titles;
+    } on FirebaseException catch (e) {
+
+      throw FirestoreException(
+        errorMessage: e.message ?? "cant featch posts titles for unkown reason!",
+      );
+    }
   }
 }

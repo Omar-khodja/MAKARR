@@ -41,6 +41,7 @@ class OpinionModel extends Opinion {
   Map<String, dynamic> toJson() {
     return {
       'postId': postId,
+      'postTitle': postTitle,
       'opinion': opinion,
       'comment': comment,
       'postLocation': postLocation,
