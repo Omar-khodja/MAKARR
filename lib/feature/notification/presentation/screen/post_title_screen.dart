@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:makarr/feature/notification/presentation/controler/opinion_notifire_provider.dart';
 import 'package:makarr/feature/notification/presentation/controler/post_title_notifireprovider.dart';
+import 'package:makarr/feature/notification/presentation/screen/opinions_screen.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-
 class PostTitleScreen extends ConsumerWidget {
-  const PostTitleScreen({super.key});
+  const PostTitleScreen({super.key, required this.location});
+  final String location;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titles = ref.watch(postTitleprovider);
     return Scaffold(
-      appBar: AppBar(title: const Text("Posts Titles"),),
+      appBar: AppBar(title: const Text("Posts Titles")),
       body: titles.when(
         data: (data) => ListView.builder(
           itemCount: data.length,
           itemBuilder: (context, index) => InkWell(
             onTap: () {
-              ref.read(postTitleprovider.notifier).gettitles(data[index]);
+              ref
+                  .read(opinionsProvider.notifier)
+                  .getOpinion(data[index], location);
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const PostTitleScreen()),
+                MaterialPageRoute(builder: (context) => const OpinionsScreen()),
               );
             },
             child: Card(
@@ -31,7 +35,7 @@ class PostTitleScreen extends ConsumerWidget {
           ),
         ),
         error: (error, stackTrace) => Center(child: Text(error.toString())),
-        loading: () =>  const Skeletonizer(
+        loading: () => const Skeletonizer(
           child: Column(
             mainAxisAlignment: .start,
             children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/core/entities/opinion.dart';
@@ -20,19 +21,28 @@ class _GiveOpinionState extends ConsumerState<GiveOpinion> {
 
   void submit() async {
     final user = ref.read(userNotifireProvider);
-    final post = widget.post;
+    final data = widget.post;
+    if (widget.post.option != null && selectedOption == "") {
+      Fluttertoast.showToast(
+        msg: "Please Select Option befor submiting ",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return;
+    }
+
     final bool result = await ref
         .read(opinionProvider.notifier)
         .setOpinion(
           Opinion(
-            postId: post.id!,
-            postTitle: post.title,
+            postId: data.id!,
+            postTitle: data.title,
             opinion: selectedOption!,
             userId: user.value!.id,
-            postLocation: post.location,
+            postLocation: data.location,
             userProfile: user.value!.imagUrl,
-            question: post.question,
-
+            question: data.question,
+            userName: data.username,
             comment: comment,
           ),
         );

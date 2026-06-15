@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/entities/opinion.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/error/failure.dart';
@@ -14,6 +15,8 @@ class NotificationRapo implements BaseNotificationsRepo {
       final List<String> response = await datasource.getLocation();
       return right(response);
     } on FirestoreException catch (e) {
+      AppLogger.e("getLocation: ${e.errorMessage}");
+
       return Left(ServerFailure(e.errorMessage));
     }
   }
@@ -24,8 +27,23 @@ class NotificationRapo implements BaseNotificationsRepo {
       final result = await datasource.getPostTitles(location);
       return right(result);
     } on FirestoreException catch (e) {
+      AppLogger.e("getPostTitles: ${e.errorMessage}");
       return Left(ServerFailure(e.errorMessage));
+    }
+  }
 
+  @override
+  Future<Either<Failure, List<Opinion>>> getOptions(
+    String postTitle,
+    String location,
+  ) async {
+    try {
+      final result = await datasource.getOptions(postTitle, location);
+      return right(result);
+    } on FirestoreException catch (e) {
+      AppLogger.e("getOptions: ${e.errorMessage}");
+
+      return Left(ServerFailure(e.errorMessage));
     }
   }
 }

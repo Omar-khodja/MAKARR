@@ -10,11 +10,12 @@ class OpinionModel extends Opinion {
     required super.userProfile,
     required super.id,
     required super.question,
-    required super.postTitle
+    required super.postTitle,
+    required super.userName
   });
-  factory OpinionModel.fromJson(Map<String, dynamic> json) {
+  factory OpinionModel.fromJson(Map<String, dynamic> json , String id) {
     return OpinionModel(
-      id: json['id'],
+      id: id,
       postTitle: json["postTitle"],
       postId: json['postId'],
       opinion: json['opinion'],
@@ -23,6 +24,7 @@ class OpinionModel extends Opinion {
       userId: json['userId'],
       userProfile: json['userProfile'],
       question: json["question"],
+      userName: json["userName"],
     );
   }
   factory OpinionModel.fromEntity(Opinion opinio) {
@@ -34,6 +36,7 @@ class OpinionModel extends Opinion {
       comment: opinio.comment,
       postLocation: opinio.postLocation,
       userId: opinio.userId,
+      userName: opinio.userName,
       userProfile: opinio.userProfile,
       question: opinio.question,
     );
@@ -48,6 +51,7 @@ class OpinionModel extends Opinion {
       'userId': userId,
       'userProfile': userProfile,
       "question": question,
+      "userName": userName
     };
   }
 }

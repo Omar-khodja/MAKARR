@@ -34,7 +34,8 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
                     ref.read(postTitleprovider.notifier).gettitles(data[index]);
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const PostTitleScreen(),
+                        builder: (context) =>
+                            PostTitleScreen(location: data[index]),
                       ),
                     );
                   },
