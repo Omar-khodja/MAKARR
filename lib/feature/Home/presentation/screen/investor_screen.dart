@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/feature/Home/domain/entities/post.dart';
 import 'package:makarr/feature/Home/presentation/component/post/post_card.dart';
+import 'package:makarr/feature/Home/presentation/controler/Investment_notifire.dart';
 import 'package:makarr/feature/Home/presentation/controler/get_post_notifire.dart';
-import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+class InvestorScreen extends ConsumerStatefulWidget {
+  const InvestorScreen({super.key});
 
   @override
-  ConsumerState<HomeScreen> createState() => _HomeScreen();
+  ConsumerState<InvestorScreen> createState() => _InvestorScreenState();
 }
 
-class _HomeScreen extends ConsumerState<HomeScreen> {
+class _InvestorScreenState extends ConsumerState<InvestorScreen> {
   CarouselController carouselController = CarouselController();
   @override
   void dispose() {
-    super.dispose();
     carouselController.dispose();
+    super.dispose();
   }
 
   @override
@@ -29,15 +30,13 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
       if (!mounted) return;
       final user = ref.read(userNotifireProvider);
       if (user.value == null) return;
-      ref
-          .read(getPostNotifireProvider.notifier)
-          .getPost("${user.value!.wilaya} - ${user.value!.bladya}");
+      ref.read(investmentNotifireProvider.notifier).getInvestmentPost();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(getPostNotifireProvider);
+    final state = ref.watch(investmentNotifireProvider);
     final user = ref.read(userNotifireProvider);
 
     return RefreshIndicator(
@@ -69,7 +68,7 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
                   itemBuilder: (context, index) {
                     final post = data[index];
                     return PostCard(
-                      postType: "Client",
+                      postType: "Investment",
                       userId: user.value!.id,
                       carouselController: carouselController,
                       post: post,
@@ -122,7 +121,6 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
                     "https://firebasestorage.googleapis.com/v0/b/makarr-bc736.firebasestorage.app/o/profile_images%2FgW6AJ2U71dVXZOh7LdogxC3Tbfp2.jpg?alt=media&token=e761f634-a337-4285-ba18-c10c5cfb5e89",
                   ],
                   question: "question ?",
-
                 ),
               );
             },

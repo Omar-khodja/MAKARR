@@ -5,11 +5,14 @@ abstract class BaseDatasourcePost {
   Future<void> setPost(PostMoudel post);
   Future<void> setPostForInvestor(PostMoudel post);
   Future<List<PostMoudel>> getPost(String location);
+  Future<List<PostMoudel>> getInvestmentPost();
+
   Future<void> setLike(
     String userId,
     String postId,
     String action,
     String location,
+    String type,
   );
   Future<void> setOpinion(OpinionModel opinio);
 }

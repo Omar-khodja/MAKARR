@@ -5,7 +5,8 @@ import 'package:makarr/feature/Home/domain/entities/post.dart';
 import 'package:makarr/feature/Home/presentation/component/post/postCarousel.dart';
 import 'package:makarr/feature/Home/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/feature/Home/presentation/component/post/post_user_info.dart';
-import 'package:makarr/feature/Home/presentation/controler/get_postNotifire.dart';
+import 'package:makarr/feature/Home/presentation/controler/Investment_notifire.dart';
+import 'package:makarr/feature/Home/presentation/controler/get_post_notifire.dart';
 import 'package:makarr/feature/Home/presentation/screen/give_opinion.dart';
 import 'package:makarr/feature/Home/presentation/screen/pdfViewer.dart';
 
@@ -15,15 +16,18 @@ class PostCard extends ConsumerWidget {
     required this.carouselController,
     required this.post,
     required this.userId,
+    required this.postType,
   });
   final CarouselController carouselController;
   final Post post;
   final String userId;
+  final String postType;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final darcktheme = Theme.of(context).brightness == Brightness.dark;
     final state = ref.read(getPostNotifireProvider.notifier);
+    final stateinvestment = ref.read(investmentNotifireProvider.notifier);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 4, top: 4),
@@ -96,7 +100,9 @@ class PostCard extends ConsumerWidget {
                       : FontAwesome5Regular.heart,
                   counter: post.likeNbr,
                   active: post.whoLiked.contains(userId),
-                  onPressed: () => state.setLike(userId, post),
+                  onPressed: () => postType == "Client"
+                      ? state.setLike(userId, post)
+                      : stateinvestment.setLike(userId, post),
                 ),
                 PostIconbutton(
                   icon: FontAwesome5Regular.comment,

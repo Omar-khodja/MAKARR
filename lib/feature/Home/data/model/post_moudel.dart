@@ -9,7 +9,7 @@ class PostMoudel extends Post {
     required super.id,
     required super.userId,
     required super.pdfName,
-    required super.question,
+    super.question,
     required super.title,
     super.option,
 
@@ -43,7 +43,7 @@ class PostMoudel extends Post {
       option: post.option,
     );
   }
-  factory PostMoudel.fromMap(Map<String, dynamic> map) {
+  factory PostMoudel.fromMapClient(Map<String, dynamic> map) {
     return PostMoudel(
       id: map['id'],
       title: map["title"],
@@ -61,6 +61,23 @@ class PostMoudel extends Post {
       location: map['location'],
       question: map['question'],
       option: List<String>.from(map['option'] ?? []),
+    );
+  }
+  factory PostMoudel.fromMapInvestor(Map<String, dynamic> map) {
+    return PostMoudel(
+      id: map['id'],
+      title: map["title"],
+      userId: map['userId'],
+      username: map['username'],
+      userImageUrl: map['userImageUrl'],
+      desciption: map['desciption'],
+      photosUrl: List<String>.from(map['photosUrl'] ?? []),
+      pdfUrl: map['pdfUrl'] ?? '',
+      pdfName: map['pdfName'] ?? '',
+      time: DateTime.parse(map['time']),
+      likeNbr: map['likeNbr'] ?? 0,
+      whoLiked: List<String>.from(map['whoLiked'] ?? []),
+      location: map['location'],
     );
   }
   Map<String, dynamic> toClientMap() {
@@ -83,7 +100,8 @@ class PostMoudel extends Post {
       'option': option,
     };
   }
-    Map<String, dynamic> toInvestorMap() {
+
+  Map<String, dynamic> toInvestorMap() {
     return {
       'id': id ?? '',
       "title": title,

@@ -8,11 +8,14 @@ abstract class BasePostRepo {
     Future<Either<Failure, String>> setInvestorPost(Post post);
 
   Future<Either<Failure, List<Post>>> getPost(String location);
+    Future<Either<Failure, List<Post>>> getInvestmentPost();
+
   Future<void> setLike(
     String userId,
     String postId,
     String action,
     String location,
+    String type
   );
   Future<Either<Failure, void>> setOpinion(Opinion opinio);
 }

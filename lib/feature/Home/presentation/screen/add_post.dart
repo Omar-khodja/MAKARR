@@ -5,7 +5,7 @@ import 'package:makarr/core/component/outLineButton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
 import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
-import 'package:makarr/feature/Home/presentation/controler/addPostNotifire.dart';
+import 'package:makarr/feature/Home/presentation/controler/addPost_notifire.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/feature/Home/presentation/screen/add_question_option.dart';
 import 'package:makarr/feature/Home/presentation/screen/pdfViewer.dart';

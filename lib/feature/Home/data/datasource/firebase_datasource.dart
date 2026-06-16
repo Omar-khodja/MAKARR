@@ -56,7 +56,7 @@ class FirebaseDatasource implements BaseDatasourcePost {
           .orderBy("time", descending: true)
           .get();
       final List<PostMoudel> posts = snapshot.docs
-          .map((item) => PostMoudel.fromMap(item.data()))
+          .map((item) => PostMoudel.fromMapClient(item.data()))
           .toList();
       return posts;
     } on FirebaseException catch (e) {
@@ -70,28 +70,43 @@ class FirebaseDatasource implements BaseDatasourcePost {
     String postId,
     String action,
     String location,
+    String type,
   ) async {
     try {
       if (action == "Like") {
-        await firestoreRef
-            .collection("Locations")
-            .doc(location)
-            .collection("Posts")
-            .doc(postId)
-            .update({
-              "likeNbr": FieldValue.increment(1),
-              "whoLiked": FieldValue.arrayUnion([userId]),
-            });
+        if (type == "Client") {
+          await firestoreRef
+              .collection("ClientPost")
+              .doc(location)
+              .collection("Posts")
+              .doc(postId)
+              .update({
+                "likeNbr": FieldValue.increment(1),
+                "whoLiked": FieldValue.arrayUnion([userId]),
+              });
+        } else {
+          await firestoreRef.collection("InvestorPosts").doc(postId).update({
+            "likeNbr": FieldValue.increment(1),
+            "whoLiked": FieldValue.arrayUnion([userId]),
+          });
+        }
       } else {
-        await firestoreRef
-            .collection("Locations")
-            .doc(location)
-            .collection("Posts")
-            .doc(postId)
-            .update({
-              "likeNbr": FieldValue.increment(-1),
-              "whoLiked": FieldValue.arrayRemove([userId]),
-            });
+        if (type == "Client") {
+          await firestoreRef
+              .collection("ClientPost")
+              .doc(location)
+              .collection("Posts")
+              .doc(postId)
+              .update({
+                "likeNbr": FieldValue.increment(-1),
+                "whoLiked": FieldValue.arrayRemove([userId]),
+              });
+        } else {
+          await firestoreRef.collection("InvestorPosts").doc(postId).update({
+            "likeNbr": FieldValue.increment(-1),
+            "whoLiked": FieldValue.arrayRemove([userId]),
+          });
+        }
       }
     } on FirebaseException catch (e) {
       throw FirestoreException(errorMessage: e.message!);
@@ -123,7 +138,7 @@ class FirebaseDatasource implements BaseDatasourcePost {
       throw FirestoreException(errorMessage: e.message!);
     }
   }
-  
+
   @override
   Future<void> setPostForInvestor(PostMoudel post) async {
     final List<String> photosUrl = [];
@@ -132,8 +147,6 @@ class FirebaseDatasource implements BaseDatasourcePost {
     try {
       final postref = await firestoreRef
           .collection("InvestorPosts")
-          .doc(post.location)
-          .collection("Posts")
           .add(post.toInvestorMap());
       if (post.photos?.isNotEmpty == true) {
         for (int i = 0; i < post.photos!.length; i++) {
@@ -159,6 +172,19 @@ class FirebaseDatasource implements BaseDatasourcePost {
       throw ServerException(errorMessage: e.message ?? 'Firebase error');
     } catch (e) {
       throw ServerException(errorMessage: 'Unexpected error: $e');
+    }
+  }
+
+  @override
+  Future<List<PostMoudel>> getInvestmentPost() async {
+    try {
+      final snapshot = await firestoreRef.collection("InvestorPosts").get();
+      final List<PostMoudel> posts = snapshot.docs
+          .map((item) => PostMoudel.fromMapInvestor(item.data()))
+          .toList();
+      return posts;
+    } on FirebaseException catch (e) {
+      throw FirestoreException(errorMessage: 'Unexpected error: $e');
     }
   }
 }

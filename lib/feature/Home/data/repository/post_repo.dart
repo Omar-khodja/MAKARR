@@ -41,9 +41,10 @@ class PostRepo implements BasePostRepo {
     String postId,
     String action,
     String location,
+    String type
   ) async {
     try {
-      await baseDataSourcepost.setLike(userId, postId, action, location);
+      await baseDataSourcepost.setLike(userId, postId, action, location,type);
     } catch (e) {
       AppLogger.e(e.toString());
     }
@@ -68,6 +69,17 @@ class PostRepo implements BasePostRepo {
     } catch (e) {
       AppLogger.e(e.toString());
       return Left(ServerFailure(e.toString()));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, List<Post>>> getInvestmentPost()async {
+       try {
+      final posts = await baseDataSourcepost.getInvestmentPost();
+      return Right(posts);
+    } catch (e) {
+      AppLogger.e(e.toString());
+      return const Left(ServerFailure("Failed to get investment posts"));
     }
   }
 }
