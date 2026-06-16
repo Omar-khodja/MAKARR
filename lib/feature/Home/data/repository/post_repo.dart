@@ -59,4 +59,15 @@ class PostRepo implements BasePostRepo {
       return Left(ServerFailure(e.toString()));
     }
   }
+  
+  @override
+  Future<Either<Failure, String>> setInvestorPost(Post post)async {
+      try {
+      await baseDataSourcepost.setPostForInvestor(PostMoudel.fromEntity(post));
+      return const Right("sep post seccessfully");
+    } catch (e) {
+      AppLogger.e(e.toString());
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

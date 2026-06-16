@@ -63,7 +63,7 @@ class PostMoudel extends Post {
       option: List<String>.from(map['option'] ?? []),
     );
   }
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toClientMap() {
     return {
       'id': id ?? '',
       "title": title,
@@ -81,6 +81,23 @@ class PostMoudel extends Post {
       'location': location,
       'question': question,
       'option': option,
+    };
+  }
+    Map<String, dynamic> toInvestorMap() {
+    return {
+      'id': id ?? '',
+      "title": title,
+      'userId': userId,
+      'username': username,
+      'userImageUrl': userImageUrl,
+      'desciption': desciption,
+      'photosUrl': photosUrl ?? [],
+      'pdfUrl': pdfUrl ?? '',
+      'pdfName': pdfName,
+      'time': time!.toIso8601String(),
+      'likeNbr': likeNbr,
+      'whoLiked': whoLiked,
+      'location': location,
     };
   }
 }

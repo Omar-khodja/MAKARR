@@ -41,7 +41,7 @@ class _GiveOpinionState extends ConsumerState<GiveOpinion> {
             userId: user.value!.id,
             postLocation: data.location,
             userProfile: user.value!.imagUrl,
-            question: data.question,
+            question: data.question!,
             userName: data.username,
             comment: comment,
           ),

@@ -82,7 +82,22 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
             ],
           );
         },
-        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        error: (error, stackTrace) => RefreshIndicator(
+           onRefresh: () async {
+        ref
+            .read(getPostNotifireProvider.notifier)
+            .getPost("${user.value!.wilaya} - ${user.value!.bladya}");
+
+        Fluttertoast.showToast(
+          msg: "Reloading...",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+      }
+          ,child: Center(child: Text(error.toString()))),
         loading: () => Skeletonizer(
           enabled: true,
           child: ListView.builder(

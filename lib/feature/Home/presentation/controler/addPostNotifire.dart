@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/legacy.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
-import 'package:makarr/core/usecases/baseusecase.dart';
 import 'package:makarr/feature/Home/domain/entities/post.dart';
+import 'package:makarr/feature/Home/domain/usecase/set_post_usecase.dart';
 import 'package:makarr/feature/profile/domain/entities/user_nav.dart';
 import 'package:makarr/feature/Home/presentation/controler/post_provider.dart';
 
@@ -48,7 +48,7 @@ class AddpostnotifireState {
 class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
   AddPostNotifire({required this.addPostUsecase})
     : super(AddpostnotifireState());
-  final UseCase addPostUsecase;
+  final SetPostUsecase addPostUsecase;
 
   Future<void> pickImages() async {
     final xFiles = await ImagePicker().pickMultiImage(
@@ -108,7 +108,8 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
     required String des,
     required String title,
     required String location,
-    required String question,
+     String? question,
+    required String setPostFor,
     List<String?>? options,
   }) async {
     final userid = user.id;
@@ -128,7 +129,7 @@ class AddPostNotifire extends StateNotifier<AddpostnotifireState> {
         location: location,
         option: options ?? const [],
       );
-      await addPostUsecase.call(post);
+      await addPostUsecase.call(post ,setPostFor );
       AwesomeNotifications().createNotification(
         content: NotificationContent(
           id: 1,

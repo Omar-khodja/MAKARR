@@ -5,6 +5,8 @@ import 'package:makarr/feature/Home/domain/entities/post.dart';
 
 abstract class BasePostRepo {
   Future<Either<Failure, String>> setPost(Post post);
+    Future<Either<Failure, String>> setInvestorPost(Post post);
+
   Future<Either<Failure, List<Post>>> getPost(String location);
   Future<void> setLike(
     String userId,

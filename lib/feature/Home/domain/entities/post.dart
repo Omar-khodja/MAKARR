@@ -12,7 +12,7 @@ class Post extends Equatable {
     required this.desciption,
     required this.time,
     required this.location,
-    required this.question,
+     this.question,
     this.pdfName,
     this.pdf,
     this.pdfUrl,
@@ -39,7 +39,7 @@ class Post extends Equatable {
   final int? opinion;
   final List<String> whoLiked;
   final String location;
-  final String question;
+  final String? question;
   final List<String?>? option;
   @override
   List<Object?> get props => [

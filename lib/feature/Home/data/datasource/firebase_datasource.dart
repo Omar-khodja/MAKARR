@@ -15,10 +15,10 @@ class FirebaseDatasource implements BaseDatasourcePost {
 
     try {
       final postref = await firestoreRef
-          .collection("Locations")
+          .collection("ClientPost")
           .doc(post.location)
           .collection("Posts")
-          .add(post.toMap());
+          .add(post.toClientMap());
       if (post.photos?.isNotEmpty == true) {
         for (int i = 0; i < post.photos!.length; i++) {
           final imageRef = storageRef.ref().child(
@@ -50,7 +50,7 @@ class FirebaseDatasource implements BaseDatasourcePost {
   Future<List<PostMoudel>> getPost(String location) async {
     try {
       final snapshot = await firestoreRef
-          .collection("Locations")
+          .collection("ClientPost")
           .doc(location)
           .collection("Posts")
           .orderBy("time", descending: true)
@@ -121,6 +121,44 @@ class FirebaseDatasource implements BaseDatasourcePost {
           .add(opinio.toJson());
     } on FirebaseException catch (e) {
       throw FirestoreException(errorMessage: e.message!);
+    }
+  }
+  
+  @override
+  Future<void> setPostForInvestor(PostMoudel post) async {
+    final List<String> photosUrl = [];
+    String pdfUrl = "";
+
+    try {
+      final postref = await firestoreRef
+          .collection("InvestorPosts")
+          .doc(post.location)
+          .collection("Posts")
+          .add(post.toInvestorMap());
+      if (post.photos?.isNotEmpty == true) {
+        for (int i = 0; i < post.photos!.length; i++) {
+          final imageRef = storageRef.ref().child(
+            'post_images/${postref.id}/image_$i.jpg',
+          );
+          await imageRef.putFile(post.photos![i]);
+          final imageUrl = await imageRef.getDownloadURL();
+          photosUrl.add(imageUrl);
+        }
+      }
+      if (post.pdf != null) {
+        final fileRef = storageRef.ref().child('post_pdfs/${postref.id}.pdf');
+        await fileRef.putFile(post.pdf!);
+        pdfUrl = await fileRef.getDownloadURL();
+      }
+      await postref.update({
+        "id": postref.id,
+        'photosUrl': photosUrl,
+        'pdfUrl': pdfUrl,
+      });
+    } on FirebaseException catch (e) {
+      throw ServerException(errorMessage: e.message ?? 'Firebase error');
+    } catch (e) {
+      throw ServerException(errorMessage: 'Unexpected error: $e');
     }
   }
 }
