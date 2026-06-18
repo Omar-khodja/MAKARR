@@ -9,7 +9,7 @@ import 'package:makarr/feature/auth/presentation/controler/auth_provider.dart';
 import 'package:makarr/core/usecases/baseusecase.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class AuthNotifier extends StateNotifier<AsyncValue<UserAuth?>> {
+class AuthNotifier extends StateNotifier<AsyncValue<bool?>> {
   AuthNotifier({
     required this.createuserUsecase,
     required this.loginUsecase,
@@ -22,19 +22,31 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserAuth?>> {
 
   Future<void> createUser(UserAuth user) async {
     final result = await createuserUsecase.call(user);
-    result.fold(
-      (l) =>
-          Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red),
-      (r) => Fluttertoast.showToast(msg: "User created successfully"),
+    state = result.fold(
+      (l) {
+        Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red);
+        return const AsyncValue.data(false);
+      },
+      (r) {
+        Fluttertoast.showToast(msg: "User created successfully");
+        return const AsyncValue.data(true);
+      },
     );
   }
 
   Future<void> login(String email, String password) async {
+    state = const AsyncValue.loading();
+
     final result = await loginUsecase.call((email, password));
-    result.fold(
-      (l) =>
-          Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red),
-      (r) => Fluttertoast.showToast(msg: "Login successfully"),
+    state = result.fold(
+      (l) {
+        Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red);
+        return const AsyncValue.data(false);
+      },
+      (r) {
+        Fluttertoast.showToast(msg: "Login successfully");
+        return const AsyncValue.data(true);
+      },
     );
   }
 
@@ -48,7 +60,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserAuth?>> {
 }
 
 final authNotifierProvider =
-    StateNotifierProvider<AuthNotifier, AsyncValue<UserAuth?>>((ref) {
+    StateNotifierProvider<AuthNotifier, AsyncValue<bool?>>((ref) {
       return AuthNotifier(
         createuserUsecase: ref.read(createUserUseCaseProvider),
         loginUsecase: ref.read(loginUseCaseProvider),

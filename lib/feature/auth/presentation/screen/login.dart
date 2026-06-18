@@ -28,160 +28,180 @@ class _LoginState extends ConsumerState<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final userAuth = ref.watch(authNotifierProvider);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-          child: Form(
-            key: _formkey,
-            child: Column(
-              children: [
-                Center(
-                  child: Image.asset(
-                    "assets/logo/logo.png",
-                    width: 200,
-                    height: 200,
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    "Login with email",
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
-                      letterSpacing: 5,
-                    ),
-                    maxLines: 1,
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                CustomTextformfield(
-                  controller: _emailController,
-                  label: "Enter your email",
-                  icon: Icons.email_outlined,
-                  inputType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null ||
-                        value.trim().isEmpty ||
-                        !value.contains("@")) {
-                      return "Pealse enter valid email";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: !showPassword,
-                  decoration: InputDecoration(
-                    labelText: 'Enter your password',
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    border: const OutlineInputBorder(),
-
-                    suffixIcon: IconButton(
-                      onPressed: () => setState(() {
-                        showPassword = !showPassword;
-                      }),
-                      icon: Icon(
-                        showPassword ? Icons.visibility : Icons.visibility_off,
-                      ),
+      body: userAuth.when(
+        data: (data) => SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+            child: Form(
+              key: _formkey,
+              child: Column(
+                children: [
+                  Center(
+                    child: Image.asset(
+                      "assets/logo/logo.png",
+                      width: 200,
+                      height: 200,
                     ),
                   ),
-                  validator: (value) {
-                    if (value == null || value.trim().length < 6) {
-                      return "Password must be at  least 6 characters! ";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-
-                const Row(
-                  mainAxisAlignment: .end,
-                  children: [
-                    Text(
-                      "forgot  password? ",
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-
-                PrimaryButton(
-                  label: "Singin",
-                  fun: _submit,
-                  tailIcon: Icons.login,
-                ),
-                const SizedBox(height: 20),
-
-                Row(
-                  mainAxisAlignment: .center,
-                  children: [
-                    const Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                        endIndent: 10,
-                      ),
-                    ),
-                    Text(
-                      "Sing in with social media",
+                  Center(
+                    child: Text(
+                      "Login with email",
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        letterSpacing: 5,
                       ),
+                      maxLines: 1,
                     ),
-                    const Expanded(
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                        indent: 10,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                OutLineButton(
-                  text: "Sing in with Google",
-                  fun: () {},
-                  image: "assets/logo/google.png",
-                ),
-                const SizedBox(height: 10),
+                  ),
+                  const SizedBox(height: 20),
 
-                OutLineButton(text: "Sing in with Facebook", fun: () {}),
-                const SizedBox(height: 20),
+                  CustomTextformfield(
+                    controller: _emailController,
+                    label: "Enter your email",
+                    icon: Icons.email_outlined,
+                    inputType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null ||
+                          value.trim().isEmpty ||
+                          !value.contains("@")) {
+                        return "Pealse enter valid email";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: !showPassword,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your password',
+                      prefixIcon: const Icon(Icons.lock_outline),
+                      border: const OutlineInputBorder(),
 
-                Text.rich(
-                  TextSpan(
-                    text: "Not a member , ",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 18,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Create a new accounte",
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          fontSize: 18,
+                      suffixIcon: IconButton(
+                        onPressed: () => setState(() {
+                          showPassword = !showPassword;
+                        }),
+                        icon: Icon(
+                          showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const CreateAccounte(),
-                              ),
-                            );
-                          },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().length < 6) {
+                        return "Password must be at  least 6 characters! ";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+
+                  const Row(
+                    mainAxisAlignment: .end,
+                    children: [
+                      Text(
+                        "forgot  password? ",
+                        style: TextStyle(color: Colors.blue),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+
+                  PrimaryButton(
+                    label: "Singin",
+                    fun: _submit,
+                    tailIcon: Icons.login,
+                  ),
+                  const SizedBox(height: 20),
+
+                  Row(
+                    mainAxisAlignment: .center,
+                    children: [
+                      const Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                          endIndent: 10,
+                        ),
+                      ),
+                      Text(
+                        "Sing in with social media",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      const Expanded(
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 1,
+                          indent: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  OutLineButton(
+                    text: "Sing in with Google",
+                    fun: () {},
+                    image: "assets/logo/google.png",
+                  ),
+                  const SizedBox(height: 10),
+
+                  OutLineButton(text: "Sing in with Facebook", fun: () {}),
+                  const SizedBox(height: 20),
+
+                  Text.rich(
+                    TextSpan(
+                      text: "Not a member , ",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 18,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "Create a new accounte",
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CreateAccounte(),
+                                ),
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
+          ),
+        ),
+        error: (error, stackTrace) => const SizedBox(),
+        loading: () => const SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+            mainAxisSize: .min,
+            mainAxisAlignment: .center,
+            crossAxisAlignment: .center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 10),
+              Text("Just s second..."),
+            ],
           ),
         ),
       ),
