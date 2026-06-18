@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/feature/profile/data/datasource/base_profile_datasource.dart';
 import 'package:makarr/feature/profile/data/model/user_model.dart';
@@ -12,14 +13,13 @@ class FirebaseDatasource implements BaseDataSource {
   final FirebaseStorage storageRef;
   @override
   Future<UserModel> getUserById(String userId) async {
+    AppLogger.i(userId);
     try {
       final result = await firestoreRef.collection("Users").doc(userId).get();
-      if (result.exists && result.data() != null) {
         return UserModel.fromFireBase(result.data()!);
-      } else {
-        throw const FirestoreException(errorMessage: 'User dose not exist');
-      }
+    
     } on FirebaseException catch (e) {
+      AppLogger.e(e.code);
       throw FirestoreException(errorMessage: e.message ?? 'Server error');
     }
   }

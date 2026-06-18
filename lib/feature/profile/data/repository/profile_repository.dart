@@ -17,8 +17,9 @@ class NavigationRepository extends BaseNavigationRepository {
     try {
       final user = await baseDataSource.getUserById(userId);
       return Right(user);
-    } catch (e) {
-      return const Left(ServerFailure('Failed to fetch user data'));
+    } on FirestoreException catch (e) {
+      AppLogger.e(e.errorMessage);
+      return  Left(ServerFailure(e.errorMessage));
     }
   }
 

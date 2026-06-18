@@ -198,6 +198,7 @@ class _CreateAccounteState extends ConsumerState<CreateAccounte> {
         password: _password1Controller.text.trim(),
         wilaya: selectedWilaya!,
         bladya: selectedBladya!,
+        subscription: DateTime.now().toString()
       ),
     );
     if (!mounted) return;

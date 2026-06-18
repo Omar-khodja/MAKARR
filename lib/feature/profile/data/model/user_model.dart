@@ -11,47 +11,24 @@ class UserModel extends UserNav {
     required super.imagUrl,
     required super.wilaya,
     required super.bladya,
+    required super.subscription,
     super.type,
   });
 
   factory UserModel.fromFireBase(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'] ?? '',
-      fname: map['Fname'] ?? '',
-      lname: map['Lname'] ?? '',
-      phone: map['Phone'] ?? '',
-      birthDate: map['Birth_Date'] ?? '',
-      email: map['Email'] ?? '',
-      imagUrl: map['ImagUrl'] ?? '',
-      wilaya: map['Wilaya'] ?? '',
-      bladya: map['Bladya'] ?? '',
-      type: map['type'] ?? '',
-    );
-  }
-  @override
-  UserModel copyWith({
-    String? id,
-    String? fname,
-    String? lname,
-    String? phone,
-    String? birthDate,
-    String? email,
-    String? imagUrl,
-    String? wilaya,
-    String? bladya,
-    String? type,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      fname: fname ?? this.fname,
-      lname: lname ?? this.lname,
-      phone: phone ?? this.phone,
-      birthDate: birthDate ?? this.birthDate,
-      email: email ?? this.email,
-      imagUrl: imagUrl ?? this.imagUrl,
-      wilaya: wilaya ?? this.wilaya,
-      bladya: bladya ?? this.bladya,
-      type: type ?? this.type,
+      id: map['id'],
+      fname: map['Fname'],
+      lname: map['Lname'],
+      phone: map['Phone'],
+      birthDate: map['Birth_Date'],
+      email: map['Email'],
+      imagUrl: map['ImagUrl'],
+      wilaya: map['Wilaya'],
+      bladya: map['Bladya'],
+      type: map['type'],
+      subscription: map["subscription"].toString(),
+      //error is here
     );
   }
 }

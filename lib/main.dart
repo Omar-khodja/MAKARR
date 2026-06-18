@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
+import 'package:makarr/feature/pymente/presentation/controler/subscriptionnotifire.dart';
 import 'package:makarr/navigation_screen.dart';
 import 'package:makarr/feature/auth/presentation/screen/login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,7 +17,6 @@ import 'package:dynamic_color/dynamic_color.dart';
 final colorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue.shade900,
 ).copyWith(secondary: Colors.deepPurple, surface: Colors.grey.shade100);
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,7 +59,6 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-  String? _lastFetchedUid;
 
   // This widget is the root of your application.
   @override
@@ -100,19 +99,20 @@ class _MyAppState extends ConsumerState<MyApp> {
               final user = snapshot.data;
 
               if (user != null) {
-                if (_lastFetchedUid != user.uid) {
-                  _lastFetchedUid = user.uid;
+              
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    if (!mounted) return;
                     ref
                         .read(userNotifireProvider.notifier)
                         .featchCurrentUser(user.uid);
+                    ref
+                        .read(subscriptionProvider.notifier)
+                        .checkSubscription(user.uid);
                   });
-                }
+                
+
                 return const NavigationScreen();
               }
 
-              _lastFetchedUid = null;
               return const Login();
             },
           ),

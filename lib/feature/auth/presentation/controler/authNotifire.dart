@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:makarr/feature/auth/domain/entities/user_auth.dart';
@@ -20,25 +21,24 @@ class AuthNotifier extends StateNotifier<AsyncValue<UserAuth?>> {
   final SingoutUsecase singoutUsecase;
 
   Future<void> createUser(UserAuth user) async {
-    state = const AsyncValue.loading();
     final result = await createuserUsecase.call(user);
     result.fold(
-      (l) => state = AsyncValue.error(l, StackTrace.current),
+      (l) =>
+          Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red),
       (r) => Fluttertoast.showToast(msg: "User created successfully"),
     );
   }
 
   Future<void> login(String email, String password) async {
-    state = const AsyncValue.loading();
     final result = await loginUsecase.call((email, password));
     result.fold(
-      (l) => state = AsyncValue.error(l, StackTrace.current),
+      (l) =>
+          Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red),
       (r) => Fluttertoast.showToast(msg: "Login successfully"),
     );
   }
 
   Future<void> signOut() async {
-    state = const AsyncValue.loading();
     final result = await singoutUsecase.call(const NoParameters());
     result.fold(
       (l) => state = AsyncValue.error(l, StackTrace.current),

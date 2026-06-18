@@ -11,6 +11,7 @@ class UserNav extends Equatable {
     required this.imagUrl,
     required this.wilaya,
     required this.bladya,
+    required this.subscription,
     this.type = "Client",
   });
   final String id;
@@ -23,6 +24,7 @@ class UserNav extends Equatable {
   final String wilaya;
   final String bladya;
   final String type;
+  final String subscription;
 
   factory UserNav.empty() {
     return const UserNav(
@@ -36,6 +38,7 @@ class UserNav extends Equatable {
       wilaya: '',
       bladya: '',
       type: "",
+      subscription:""
     );
   }
 
@@ -51,6 +54,7 @@ class UserNav extends Equatable {
     bladya,
     id,
     type,
+    subscription
   ];
 
   UserNav copyWith({
@@ -64,6 +68,7 @@ class UserNav extends Equatable {
     String? wilaya,
     String? bladya,
     String? type,
+    String? subscription
   }) {
     return UserNav(
       id: id ?? this.id,
@@ -76,6 +81,7 @@ class UserNav extends Equatable {
       wilaya: wilaya ?? this.wilaya,
       bladya: bladya ?? this.bladya,
       type: type ?? this.type,
+      subscription: subscription ?? this.subscription
     );
   }
 }

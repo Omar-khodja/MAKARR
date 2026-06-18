@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/core/component/outLineButton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
-import 'package:makarr/feature/Home/presentation/controler/addPost_notifire.dart';
+import 'package:makarr/feature/Home/presentation/controler/addPost_provider.dart';
 
 class AddQuestionOption extends ConsumerStatefulWidget {
   const AddQuestionOption({

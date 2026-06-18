@@ -16,7 +16,9 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(locationProvider.notifier).getLocations();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(locationProvider.notifier).getLocations();
+    });
   }
 
   @override

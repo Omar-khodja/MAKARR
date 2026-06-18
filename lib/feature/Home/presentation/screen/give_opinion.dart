@@ -5,7 +5,7 @@ import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/core/entities/opinion.dart';
 import 'package:makarr/feature/Home/domain/entities/post.dart';
-import 'package:makarr/feature/Home/presentation/controler/opinion_provider_nitifire.dart';
+import 'package:makarr/feature/Home/presentation/controler/opinion_provider.dart';
 
 class GiveOpinion extends ConsumerStatefulWidget {
   const GiveOpinion({super.key, required this.post});

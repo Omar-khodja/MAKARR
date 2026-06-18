@@ -28,6 +28,7 @@ class FirebaseDatasource extends BaseDataSourse {
         'Bladya': user.bladya.trim(),
         'ImagUrl': "",
         'type': "Client",
+        'subscription': user.subscription
       });
     } on FirebaseAuthException catch (e) {
       throw AuthException(errorMessage: e.message ?? 'Auth error');

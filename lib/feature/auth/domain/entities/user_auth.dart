@@ -10,6 +10,7 @@ class UserAuth extends Equatable {
     required this.password,
     required this.wilaya,
     required this.bladya,
+    required this.subscription,
     this.type = "Client",
   });
   final String firstName;
@@ -21,6 +22,7 @@ class UserAuth extends Equatable {
   final String password;
   final String wilaya;
   final String bladya;
+  final String subscription;
 
   @override
   List<Object?> get props => [
@@ -32,5 +34,6 @@ class UserAuth extends Equatable {
     password,
     wilaya,
     bladya,
+    subscription
   ];
 }

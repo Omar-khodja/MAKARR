@@ -16,7 +16,7 @@ class Authrepository extends BaseAuthRepo {
       await baseDataSourse.createUser(usermodel);
       return const Right(unit);
     } on AuthException catch (failure) {
-      return Left(ServerFailure(failure.errorMessage));
+      return Left(AuthFailure(failure.errorMessage));
     }
   }
 
@@ -26,7 +26,7 @@ class Authrepository extends BaseAuthRepo {
       await baseDataSourse.login(email, password);
       return const Right(unit);
     } on AuthException catch (failure) {
-      return Left(ServerFailure(failure.errorMessage));
+      return Left(AuthFailure(failure.errorMessage));
     }
   }
 
@@ -36,7 +36,7 @@ class Authrepository extends BaseAuthRepo {
       await baseDataSourse.singOut();
       return const Right(unit);
     } on AuthException catch (failure) {
-      return Left(ServerFailure(failure.errorMessage));
+      return Left(AuthFailure(failure.errorMessage));
     }
   }
 }

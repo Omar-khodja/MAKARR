@@ -5,8 +5,8 @@ import 'package:makarr/feature/Home/domain/entities/post.dart';
 import 'package:makarr/feature/Home/presentation/component/post/postCarousel.dart';
 import 'package:makarr/feature/Home/presentation/component/post/post_iconbutton.dart';
 import 'package:makarr/feature/Home/presentation/component/post/post_user_info.dart';
-import 'package:makarr/feature/Home/presentation/controler/Investment_notifire.dart';
-import 'package:makarr/feature/Home/presentation/controler/get_post_notifire.dart';
+import 'package:makarr/feature/Home/presentation/controler/Investment_provider.dart';
+import 'package:makarr/feature/Home/presentation/controler/get_post_provider.dart';
 import 'package:makarr/feature/Home/presentation/screen/give_opinion.dart';
 import 'package:makarr/feature/Home/presentation/screen/pdfViewer.dart';
 
@@ -104,6 +104,7 @@ class PostCard extends ConsumerWidget {
                       ? state.setLike(userId, post)
                       : stateinvestment.setLike(userId, post),
                 ),
+                if (postType == "Client")
                 PostIconbutton(
                   icon: FontAwesome5Regular.comment,
                   onPressed: () => Navigator.of(context).push(
@@ -112,6 +113,12 @@ class PostCard extends ConsumerWidget {
                     ),
                   ),
                 ),
+                if (postType != "Client")
+                  PostIconbutton(
+                    icon: Icons.send,
+                    label: "Request",
+                    onPressed: () {},
+                  ),
 
                 const Spacer(),
                 PostIconbutton(

@@ -4,15 +4,16 @@ import 'package:makarr/feature/Home/domain/entities/post.dart';
 import 'package:makarr/feature/Home/domain/usecase/get_post_usecase.dart';
 import 'package:makarr/feature/Home/presentation/controler/post_provider.dart';
 
-class GetPostnotifire extends StateNotifier<AsyncValue<List<Post>>> {
-  GetPostnotifire({required this.getPostUsecase})
+class InvestmentNotifire extends StateNotifier<AsyncValue<List<Post>>> {
+  InvestmentNotifire({required this.getPostUsecase})
     : super(const AsyncValue.loading());
   final GetPostUsecase getPostUsecase;
-  Future<void> getPost(String location) async {
+
+  Future<void> getInvestmentPost() async {
     state = const AsyncValue.loading();
 
     await Future.delayed(const Duration(seconds: 3));
-    final resulr = await getPostUsecase.getClientPost(location);
+    final resulr = await getPostUsecase.getInvestmentPost();
     state = resulr.fold(
       (failure) {
         return AsyncValue.error(failure.message, StackTrace.current);
@@ -22,9 +23,7 @@ class GetPostnotifire extends StateNotifier<AsyncValue<List<Post>>> {
       },
     );
   }
-   
-
-  Future<void> setLike(String userId, Post targetPost) async {
+    Future<void> setLike(String userId, Post targetPost) async {
     final like = targetPost.whoLiked.contains(userId);
     state = state.whenData((posts) {
       return posts.map((post) {
@@ -46,12 +45,13 @@ class GetPostnotifire extends StateNotifier<AsyncValue<List<Post>>> {
         return post;
       }).toList();
     });
-    await getPostUsecase.setLike(userId, targetPost,"Client");
+    await getPostUsecase.setLike(userId, targetPost, "Investment");
   }
 }
 
-final getPostNotifireProvider =
-    StateNotifierProvider<GetPostnotifire, AsyncValue<List<Post>>>((ref) {
-      final getPostUsecase = ref.watch(getPostUsecaseProvider);
-      return GetPostnotifire(getPostUsecase: getPostUsecase);
+final investmentNotifireProvider =
+    StateNotifierProvider<InvestmentNotifire, AsyncValue<List<Post>>>((ref) {
+      final getPostUsecase = ref.read(getPostUsecaseProvider);
+      return InvestmentNotifire(getPostUsecase: getPostUsecase);
     });
+

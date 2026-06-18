@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/feature/auth/presentation/controler/authNotifire.dart';
 import 'package:makarr/feature/auth/presentation/component/custom_TextFormField.dart';
 import 'package:makarr/feature/auth/presentation/screen/createAccounte.dart';
@@ -194,12 +193,16 @@ class _LoginState extends ConsumerState<Login> {
     final auth = ref.read(authNotifierProvider.notifier);
     if (!isValid) return;
     try {
-      auth.login(_emailController.text.trim(), _passwordController.text.trim());
+      await auth.login(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
     } catch (e) {
-      AppLogger.e(e.toString());
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
     }
   }
 }

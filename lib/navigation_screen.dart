@@ -39,8 +39,8 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
   ];
   final cittyHalltScreenTitel = const [
     "Citty Hall",
-    "Investment"
-        "Notifications",
+    "Investment",
+    "Notifications",
     "Profile",
   ];
   final gButtonForClient = const [
@@ -94,7 +94,7 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Theme.of(context).colorScheme.onPrimary,
                   title: Text(
-                    user.type == "Client"
+                    user.type == "Client" || user.type == "Investor"
                         ? clientScreenTitel[selectedScreen]
                         : cittyHalltScreenTitel[selectedScreen],
                   ),
@@ -106,7 +106,7 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
               ],
               body: IndexedStack(
                 index: selectedScreen,
-                children: user.type == "Client"
+                children: user.type == "Client" || user.type == "Investor"
                     ? screenForClient
                     : screenForAdmin,
               ),
@@ -163,7 +163,7 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
         );
       },
       error: (e, stackTrace) =>
-          Scaffold(body: Center(child: Text(e.toString()))),
+          Scaffold(body: Center(child: Text("${e.toString()} aaaa"))),
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
     );
