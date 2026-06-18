@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/feature/pymente/presentation/controler/subscriptionnotifire.dart';
 import 'package:makarr/feature/pymente/presentation/screen/subscription_screen.dart';
 
@@ -11,10 +12,11 @@ class NotSubscriber extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscription = ref.watch(subscriptionProvider);
+    final user = ref.watch(userNotifireProvider);
 
     return subscription.when(
       data: (data) {
-        if (data) {
+        if (data && user.value!.type != "Admin") {
           return BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 6, sigmaY: 5),
             child: Center(
