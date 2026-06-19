@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 class Report extends Equatable {
@@ -9,17 +11,21 @@ class Report extends Equatable {
     required this.lat,
     required this.lng,
     required this.address,
-    this.images,
-    this.video,
+    required this.images,
+    required this.userId,
+    required this.userName,
+    required this.userprofile,
   });
   final String? id;
+  final String userId;
+  final String userName;
+  final String userprofile;
   final String titel;
   final String discreption;
-  final List<String>? images;
-  final String? video;
-  final DateTime lng;
-  final DateTime lat;
-  final DateTime address;
+  final List<File> images;
+  final String lng;
+  final String lat;
+  final String address;
   final DateTime date;
 
   @override
@@ -28,10 +34,12 @@ class Report extends Equatable {
     titel,
     discreption,
     images,
-    video,
     date,
     lat,
     lng,
     address,
+    userId,
+    userName,
+    userprofile,
   ];
 }

@@ -1,13 +1,18 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:makarr/core/component/Custom_elevatedButton.dart';
 import 'package:makarr/core/component/coustom_elevatedbutton.dart';
-import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
+import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
-import 'package:makarr/feature/Report_Problem/presentation/controler/reportNotifire.dart';
+import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/feature/Report_Problem/presentation/component/image_container.dart';
+import 'package:makarr/feature/Report_Problem/presentation/component/location_component.dart';
+import 'package:makarr/feature/Report_Problem/presentation/controler/image_provider.dart';
+import 'package:makarr/feature/Report_Problem/presentation/controler/locarion_provider.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:makarr/feature/Report_Problem/presentation/controler/report_Provider.dart';
+import 'package:makarr/feature/profile/domain/entities/user_nav.dart';
 
 class ReportProblem extends ConsumerStatefulWidget {
   const ReportProblem({super.key});
@@ -17,146 +22,160 @@ class ReportProblem extends ConsumerStatefulWidget {
 }
 
 class _ReportProblemState extends ConsumerState<ReportProblem> {
-  late MapboxMap mapboxMap;
-  late final Reportnotifire notifireMethods;
-
+  late final ImageNotifier imageProvider;
+  late final LocationNotifier locationProvider;
+  late final Reportnotifire reportProvider;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  final TextEditingController _des = TextEditingController();
+  final TextEditingController _title = TextEditingController();
   @override
   void initState() {
     super.initState();
-    notifireMethods = ref.read(reportNotifireProvider.notifier);
+    reportProvider = ref.read(reportNotifireProvider.notifier);
+    locationProvider = ref.read(locationNotifierProvider.notifier);
+    imageProvider = ref.read(imageNotifierProvider.notifier);
   }
 
-  void showSnackBar() {
-    ref.listen(reportNotifireProvider, (previous, next) {
-      if (next.error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              next.error.toString(),
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
-      }
-    });
+  @override
+  void dispose() {
+    _des.dispose();
+    _title.dispose();
+    super.dispose();
+  }
+
+  void _submit(UserNav user) async {
+    final bool isValid = _formkey.currentState!.validate();
+    final location = ref.read(locationNotifierProvider);
+    final images = ref.read(imageNotifierProvider);
+    if (!isValid) return;
+    if (location.value == null || location.value!.isEmpty) {
+      Fluttertoast.showToast(msg: "you have to insert Location");
+      return;
+    }
+    if (images.value == null || images.value!.isEmpty) {
+      Fluttertoast.showToast(msg: "you have to insert Images");
+      return;
+    }
+    final isDone = await reportProvider.setReport(
+      Report(
+        userId: user.id,
+        userName: '${user.fname} ${user.lname}',
+        userprofile: user.imagUrl,
+        titel: _title.text,
+        discreption: _des.text,
+        date: DateTime.now(),
+        lat: location.value!["lat"].toString(),
+        lng: location.value!["lng"].toString(),
+        address: location.value!["formatted"],
+        images: images.value!,
+      ),
+    );
+    if (isDone) {
+      _des.text = "";
+      _title.text = "";
+      locationProvider.emptyState();
+      imageProvider.emptyState();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final notifire = ref.watch(reportNotifireProvider);
     final user = ref.watch(userNotifireProvider);
+    final report = ref.watch(reportNotifireProvider);
 
-    showSnackBar();
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsetsGeometry.symmetric(
-          horizontal: 16,
-          vertical: 50,
-        ),
-        child: Column(
-          crossAxisAlignment: .center,
-          children: [
-            UserCardInfo(
-              name: "${user.value!.fname} ${user.value!.lname}",
-              imageUrl: user.value!.imagUrl,
-            ),
-            const SizedBox(height: 20),
-
-            TextField(
-              decoration: InputDecoration(
-                labelText: "Title",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+    return report.when(
+      data: (data) => SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsetsGeometry.symmetric(
+            horizontal: 16,
+            vertical: 50,
+          ),
+          child: Column(
+            crossAxisAlignment: .center,
+            children: [
+              UserCardInfo(
+                name: "${user.value!.fname} ${user.value!.lname}",
+                imageUrl: user.value!.imagUrl,
+              ),
+              const SizedBox(height: 20),
+              Form(
+                key: _formkey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _title,
+                      decoration: InputDecoration(
+                        labelText: "Title",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "You have to insert title ";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _des,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                        labelText: "Describe the issue...",
+                        alignLabelWithHint: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "Describtion can not be empty";
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              maxLines: 4,
-              decoration: InputDecoration(
-                labelText: "Describe the issue...",
-                alignLabelWithHint: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(notifire.position["formatted"] ?? 'Current location'),
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: notifire.imageFile.map((file) {
-                return SizedBox(
-                  width: (MediaQuery.of(context).size.width - 60) / 2,
-                  height: 180,
-                  child: ImageCard(
-                    image: file,
-                    onDelete: () => notifireMethods.deleteImage(file),
-                  ),
-                );
-              }).toList(),
-            ),
+              const SizedBox(height: 12),
+              const LocationComponent(),
+              const SizedBox(height: 12),
 
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: .spaceEvenly,
+              const ImageContainer(),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: .spaceEvenly,
 
-              children: [
-                if (notifire.video == null)
+                children: [
                   CustomElevatedbutton(
                     label: 'Photo',
                     leadIcon: Icons.photo_library_outlined,
-                    fun: notifireMethods.pickImage,
+                    fun: imageProvider.pickImage,
                   ),
-                CoustomElevatedbutton(
-                  label: "Get Current location",
-                  fun: notifireMethods.gerCurrentLocation,
-                  isLoading: notifire.isGettingLocation,
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            if (notifire.position["lat"] != null)
-              SizedBox(
-                width: double.infinity,
-                height: 250,
-              
-                child: ClipRRect(
-                  borderRadius: BorderRadiusGeometry.circular(12),
-                  child: MapWidget(
-                    onMapCreated: (controller) async {
-                      final lat = notifire.position["lat"];
-                      final lng = notifire.position["lng"];
-                      mapboxMap = controller;
-                      mapboxMap.setCamera(
-                        CameraOptions(
-                          center: Point(coordinates: Position(lng, lat)),
-                          zoom: 12.0,
-                        ),
-                      );
-                      await mapboxMap.location.updateSettings(
-                        LocationComponentSettings(
-                          enabled: true,
-                          pulsingEnabled: true,
-                        ),
-                      );
-                    },
+                  CoustomElevatedbutton(
+                    label: "Get Current location",
+                    fun: locationProvider.getCurrentLocation,
                   ),
-                ),
+                ],
               ),
-          ],
+              const SizedBox(height: 20),
+
+              PrimaryButton(
+                label: "Send Reporet",
+                fun: () => _submit(user.value!),
+              ),
+            ],
+          ),
         ),
+      ),
+      error: (error, stackTrace) => const SizedBox(),
+      loading: () => const Column(
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(height: 10),
+          Text("Just Seconde..."),
+        ],
       ),
     );
   }

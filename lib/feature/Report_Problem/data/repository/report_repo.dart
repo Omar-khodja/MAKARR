@@ -13,11 +13,11 @@ class ReportRepo implements BaseReportRepo {
   ReportRepo(this.baseDataSource);
   final ReportBaseDataSource baseDataSource;
   @override
-  Future<Either<Failure, void>> setReportToDataBase(Report report) async {
+  Future<Either<Failure, bool>> setReportToDataBase(Report report) async {
     try {
       final reportmodel = ReportModel.fromEntity(report);
-      await baseDataSource.setReport(reportmodel);
-      return const Right(null);
+      final response =await baseDataSource.setReport(reportmodel);
+      return  Right(response);
     } catch (e) {
       return const Left(ServerFailure("Failed to set report"));
     }

@@ -5,19 +5,27 @@ class ReportModel extends Report {
     required super.titel,
     required super.discreption,
     required super.date,
-    super.images,
-    super.video,
+    required super.images,
     required super.lat,
     required super.lng,
     required super.address,
+    required super.userId,
+    required super.userName,
+    required super.userprofile,
   });
   Map<String, dynamic> toMap() {
     return {
       "Title": titel,
       "Discreption": discreption,
       "Date": date,
-      "Images": images ?? [],
-      "Video": video ?? "",
+      "lat": lat,
+      'lng': lng,
+      'address': address,
+      "Images": '',
+      'date': date,
+      "userId": userId,
+      "userName": userName,
+      "userprofile": userprofile,
     };
   }
 
@@ -26,11 +34,13 @@ class ReportModel extends Report {
       titel: report.titel,
       discreption: report.discreption,
       date: report.date,
-      images: report.images ?? [],
-      video: report.video ?? "",
+      images: report.images,
       lat: report.lat,
       lng: report.lng,
       address: report.address,
+      userId: report.userId,
+      userName: report.userName,
+      userprofile: report.userprofile
     );
   }
 }
