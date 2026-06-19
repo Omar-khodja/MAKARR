@@ -64,25 +64,19 @@ class _InvestorScreenState extends ConsumerState<InvestorScreen> {
 
           return Stack(
             children: [
-              Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        final post = data[index];
-                        return PostCard(
-                          postType: "Investment",
-                          userId: user.value!.id,
-                          carouselController: carouselController,
-                          post: post,
-                        );
-                      },
-                    ),
-                  ),
-                ],
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  final post = data[index];
+                  return PostCard(
+                    postType: "Investment",
+                    userId: user.value!.id,
+                    carouselController: carouselController,
+                    post: post,
+                  );
+                },
               ),
               const NotSubscriber()
                

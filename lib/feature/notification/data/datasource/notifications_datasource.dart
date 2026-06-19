@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/models/opinion_model.dart';
+import 'package:makarr/feature/Report_Problem/data/model/report_model.dart';
 import 'package:makarr/feature/notification/data/datasource/basr_notification_datasource.dart';
 
 class NotificationsDatasource extends BaseNotificationDataSource {
@@ -33,6 +35,7 @@ class NotificationsDatasource extends BaseNotificationDataSource {
       final List<String> titles = snapshot.docs
           .map((items) => items.id)
           .toList();
+      AppLogger.i(titles.toString());
       return titles;
     } on FirebaseException catch (e) {
 
@@ -57,6 +60,43 @@ class NotificationsDatasource extends BaseNotificationDataSource {
       throw FirestoreException(
         errorMessage:
             e.message ?? "cant featch posts titles for unkown reason!",
+      );
+    }
+  }
+  
+  @override
+  Future<List<String>> getReportLocation() async {
+    try {
+      final snapshot = await firestoreRef.collection("Report").get();
+
+      final List<String> titles = snapshot.docs
+          .map((items) => items.id)
+          .toList();
+      return titles;
+    } on FirebaseException catch (e) {
+      throw FirestoreException(
+        errorMessage: e.message ?? "cant featch posts for unkown reason!",
+      );
+    }
+  }
+
+  @override
+  Future<List<ReportModel>> getReport(String location) async{
+      try {
+      final snapshot = await firestoreRef
+          .collection("Report")
+          .doc(location)
+          .collection("Reports")
+          .get();
+
+      final List<ReportModel> titles = snapshot.docs
+          .map((item) => ReportModel.fromJson(item.data(), item.id))
+          .toList();
+      return titles;
+    } on FirebaseException catch (e) {
+      throw FirestoreException(
+        errorMessage:
+            e.message ?? "cant featch reports for unkown reason!",
       );
     }
   }

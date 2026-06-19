@@ -4,6 +4,7 @@ import 'package:makarr/feature/notification/data/repository/notification_rapo.da
 import 'package:makarr/feature/notification/domain/usecase/get_opinion_usecase.dart';
 import 'package:makarr/feature/notification/domain/usecase/get_posttitle_usecase.dart';
 import 'package:makarr/feature/notification/domain/usecase/getlocations_usecase.dart';
+import 'package:makarr/feature/notification/domain/usecase/report_usecase.dart';
 
 final notificationsDatasource = Provider((ref) => NotificationsDatasource());
 final notificationRepo = Provider(
@@ -18,4 +19,7 @@ final postTitileUseCaseProvider = Provider(
 );
 final getOpinionUseCaseProvider = Provider(
   (ref) => GetOpinionUsecase(repo: ref.read(notificationRepo)),
+);
+final reportUseCaseProvider = Provider(
+  (ref) => ReportUsecase(repo: ref.read(notificationRepo)),
 );

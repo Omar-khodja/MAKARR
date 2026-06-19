@@ -5,8 +5,11 @@ import 'package:makarr/feature/notification/domain/repository/base_notifications
 class GetlocationsUsecase   {
   GetlocationsUsecase({required this.repo});
   final BaseNotificationsRepo repo;
-  Future<Either<Failure, List<String>>> getlocation() async{
+  Future<Either<Failure, List<String>>> getLocation() async {
     return await repo.getLocation();
     
+  }
+  Future<Either<Failure, List<String>>> getReportLocation() async {
+    return await repo.getReportLocation();
   }
 }

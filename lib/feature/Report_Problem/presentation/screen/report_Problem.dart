@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:makarr/core/component/Custom_elevatedButton.dart';
 import 'package:makarr/core/component/coustom_elevatedbutton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
@@ -56,6 +57,8 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
       Fluttertoast.showToast(msg: "you have to insert Images");
       return;
     }
+    final now = DateTime.now();
+    final formatted = DateFormat('yyyy-MM-dd').format(now);
     final isDone = await reportProvider.setReport(
       Report(
         userId: user.id,
@@ -63,7 +66,7 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
         userprofile: user.imagUrl,
         titel: _title.text,
         discreption: _des.text,
-        date: DateTime.now(),
+        date: formatted,
         lat: location.value!["lat"].toString(),
         lng: location.value!["lng"].toString(),
         address: location.value!["formatted"],

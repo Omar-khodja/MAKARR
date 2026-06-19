@@ -14,17 +14,20 @@ class FireBaseDataSource implements ReportBaseDataSource {
     final List<String> photosUrl = [];
     AppLogger.i("here");
     try {
+      await firestoreRef.collection("Report").doc(report.address).set({
+        "title": report.address,
+      });
       final reportRef = await firestoreRef
           .collection("Report")
           .doc(report.address)
           .collection("Reports")
           .add(report.toMap());
-      if (report.images.isNotEmpty == true) {
-        for (int i = 0; i < report.images.length; i++) {
+      if (report.images!.isNotEmpty == true) {
+        for (int i = 0; i < report.images!.length; i++) {
           final imageRef = storageRef.ref().child(
             'report_images/${reportRef.id}/image_$i.jpg',
           );
-          await imageRef.putFile(report.images[i]);
+          await imageRef.putFile(report.images![i]);
           final imageUrl = await imageRef.getDownloadURL();
           photosUrl.add(imageUrl);
         }

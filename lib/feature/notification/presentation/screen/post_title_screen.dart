@@ -17,7 +17,9 @@ class PostTitleScreen extends ConsumerWidget {
       body: titles.when(
         data: (data) => ListView.builder(
           itemCount: data.length,
-          itemBuilder: (context, index) => InkWell(
+          itemBuilder: (context, index) => data.isEmpty
+              ? const Center(child: Text("No Report Notifications"))
+              : InkWell(
             onTap: () {
               ref
                   .read(opinionsProvider.notifier)

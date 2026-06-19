@@ -59,25 +59,19 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
         data: (data) {
           if (data.isEmpty) return const Center(child: Text("No post yet!!"));
 
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data.length,
-                  itemBuilder: (context, index) {
-                    final post = data[index];
-                    return PostCard(
-                      postType: "Client",
-                      userId: user.value!.id,
-                      carouselController: carouselController,
-                      post: post,
-                    );
-                  },
-                ),
-              ),
-            ],
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final post = data[index];
+              return PostCard(
+                postType: "Client",
+                userId: user.value!.id,
+                carouselController: carouselController,
+                post: post,
+              );
+            },
           );
         },
         error: (error, stackTrace) => RefreshIndicator(

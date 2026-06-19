@@ -2,22 +2,42 @@ import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
 
 class ReportModel extends Report {
   const ReportModel({
+    super.id,
     required super.titel,
     required super.discreption,
     required super.date,
-    required super.images,
+    super.images,
     required super.lat,
     required super.lng,
     required super.address,
     required super.userId,
     required super.userName,
     required super.userprofile,
+    super.imagesUrl,
   });
+  factory ReportModel.fromJson(Map<String, dynamic> json, String id) {
+    return ReportModel(
+      id: id,
+      titel: json['Title'],
+      discreption: json['Discreption'],
+      date: json['date'],
+      imagesUrl:
+          (json['Images'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      lat: json['lat'],
+      lng: json['lng'],
+      address: json['address'],
+      userId: json['userId'],
+      userName: json['userName'],
+      userprofile: json['userprofile'],
+    );
+  }
   Map<String, dynamic> toMap() {
     return {
       "Title": titel,
       "Discreption": discreption,
-      "Date": date,
       "lat": lat,
       'lng': lng,
       'address': address,
@@ -40,7 +60,7 @@ class ReportModel extends Report {
       address: report.address,
       userId: report.userId,
       userName: report.userName,
-      userprofile: report.userprofile
+      userprofile: report.userprofile,
     );
   }
 }

@@ -11,10 +11,11 @@ class Report extends Equatable {
     required this.lat,
     required this.lng,
     required this.address,
-    required this.images,
     required this.userId,
     required this.userName,
     required this.userprofile,
+    this.imagesUrl,
+    this.images ,
   });
   final String? id;
   final String userId;
@@ -22,11 +23,12 @@ class Report extends Equatable {
   final String userprofile;
   final String titel;
   final String discreption;
-  final List<File> images;
+  final List<File>? images;
+  final List<String>? imagesUrl;
   final String lng;
   final String lat;
   final String address;
-  final DateTime date;
+  final String date;
 
   @override
   List<Object?> get props => [
