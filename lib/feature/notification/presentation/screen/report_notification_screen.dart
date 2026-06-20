@@ -13,12 +13,9 @@ class ReportNotificationScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Reports")),
       body: reports.when(
-        data: (data) => Expanded(
-          child: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) =>
-                ReportComponent(report: data[index]),
-          ),
+        data: (data) => ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) => ReportComponent(report: data[index]),
         ),
         error: (error, stackTrace) => Center(child: Text(error.toString())),
         loading: () => const Skeletonizer(

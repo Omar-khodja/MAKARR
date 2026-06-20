@@ -39,7 +39,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
           controller: _tabController,
           tabs: const [
             Tab(text: "Locations"),
-            Tab(text: "Titles"),
+            Tab(text: "Reports"),
           ],
         ),
         Expanded(

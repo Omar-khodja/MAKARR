@@ -113,12 +113,7 @@ class PostCard extends ConsumerWidget {
                     ),
                   ),
                 ),
-                if (postType != "Client")
-                  PostIconbutton(
-                    icon: Icons.send,
-                    label: "Request",
-                    onPressed: () {},
-                  ),
+             
 
                 const Spacer(),
                 PostIconbutton(
