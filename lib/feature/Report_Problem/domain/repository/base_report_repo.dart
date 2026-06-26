@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:makarr/core/error/failure.dart';
-import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/core/entities/report.dart';
 
 abstract class BaseReportRepo {
   Future<Either<Failure, bool>> setReportToDataBase(Report report);

@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/feature/Report_Problem/data/datasource/report_base_datasource.dart';
-import 'package:makarr/feature/Report_Problem/data/model/report_model.dart';
+import 'package:makarr/core/models/report_model.dart';
 
 class FireBaseDataSource implements ReportBaseDataSource {
   FireBaseDataSource({required this.firestoreRef, required this.storageRef});

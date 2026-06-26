@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/models/opinion_model.dart';
-import 'package:makarr/feature/Report_Problem/data/model/report_model.dart';
+import 'package:makarr/core/models/report_model.dart';
 import 'package:makarr/feature/notification/data/datasource/basr_notification_datasource.dart';
 
 class NotificationsDatasource extends BaseNotificationDataSource {

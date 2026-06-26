@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:makarr/feature/Home/presentation/component/post/postCarousel.dart';
 import 'package:makarr/feature/Home/presentation/component/post/post_user_info.dart';
-import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/core/entities/report.dart';
 
 class ReportComponent extends ConsumerStatefulWidget {
   const ReportComponent({super.key, required this.report});

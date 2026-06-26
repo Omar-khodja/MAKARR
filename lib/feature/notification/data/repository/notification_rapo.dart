@@ -3,7 +3,7 @@ import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/entities/opinion.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/core/error/failure.dart';
-import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/core/entities/report.dart';
 import 'package:makarr/feature/notification/data/datasource/basr_notification_datasource.dart';
 import 'package:makarr/feature/notification/domain/repository/base_notifications_repo.dart';
 

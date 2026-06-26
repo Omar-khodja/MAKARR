@@ -7,8 +7,8 @@ import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/feature/profile/data/datasource/base_profile_datasource.dart';
 import 'package:makarr/feature/profile/data/model/user_model.dart';
 
-class FirebaseDatasource implements BaseDataSource {
-  FirebaseDatasource({required this.firestoreRef, required this.storageRef});
+class ProfileDatasource implements BaseDataSource {
+  ProfileDatasource({required this.firestoreRef, required this.storageRef});
   final FirebaseFirestore firestoreRef;
   final FirebaseStorage storageRef;
   @override

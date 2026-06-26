@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:makarr/core/applogger/appLogger.dart';
+import 'package:makarr/core/entities/report.dart';
 import 'package:makarr/core/error/failure.dart';
 import 'package:makarr/feature/Report_Problem/data/datasource/report_base_datasource.dart';
-import 'package:makarr/feature/Report_Problem/data/model/report_model.dart';
-import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/core/models/report_model.dart';
 import 'package:makarr/feature/Report_Problem/domain/repository/base_report_repo.dart';
 
 class ReportRepo implements BaseReportRepo {

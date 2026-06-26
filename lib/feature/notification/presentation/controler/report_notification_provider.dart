@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/core/entities/report.dart';
 import 'package:makarr/feature/notification/domain/usecase/report_usecase.dart';
 import 'package:makarr/feature/notification/presentation/controler/notification_provider.dart';
 

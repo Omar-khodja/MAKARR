@@ -28,12 +28,35 @@ class FirebaseDatasource extends BaseDataSourse {
         'Bladya': user.bladya.trim(),
         'ImagUrl': "",
         'type': "Client",
-        'subscription': user.subscription
+        'subscription': user.subscription,
       });
     } on FirebaseAuthException catch (e) {
-      throw AuthException(errorMessage: e.message ?? 'Auth error');
-    } on FirebaseException catch (e) {
-      throw ServerException(errorMessage: e.message ?? 'Server error');
+      if (e.code == "email-already-in-use") {
+        throw const AuthException(
+          errorMessage: "this email is already exists.",
+        );
+      } else if (e.code == "invalid-email") {
+        throw const AuthException(errorMessage: 'Invalid email format.');
+      } else if (e.code == "weak-password") {
+        throw const AuthException(
+          errorMessage: 'password is not strong enough.',
+        );
+      } else if (e.code == "too-many-requests") {
+        throw const AuthException(
+          errorMessage: 'too many requests you have to wait for momnet.',
+        );
+      } else if (e.code == "user-token-expired") {
+        throw const AuthException(errorMessage: 'token expired log in again.');
+      } else if (e.code == "network-request-failed") {
+        throw const AuthException(
+          errorMessage: 'Check your internet connection.',
+        );
+      } else {
+        AppLogger.e(e.toString());
+        throw const AuthException(
+          errorMessage: 'somthing went wrong try again later.',
+        );
+      }
     }
   }
 
@@ -54,6 +77,14 @@ class FirebaseDatasource extends BaseDataSourse {
         throw const AuthException(errorMessage: 'Wrong password provided.');
       } else if (e.code == 'invalid-email') {
         throw const AuthException(errorMessage: 'Invalid email format.');
+      } else if (e.code == "user-token-expired") {
+        throw const AuthException(errorMessage: 'token expired log in again.');
+      } else if (e.code == "network-request-failed") {
+        throw const AuthException(
+          errorMessage: 'Check your internet connection.',
+        );
+      } else if (e.code == "user-disabled") {
+        throw const AuthException(errorMessage: 'email has been disabled.');
       } else {
         throw AuthException(errorMessage: e.message ?? 'Auth error');
       }

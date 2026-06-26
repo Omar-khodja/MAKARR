@@ -21,6 +21,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<bool?>> {
   final SingoutUsecase singoutUsecase;
 
   Future<void> createUser(UserAuth user) async {
+    state = const AsyncValue.loading();
+
     final result = await createuserUsecase.call(user);
     state = result.fold(
       (l) {

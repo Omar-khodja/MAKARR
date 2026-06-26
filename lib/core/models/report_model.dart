@@ -1,4 +1,4 @@
-import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/core/entities/report.dart';
 
 class ReportModel extends Report {
   const ReportModel({

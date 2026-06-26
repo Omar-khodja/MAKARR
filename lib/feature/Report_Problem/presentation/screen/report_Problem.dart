@@ -6,7 +6,7 @@ import 'package:makarr/core/component/Custom_elevatedButton.dart';
 import 'package:makarr/core/component/coustom_elevatedbutton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
-import 'package:makarr/feature/Report_Problem/domain/entities/report.dart';
+import 'package:makarr/core/entities/report.dart';
 import 'package:makarr/feature/Report_Problem/presentation/component/image_container.dart';
 import 'package:makarr/feature/Report_Problem/presentation/component/location_component.dart';
 import 'package:makarr/feature/Report_Problem/presentation/controler/image_provider.dart';
