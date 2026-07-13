@@ -6,11 +6,15 @@ class UserCardInfo extends StatelessWidget {
   final String imageUrl;
   @override
   Widget build(BuildContext context) {
+    final hasValidImageUrl = imageUrl.trim().isNotEmpty;
+
     return ListTile(
       leading: CircleAvatar(
         radius: 30,
-        backgroundColor: imageUrl.isEmpty ? Colors.grey : Colors.transparent,
-        backgroundImage: imageUrl.isEmpty ? null : NetworkImage(imageUrl),
+        backgroundColor: hasValidImageUrl ? Colors.transparent : Colors.grey,
+        backgroundImage: hasValidImageUrl
+            ? NetworkImage(imageUrl)
+            : const AssetImage("assets/image/noprofilel.png"),
       ),
       title: Text(
         name,

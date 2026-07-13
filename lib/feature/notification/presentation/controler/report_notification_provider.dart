@@ -12,9 +12,12 @@ class ReportNotificationNotifire
   Future<void> getReports(String location) async {
     state = const AsyncValue.loading();
     final response = await usecase.getReport(location);
+    
     state = response.fold(
       (l) => AsyncValue.error(l, StackTrace.current),
-      (r) => AsyncValue.data(r),
+      (r) {
+      return AsyncValue.data(r);
+    } 
     );
   }
 }

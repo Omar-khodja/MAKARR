@@ -33,7 +33,12 @@ class OpinionsScreen extends ConsumerWidget {
                             children: [
                               CircleAvatar(
                                 radius: 25,
-                                foregroundImage: NetworkImage(data[index].userProfile),
+                                foregroundImage: data[index].userProfile.trim().isNotEmpty
+                                    ? NetworkImage(data[index].userProfile)
+                                    : null,
+                                backgroundImage: data[index].userProfile.trim().isNotEmpty
+                                    ? null
+                                    : const AssetImage("assets/image/noprofilel.png"),
                                 backgroundColor: Colors.grey,
                               ),
                               const SizedBox(width: 10),

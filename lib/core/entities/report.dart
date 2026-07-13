@@ -28,7 +28,7 @@ class Report extends Equatable {
   final String lng;
   final String lat;
   final String address;
-  final String date;
+  final DateTime date;
 
   @override
   List<Object?> get props => [

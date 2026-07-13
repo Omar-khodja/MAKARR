@@ -33,87 +33,97 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen>
     final opinionLocation = ref.watch(opinionLocationProvider);
     final reportLocation = ref.watch(reportLocationProvider);
 
-    return Column(
-      children: [
-        TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: "Locations"),
-            Tab(text: "Reports"),
-          ],
-        ),
-        Expanded(
-          child: TabBarView(
+    return Scaffold(
+      body: Column(
+        children: [
+          TabBar(
             controller: _tabController,
-            children: [
-              RefreshIndicator(
-                onRefresh: () =>
-                    ref.read(opinionLocationProvider.notifier).getLocations(),
-                child: opinionLocation.when(
-                  data: (data) => data.isEmpty
-                      ? const Center(child: Text("No Opinion Notifications"))
-                      : ListView.builder(
-                          itemCount: data.length,
-                          itemBuilder: (context, index) => ListTile(
-                            onTap: () {
-                              ref
-                                  .read(postTitleprovider.notifier)
-                                  .gettitles(data[index]);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      PostTitleScreen(location: data[index]),
-                                ),
-                              );
-                            },
-                            title: Card(
-                              child: ListTile(
-                                title: Text(data[index]),
-                                trailing: const Icon(
-                                  Icons.keyboard_arrow_right_outlined,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                  error: (e, _) => Center(child: Text(e.toString())),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                ),
-              ),
-
-              reportLocation.when(
-                data: (data) => data.isEmpty
-                    ? const Center(child: Text("No Report Notifications"))
-                    : ListView.builder(
-                        itemCount: data.length,
-                        itemBuilder: (context, index) => ListTile(
-                          onTap: () {
-                            ref.read(reportNotificationProvider.notifier).getReports(data[index]);
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                   const ReportNotificationScreen(),
-                              ),
-                            );
-                          },
-                          title: Card(
-                            child: ListTile(
-                              title: Text(data[index]),
-                              trailing: const Icon(
-                                Icons.keyboard_arrow_right_outlined,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                error: (e, _) => Center(child: Text(e.toString())),
-                loading: () => const Center(child: CircularProgressIndicator()),
-              ),
+            tabs: const [
+              Tab(text: "Opinions"),
+              Tab(text: "Reports"),
             ],
           ),
-        ),
-      ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                RefreshIndicator(
+                  onRefresh: () =>
+                      ref.read(opinionLocationProvider.notifier).getLocations(),
+                  child: opinionLocation.when(
+                    data: (data) => data.isEmpty
+                        ? const Center(child: Text("No Opinion Notifications"))
+                        : ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                ref
+                                    .read(postTitleprovider.notifier)
+                                    .gettitles(data[index]);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PostTitleScreen(location: data[index]),
+                                  ),
+                                );
+                              },
+                              title: Card(
+                                child: ListTile(
+                                  title: Text(data[index]),
+                                  trailing: const Icon(
+                                    Icons.keyboard_arrow_right_outlined,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                    error: (e, _) => Center(child: Text(e.toString())),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                  ),
+                ),
+
+                RefreshIndicator(
+                  onRefresh: () =>
+                      ref.read(reportLocationProvider.notifier).getLocations(),
+
+                  child: reportLocation.when(
+                    data: (data) => data.isEmpty
+                        ? const Center(child: Text("No Report Notifications"))
+                        : ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (context, index) => ListTile(
+                              onTap: () {
+                                ref
+                                    .read(reportNotificationProvider.notifier)
+                                    .getReports(data[index]);
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ReportNotificationScreen(),
+                                  ),
+                                );
+                              },
+                              title: Card(
+                                child: ListTile(
+                                  title: Text(data[index]),
+                                  trailing: const Icon(
+                                    Icons.keyboard_arrow_right_outlined,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                    error: (e, _) => Center(child: Text(e.toString())),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

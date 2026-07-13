@@ -20,7 +20,7 @@ class ReportModel extends Report {
       id: id,
       titel: json['Title'],
       discreption: json['Discreption'],
-      date: json['date'],
+      date:  DateTime.parse(json['date']),
       imagesUrl:
           (json['Images'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -42,7 +42,7 @@ class ReportModel extends Report {
       'lng': lng,
       'address': address,
       "Images": '',
-      'date': date,
+      'date': date.toIso8601String(),
       "userId": userId,
       "userName": userName,
       "userprofile": userprofile,

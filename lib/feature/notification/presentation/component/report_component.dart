@@ -32,7 +32,7 @@ class _ReportComponentState extends ConsumerState<ReportComponent> {
             PostUserInfo(
               username: widget.report.userName,
               imageUrl: widget.report.userprofile,
-              time: DateTime.parse(widget.report.date),
+              time: widget.report.date,
             ),
             const SizedBox(height: 8),
             Text(

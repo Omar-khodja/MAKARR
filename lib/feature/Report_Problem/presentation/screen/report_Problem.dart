@@ -57,8 +57,6 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
       Fluttertoast.showToast(msg: "you have to insert Images");
       return;
     }
-    final now = DateTime.now();
-    final formatted = DateFormat('yyyy-MM-dd').format(now);
     final isDone = await reportProvider.setReport(
       Report(
         userId: user.id,
@@ -66,7 +64,7 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
         userprofile: user.imagUrl,
         titel: _title.text,
         discreption: _des.text,
-        date: formatted,
+        date: DateFormat('y-MM-dd HH:mm').parse(DateTime.now().toString()),
         lat: location.value!["lat"].toString(),
         lng: location.value!["lng"].toString(),
         address: location.value!["formatted"],
@@ -173,12 +171,16 @@ class _ReportProblemState extends ConsumerState<ReportProblem> {
         ),
       ),
       error: (error, stackTrace) => const SizedBox(),
-      loading: () => const Column(
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 10),
-          Text("Just Seconde..."),
-        ],
+      loading: () => const Center(
+        child: Column(
+          mainAxisAlignment: .center,
+          crossAxisAlignment: .center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 10),
+            Text("Just Seconde..."),
+          ],
+        ),
       ),
     );
   }
