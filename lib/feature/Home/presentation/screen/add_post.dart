@@ -41,6 +41,9 @@ class _AddPostState extends ConsumerState<AddPost> {
 
   void submitClient() {
     if (_formkey.currentState!.validate()) {
+      ref.invalidate(pdfNotifireProvider);
+      ref.invalidate(imageNotifierProvider);
+
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => AddQuestionOption(
@@ -52,6 +55,9 @@ class _AddPostState extends ConsumerState<AddPost> {
           ),
         ),
       );
+      _des.clear();
+      _title.clear();
+      
     }
     return;
   }
@@ -152,8 +158,7 @@ class _AddPostState extends ConsumerState<AddPost> {
                   controller: _des,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    labelText:
-                        "Post Description",
+                    labelText: "Post Description",
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -171,18 +176,18 @@ class _AddPostState extends ConsumerState<AddPost> {
 
                 imageState.value != null
                     ? Wrap(
-                  spacing: 5,
-                  runSpacing: 5,
+                        spacing: 5,
+                        runSpacing: 5,
                         children: imageState.value!.map((file) {
-                    return SizedBox(
-                      width: (MediaQuery.of(context).size.width - 60) / 2,
-                      height: 150,
-                      child: ImageCard(
-                        image: file,
+                          return SizedBox(
+                            width: (MediaQuery.of(context).size.width - 60) / 2,
+                            height: 150,
+                            child: ImageCard(
+                              image: file,
                               onDelete: () => imageProvider.deleteImage(file),
-                      ),
-                    );
-                  }).toList(),
+                            ),
+                          );
+                        }).toList(),
                       )
                     : const SizedBox.shrink(),
                 const SizedBox(height: 12),
