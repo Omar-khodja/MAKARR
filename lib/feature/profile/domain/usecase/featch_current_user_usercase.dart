@@ -11,7 +11,7 @@ class FeatchCurrentUserUsercase extends UseCase<UserNav, String> {
 
   final BaseNavigationRepository baseNavigationRepository;
   @override
-  Future<Either<Failure, UserNav>> call(String userId) async {
+  Future<Either<Failure, UserNav>> setOpinion(String userId) async {
     return await baseNavigationRepository.getCurrentUserInfo(userId);
   }
 

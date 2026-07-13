@@ -39,7 +39,7 @@ class ImageNotifier extends StateNotifier<AsyncValue<List<File>>> {
     state = AsyncValue.data([...currentImages, ...newImages]);
   }
 
-  void deleteImage(File image) {
+  Future<void> deleteImage(File image)async {
     final currentImages = state.value ?? [];
     final updated = [...currentImages]..remove(image);
     state = AsyncValue.data(updated);

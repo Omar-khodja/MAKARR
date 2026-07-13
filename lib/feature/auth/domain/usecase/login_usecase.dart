@@ -7,7 +7,7 @@ class LoginUsecase implements UseCase<void, (String, String)> {
   LoginUsecase({required this.baseAuthRepo});
   final BaseAuthRepo baseAuthRepo;
   @override
-  Future<Either<Failure, void>> call((String, String) params) async {
+  Future<Either<Failure, void>> setOpinion((String, String) params) async {
     final (email, password) = params;
     return await baseAuthRepo.login(email, password);
   }

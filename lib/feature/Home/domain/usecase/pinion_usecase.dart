@@ -10,7 +10,7 @@ class OpinionUsecase extends UseCase<void, Opinion> {
   final BasePostRepo basePostRepo;
 
   @override
-  Future<Either<Failure, void>> call(Opinion opinio) {
+  Future<Either<Failure, void>> setOpinion(Opinion opinio) {
     return basePostRepo.setOpinion(opinio);
   }
 }

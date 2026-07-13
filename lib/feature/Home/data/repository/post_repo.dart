@@ -19,7 +19,6 @@ class PostRepo implements BasePostRepo {
       await baseDataSourcepost.setPost(PostMoudel.fromEntity(post));
       return const Right("sep post seccessfully");
     } catch (e) {
-      AppLogger.e(e.toString());
       return Left(ServerFailure(e.toString()));
     }
   }
@@ -30,7 +29,6 @@ class PostRepo implements BasePostRepo {
       final posts = await baseDataSourcepost.getPost(location);
       return Right(posts);
     } catch (e) {
-      AppLogger.e(e.toString());
       return const Left(ServerFailure("Failed to get posts"));
     }
   }
@@ -56,7 +54,6 @@ class PostRepo implements BasePostRepo {
       await baseDataSourcepost.setOpinion(OpinionModel.fromEntity(opinio));
       return const Right(null);
     } on FirestoreException catch (e) {
-      AppLogger.e(e.toString());
       return Left(ServerFailure(e.toString()));
     }
   }
@@ -67,7 +64,6 @@ class PostRepo implements BasePostRepo {
       await baseDataSourcepost.setPostForInvestor(PostMoudel.fromEntity(post));
       return const Right("sep post seccessfully");
     } catch (e) {
-      AppLogger.e(e.toString());
       return Left(ServerFailure(e.toString()));
     }
   }
@@ -78,7 +74,6 @@ class PostRepo implements BasePostRepo {
       final posts = await baseDataSourcepost.getInvestmentPost();
       return Right(posts);
     } catch (e) {
-      AppLogger.e(e.toString());
       return const Left(ServerFailure("Failed to get investment posts"));
     }
   }

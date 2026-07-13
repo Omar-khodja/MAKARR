@@ -8,7 +8,7 @@ class SetPostUsecase  {
 
   final BasePostRepo basePostRepo;
 
-  Future<Either<Failure, String>> call(Post post,String postForWho) {
+  Future<Either<Failure, String>> setPost(Post post, String postForWho) {
     if(postForWho == "Client"){
 
     return basePostRepo.setPost(post);

@@ -4,6 +4,8 @@ import 'package:makarr/core/component/outLineButton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/feature/Home/presentation/controler/addPost_provider.dart';
+import 'package:makarr/feature/Home/presentation/controler/pdf_provider.dart';
+import 'package:makarr/feature/Report_Problem/presentation/controler/image_provider.dart';
 
 class AddQuestionOption extends ConsumerStatefulWidget {
   const AddQuestionOption({
@@ -44,6 +46,8 @@ class _AddQuestionOptionState extends ConsumerState<AddQuestionOption> {
 
   void submit() {
     if (_formkey.currentState!.validate()  ) {
+      final images = ref.read(imageNotifierProvider);
+      final pdfFile = ref.read(pdfNotifireProvider);
       final user = ref.read(userNotifireProvider);
       ref.watch(addPostNotifireProvider.notifier)
           .savePost(
@@ -54,6 +58,8 @@ class _AddQuestionOptionState extends ConsumerState<AddQuestionOption> {
             question: _question.text.trim(),
             options: _optionCtrls.map((ctrl) => ctrl.text.trim()).toList(),
             setPostFor: widget.selectedPublish,
+            images: images.value,
+            pdfFile: pdfFile.value
           );
       Navigator.of(context).pop();
     }
@@ -62,6 +68,7 @@ class _AddQuestionOptionState extends ConsumerState<AddQuestionOption> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Opinion Section")),
       body: Form(
         key: _formkey,
         child: Padding(

@@ -14,7 +14,7 @@ class OpinionProviderNitifire extends StateNotifier<AsyncValue<Opinion>> {
   Future<bool> setOpinion(Opinion opinio) async {
     state = const AsyncValue.loading();
 
-    final resulr = await opinion.call(opinio);
+    final resulr = await opinion.setOpinion(opinio);
     return  resulr.fold(
       (failure) {
            state = AsyncValue.error(failure.message, StackTrace.current);

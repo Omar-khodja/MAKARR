@@ -8,7 +8,7 @@ class CreateuserUsecase implements UseCase<void, UserAuth> {
   CreateuserUsecase({required this.baseAuthRepo});
   final BaseAuthRepo baseAuthRepo;
   @override
-  Future<Either<Failure, void>> call(UserAuth user) async {
+  Future<Either<Failure, void>> setOpinion(UserAuth user) async {
     return await baseAuthRepo.createUser(user);
   }
 }

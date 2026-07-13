@@ -7,8 +7,10 @@ import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
 import 'package:makarr/feature/Home/presentation/component/user_card_info.dart';
 import 'package:makarr/feature/Home/presentation/controler/addPost_provider.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
+import 'package:makarr/feature/Home/presentation/controler/pdf_provider.dart';
 import 'package:makarr/feature/Home/presentation/screen/add_question_option.dart';
 import 'package:makarr/feature/Home/presentation/screen/pdfViewer.dart';
+import 'package:makarr/feature/Report_Problem/presentation/controler/image_provider.dart';
 import 'package:makarr/feature/auth/presentation/component/custom_dropbox.dart';
 
 class AddPost extends ConsumerStatefulWidget {
@@ -37,7 +39,7 @@ class _AddPostState extends ConsumerState<AddPost> {
     super.dispose();
   }
 
-  void submitClient(AddpostnotifireState state) {
+  void submitClient() {
     if (_formkey.currentState!.validate()) {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -54,8 +56,10 @@ class _AddPostState extends ConsumerState<AddPost> {
     return;
   }
 
-  void submitinvestor(AddpostnotifireState state) {
+  void submitinvestor() {
     if (_formkey.currentState!.validate()) {
+      final images = ref.read(imageNotifierProvider);
+      final pdfFile = ref.read(pdfNotifireProvider);
       final user = ref.read(userNotifireProvider);
 
       ref
@@ -66,6 +70,8 @@ class _AddPostState extends ConsumerState<AddPost> {
             title: _title.text.trim(),
             location: "$selectedWilaya - $selectedBladya",
             setPostFor: selectedPublish,
+            images: images.value,
+            pdfFile: pdfFile.value,
           );
       Navigator.of(context).pop();
     }
@@ -75,8 +81,12 @@ class _AddPostState extends ConsumerState<AddPost> {
   @override
   Widget build(BuildContext context) {
     final userState = ref.read(userNotifireProvider);
-    final notifier = ref.read(addPostNotifireProvider.notifier);
-    final state = ref.watch(addPostNotifireProvider);
+    final imageProvider = ref.read(imageNotifierProvider.notifier);
+    final pdfProvider = ref.read(pdfNotifireProvider.notifier);
+    final pdfState = ref.watch(pdfNotifireProvider);
+
+    final imageState = ref.watch(imageNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text("Add Post")),
       body: Form(
@@ -143,7 +153,7 @@ class _AddPostState extends ConsumerState<AddPost> {
                   maxLines: 5,
                   decoration: InputDecoration(
                     labelText:
-                        "What's on your mind, ${userState.value!.fname}?",
+                        "Post Description",
                     alignLabelWithHint: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -159,37 +169,39 @@ class _AddPostState extends ConsumerState<AddPost> {
 
                 const SizedBox(height: 12),
 
-                Wrap(
+                imageState.value != null
+                    ? Wrap(
                   spacing: 5,
                   runSpacing: 5,
-                  children: state.imageFile.map((file) {
+                        children: imageState.value!.map((file) {
                     return SizedBox(
                       width: (MediaQuery.of(context).size.width - 60) / 2,
                       height: 150,
                       child: ImageCard(
                         image: file,
-                        onDelete: () => notifier.removeImage(file),
+                              onDelete: () => imageProvider.deleteImage(file),
                       ),
                     );
                   }).toList(),
-                ),
+                      )
+                    : const SizedBox.shrink(),
                 const SizedBox(height: 12),
-                if (state.pdf != null && state.pdf!.path.isNotEmpty)
+                if (pdfState.value != null && pdfState.value!.path.isNotEmpty)
                   ListTile(
                     leading: const Icon(
                       Icons.picture_as_pdf,
                       color: Colors.red,
                       size: 30,
                     ),
-                    title: Text(state.pdf!.path.split('/').last),
+                    title: Text(pdfState.value!.path.split('/').last),
                     trailing: IconButton(
-                      onPressed: () => notifier.removePdf(),
+                      onPressed: () => pdfProvider.removePdf(),
                       icon: const Icon(Icons.close),
                     ),
                     onTap: () => {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => Pdfviewer(file: state.pdf!),
+                          builder: (context) => Pdfviewer(file: pdfState.value),
                         ),
                       ),
                     },
@@ -202,12 +214,12 @@ class _AddPostState extends ConsumerState<AddPost> {
                     OutLineButton(
                       text: 'Photo',
                       leadIcon: Icons.photo_library_outlined,
-                      fun: notifier.pickImages,
+                      fun: imageProvider.pickImage,
                     ),
                     OutLineButton(
                       text: 'pdf',
                       leadIcon: Icons.photo_library_outlined,
-                      fun: notifier.pickPdfFile,
+                      fun: pdfProvider.pickPdfFile,
                     ),
                   ],
                 ),
@@ -215,8 +227,8 @@ class _AddPostState extends ConsumerState<AddPost> {
                 PrimaryButton(
                   label: selectedPublish == "Client" ? "Next" : "Post",
                   fun: () => selectedPublish == "Client"
-                      ? submitClient(state)
-                      : submitinvestor(state),
+                      ? submitClient()
+                      : submitinvestor(),
 
                   tailIcon: selectedPublish == "Client"
                       ? Icons.arrow_forward_ios

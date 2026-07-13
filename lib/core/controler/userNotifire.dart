@@ -14,7 +14,7 @@ class UserNotofire extends StateNotifier<AsyncValue<UserNav>> {
 
   Future<void> featchCurrentUser(String userId) async {
     state = const AsyncValue.loading();
-    final result = await featchCurrentUserUsercase.call(userId);
+    final result = await featchCurrentUserUsercase.setOpinion(userId);
     result.fold((l) {
       state = AsyncValue.error(l, StackTrace.current);
     }, (r) => state = AsyncValue.data(r));

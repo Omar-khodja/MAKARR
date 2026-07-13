@@ -23,7 +23,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<bool?>> {
   Future<void> createUser(UserAuth user) async {
     state = const AsyncValue.loading();
 
-    final result = await createuserUsecase.call(user);
+    final result = await createuserUsecase.setOpinion(user);
     state = result.fold(
       (l) {
         Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red);
@@ -39,7 +39,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<bool?>> {
   Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
 
-    final result = await loginUsecase.call((email, password));
+    final result = await loginUsecase.setOpinion((email, password));
     state = result.fold(
       (l) {
         Fluttertoast.showToast(msg: l.message, backgroundColor: Colors.red);
@@ -53,7 +53,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<bool?>> {
   }
 
   Future<void> signOut() async {
-    final result = await singoutUsecase.call(const NoParameters());
+    final result = await singoutUsecase.setOpinion(const NoParameters());
     result.fold(
       (l) => state = AsyncValue.error(l, StackTrace.current),
       (r) => Fluttertoast.showToast(msg: "Sign out successfully"),

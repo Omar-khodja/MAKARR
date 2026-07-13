@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/error/exeptions.dart';
 import 'package:makarr/feature/Home/data/datasource/base_datasource_post.dart';
 import 'package:makarr/core/models/opinion_model.dart';
@@ -40,9 +41,10 @@ class FirebaseDatasource implements BaseDatasourcePost {
         'pdfUrl': pdfUrl,
       });
     } on FirebaseException catch (e) {
-      throw ServerException(errorMessage: e.message ?? 'Firebase error');
-    } catch (e) {
-      throw ServerException(errorMessage: 'Unexpected error: $e');
+      AppLogger.e(e.message ?? "setpost error");
+      throw FirestoreException(
+        errorMessage: e.message ?? 'somthing went wrong try again later',
+      );
     }
   }
 
@@ -60,7 +62,11 @@ class FirebaseDatasource implements BaseDatasourcePost {
           .toList();
       return posts;
     } on FirebaseException catch (e) {
-      throw FirestoreException(errorMessage: 'Unexpected error: $e');
+      AppLogger.e(e.message ?? "get post error");
+
+      throw FirestoreException(
+        errorMessage: e.message ?? "somthing went wrong try again later",
+      );
     }
   }
 
@@ -109,9 +115,11 @@ class FirebaseDatasource implements BaseDatasourcePost {
         }
       }
     } on FirebaseException catch (e) {
-      throw FirestoreException(errorMessage: e.message!);
-    } catch (e) {
-      throw ServerException(errorMessage: e.toString());
+      AppLogger.e(e.message ?? "like error");
+
+      throw FirestoreException(
+        errorMessage: e.message ?? "somthing went worng",
+      );
     }
   }
 
@@ -135,7 +143,11 @@ class FirebaseDatasource implements BaseDatasourcePost {
           .collection("PostOpinion")
           .add(opinio.toJson());
     } on FirebaseException catch (e) {
-      throw FirestoreException(errorMessage: e.message!);
+      AppLogger.e(e.message ?? "set Opinion error");
+
+      throw FirestoreException(
+        errorMessage: e.message ?? "somthing went wronge try again later",
+      );
     }
   }
 
@@ -169,10 +181,11 @@ class FirebaseDatasource implements BaseDatasourcePost {
         'pdfUrl': pdfUrl,
       });
     } on FirebaseException catch (e) {
-      throw ServerException(errorMessage: e.message ?? 'Firebase error');
-    } catch (e) {
-      throw ServerException(errorMessage: 'Unexpected error: $e');
-    }
+            AppLogger.e(e.message ?? "setPostForInvestor error");
+
+      throw ServerException(errorMessage: e.message ?? "somthing went wronge try again later",
+      );
+    } 
   }
 
   @override
@@ -184,7 +197,9 @@ class FirebaseDatasource implements BaseDatasourcePost {
           .toList();
       return posts;
     } on FirebaseException catch (e) {
-      throw FirestoreException(errorMessage: 'Unexpected error: $e');
+            AppLogger.e(e.message ?? "getInvestmentPost error");
+
+      throw FirestoreException(errorMessage: e.message ?? "somthing went wronge try again later.");
     }
   }
 }
