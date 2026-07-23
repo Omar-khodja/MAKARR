@@ -61,6 +61,8 @@ class _AddQuestionOptionState extends ConsumerState<AddQuestionOption> {
             images: images.value,
             pdfFile: pdfFile.value
           );
+          ref.read(pdfNotifireProvider.notifier).removePdf();
+          ref.read(imageNotifierProvider.notifier).emptyState();
       Navigator.of(context).pop();
     }
   }

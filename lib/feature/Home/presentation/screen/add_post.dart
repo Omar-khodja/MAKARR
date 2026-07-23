@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/component/outLineButton.dart';
 import 'package:makarr/core/component/primaryButton.dart';
 import 'package:makarr/feature/Home/presentation/component/Image_card.dart';
@@ -31,6 +30,15 @@ class _AddPostState extends ConsumerState<AddPost> {
   String selectedBladya = "Aoulef";
   final List<String> whoCanSee = ["Client", "Investor"];
   String selectedPublish = "Client";
+  late ImageNotifier imageProvider;
+  late PdfNotifire pdfProvider;
+  @override
+  void initState() {
+    super.initState();
+    pdfProvider = ref.read(pdfNotifireProvider.notifier);
+    imageProvider = ref.read(imageNotifierProvider.notifier);
+  }
+
   @override
   void dispose() {
     _des.dispose();
@@ -41,10 +49,7 @@ class _AddPostState extends ConsumerState<AddPost> {
 
   void submitClient() {
     if (_formkey.currentState!.validate()) {
-      ref.invalidate(pdfNotifireProvider);
-      ref.invalidate(imageNotifierProvider);
-
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => AddQuestionOption(
             selectedBladya: selectedBladya,
@@ -55,9 +60,6 @@ class _AddPostState extends ConsumerState<AddPost> {
           ),
         ),
       );
-      _des.clear();
-      _title.clear();
-      
     }
     return;
   }
@@ -79,6 +81,9 @@ class _AddPostState extends ConsumerState<AddPost> {
             images: images.value,
             pdfFile: pdfFile.value,
           );
+      imageProvider.emptyState();
+      pdfProvider.removePdf();
+
       Navigator.of(context).pop();
     }
     return;
@@ -87,8 +92,7 @@ class _AddPostState extends ConsumerState<AddPost> {
   @override
   Widget build(BuildContext context) {
     final userState = ref.read(userNotifireProvider);
-    final imageProvider = ref.read(imageNotifierProvider.notifier);
-    final pdfProvider = ref.read(pdfNotifireProvider.notifier);
+
     final pdfState = ref.watch(pdfNotifireProvider);
 
     final imageState = ref.watch(imageNotifierProvider);
@@ -111,9 +115,6 @@ class _AddPostState extends ConsumerState<AddPost> {
                   onChange: (w, b) {
                     selectedBladya = b;
                     selectedWilaya = w;
-                    AppLogger.i(
-                      "Selected location: $selectedWilaya - $selectedBladya",
-                    );
                   },
                 ),
                 const SizedBox(height: 20),

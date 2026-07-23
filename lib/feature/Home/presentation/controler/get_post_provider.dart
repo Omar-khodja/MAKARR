@@ -11,7 +11,6 @@ class GetPostnotifire extends StateNotifier<AsyncValue<List<Post>>> {
   Future<void> getPost(String location) async {
     state = const AsyncValue.loading();
 
-    await Future.delayed(const Duration(seconds: 3));
     final resulr = await getPostUsecase.getClientPost(location);
     state = resulr.fold(
       (failure) {

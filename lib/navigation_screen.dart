@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
+import 'package:makarr/feature/Home/presentation/component/home_location_filter.dart';
+import 'package:makarr/feature/Home/presentation/controler/get_post_provider.dart';
 import 'package:makarr/feature/Home/presentation/screen/add_post.dart';
 import 'package:makarr/feature/Home/presentation/screen/home_screen.dart';
 import 'package:makarr/feature/Home/presentation/screen/investor_screen.dart';
@@ -55,10 +57,39 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
     GButton(icon: Icons.notifications_outlined, text: "Notifications"),
     GButton(icon: Icons.person_outline, text: "Profile"),
   ];
+  String selectedWilaya = "Adrar";
+  String selectedBladya = "Aoulef";
+  void setFilter(wilaya, bladia) {
+    selectedBladya = bladia;
+    selectedWilaya = wilaya;
+  }
 
   bool isNavBarVissible = true;
+  void _showLocationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Select Location"),
+        content: HomeLocationFilter(onSelected: setFilter),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              ref
+                  .read(getPostNotifireProvider.notifier)
+                  .getPost("$selectedWilaya - $selectedBladya}");
+              Navigator.of(context).pop();
+            },
+            child: const Text("Submit"),
+          ),
+        ],
+      ),
+    );
+  }
 
-  
   @override
   Widget build(BuildContext context) {
     final userState = ref.watch(userNotifireProvider);
@@ -73,7 +104,7 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
             backgroundColor: darcktheme
                 ? Theme.of(context).colorScheme.surface
                 : Theme.of(context).colorScheme.surfaceContainerHigh,
-          
+
             body: NotificationListener<UserScrollNotification>(
               onNotification: (notification) {
                 if (notification.direction == ScrollDirection.reverse) {
@@ -102,7 +133,13 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
                           ? clientScreenTitel[selectedScreen]
                           : cittyHalltScreenTitel[selectedScreen],
                     ),
-          
+                    actions: [
+                      TextButton(
+                        onPressed: () => _showLocationDialog(),
+                        child: const Text("Filter"),
+                      ),
+                    ],
+
                     floating: true,
                     snap: true,
                     pinned: false,
@@ -122,7 +159,9 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
                     duration: const Duration(milliseconds: 300),
                     child: FloatingActionButton(
                       onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const AddPost()),
+                        MaterialPageRoute(
+                          builder: (context) => const AddPost(),
+                        ),
                       ),
                       child: const Icon(Icons.add_box_outlined),
                     ),
@@ -130,7 +169,7 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
                 : null,
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.miniEndFloat,
-          
+
             bottomNavigationBar: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               height: isNavBarVissible ? 60 : 0,
@@ -148,14 +187,14 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
                         ? Theme.of(context).colorScheme.primaryContainer
                         : Theme.of(context).colorScheme.primary,
                     mainAxisAlignment: .spaceAround,
-          
+
                     gap: 4,
                     tabMargin: const EdgeInsetsGeometry.symmetric(vertical: 10),
                     padding: const EdgeInsetsGeometry.symmetric(
                       vertical: 10,
                       horizontal: 10,
                     ),
-          
+
                     onTabChange: (index) => setState(() {
                       selectedScreen = index;
                     }),

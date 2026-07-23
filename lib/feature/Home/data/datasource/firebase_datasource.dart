@@ -22,7 +22,7 @@ class FirebaseDatasource implements BaseDatasourcePost {
           .add(post.toClientMap());
       if (post.photos?.isNotEmpty == true) {
         for (int i = 0; i < post.photos!.length; i++) {
-          final imageRef = storageRef.ref().child(
+          final imageRef =  storageRef.ref().child(
             'post_images/${postref.id}/image_$i.jpg',
           );
           await imageRef.putFile(post.photos![i]);

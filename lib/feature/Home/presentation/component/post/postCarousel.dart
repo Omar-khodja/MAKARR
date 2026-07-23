@@ -30,7 +30,7 @@ class _PostCarouselState extends ConsumerState<PostCarousel> {
       children: widget.images
           .map(
             (image) => CachedNetworkImage(
-              imageUrl: image,
+              imageUrl: image.trim(),
               fit: BoxFit.cover,
               cacheKey: image.split('?').first,
               placeholder: (context, url) => Center(
