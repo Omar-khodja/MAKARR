@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:makarr/core/applogger/appLogger.dart';
 import 'package:makarr/core/controler/userNotifire.dart';
 import 'package:makarr/feature/Home/presentation/component/home_location_filter.dart';
 import 'package:makarr/feature/Home/presentation/controler/get_post_provider.dart';
@@ -66,6 +67,8 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
 
   bool isNavBarVissible = true;
   void _showLocationDialog() {
+    selectedWilaya = "Adrar";
+    selectedBladya = "Aoulef";
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -78,9 +81,10 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
           ),
           ElevatedButton(
             onPressed: () {
+              AppLogger.i("$selectedWilaya - $selectedBladya");
               ref
                   .read(getPostNotifireProvider.notifier)
-                  .getPost("$selectedWilaya - $selectedBladya}");
+                  .getPost("$selectedWilaya - $selectedBladya");
               Navigator.of(context).pop();
             },
             child: const Text("Submit"),
@@ -133,12 +137,19 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
                           ? clientScreenTitel[selectedScreen]
                           : cittyHalltScreenTitel[selectedScreen],
                     ),
-                    actions: [
+                    actions: (user.type == "Admin" && selectedScreen == 0)
+                        ? [
                       TextButton(
                         onPressed: () => _showLocationDialog(),
-                        child: const Text("Filter"),
-                      ),
-                    ],
+                              child: const Row(
+                                children: [
+                                  Text("Location"),
+                                  Icon(Icons.arrow_drop_down),
+                                ],
+                              ),
+                            ),
+                          ]
+                        : null,
 
                     floating: true,
                     snap: true,
