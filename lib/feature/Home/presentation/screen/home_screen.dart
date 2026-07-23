@@ -28,10 +28,17 @@ class _HomeScreen extends ConsumerState<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final user = ref.read(userNotifireProvider);
-      if (user.value == null || user.value!.type == "Admin") return;
+      if (user.value == null ) return;
+      if(user.value!.type == "Admin"){
+        ref
+            .read(getPostNotifireProvider.notifier)
+            .getPost("Adrar - Aoulef");
+      }else{
+
       ref
           .read(getPostNotifireProvider.notifier)
           .getPost("${user.value!.wilaya} - ${user.value!.bladya}");
+      }
     });
   }
 

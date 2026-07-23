@@ -59,7 +59,6 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -81,16 +80,34 @@ class _MyAppState extends ConsumerState<MyApp> {
           title: 'Flutter Demo',
           theme: ThemeData(
             brightness: .light,
-            textTheme: GoogleFonts.fjordOneTextTheme(
-              ThemeData.light().textTheme,
-            ),
+            textTheme:
+                GoogleFonts.fjordOneTextTheme(
+                  ThemeData.light().textTheme,
+                ).copyWith(
+                  titleLarge: GoogleFonts.fjordOne(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // adjust to match your scheme
+                  ),
+                  titleMedium: GoogleFonts.fjordOne(
+                    color: Colors.white, // adjust to match your scheme
+                  ),
+                ),
             colorScheme: lightColorScheme,
           ),
           darkTheme: ThemeData(
             brightness: .dark,
-            textTheme: GoogleFonts.fjordOneTextTheme(
-              ThemeData.dark().textTheme,
-            ),
+            textTheme: GoogleFonts.fjordOneTextTheme(ThemeData.dark().textTheme)
+                .copyWith(
+                  titleLarge: GoogleFonts.fjordOne(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // adjust to match your scheme
+                  ),
+                  titleMedium: GoogleFonts.fjordOne(
+                    color: Colors.white, // adjust to match your scheme
+                  ),
+                ),
             colorScheme: darkColorScheme,
           ),
           home: StreamBuilder(
@@ -99,16 +116,14 @@ class _MyAppState extends ConsumerState<MyApp> {
               final user = snapshot.data;
 
               if (user != null) {
-              
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    ref
-                        .read(userNotifireProvider.notifier)
-                        .featchCurrentUser(user.uid);
-                    ref
-                        .read(subscriptionProvider.notifier)
-                        .checkSubscription(user.uid);
-                  });
-                
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ref
+                      .read(userNotifireProvider.notifier)
+                      .featchCurrentUser(user.uid);
+                  ref
+                      .read(subscriptionProvider.notifier)
+                      .checkSubscription(user.uid);
+                });
 
                 return const NavigationScreen();
               }

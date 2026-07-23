@@ -141,10 +141,18 @@ class _NavigationScreen extends ConsumerState<NavigationScreen> {
                         ? [
                       TextButton(
                         onPressed: () => _showLocationDialog(),
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Text("Location"),
-                                  Icon(Icons.arrow_drop_down),
+                                  Text(
+                                    "Location",
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleMedium,
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.white,
+                                  ),
                                 ],
                               ),
                             ),
